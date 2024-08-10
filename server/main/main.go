@@ -29,8 +29,6 @@ func main() {
 	aolreplayer.Replay()
 	fmt.Println("DONE")
 
-	rdb.Persist()
-
 	listener, err := net.Listen("tcp", ":2222")
 
 	if err != nil {
@@ -38,6 +36,8 @@ func main() {
 	}
 
 	defer listener.Close()
+
+	rdb.Reload()
 
 	fmt.Println("Tedis is listening on port 2222")
 	fmt.Println("Ready to accept connections")
@@ -79,6 +79,8 @@ func handleConnection(conn net.Conn) {
 		}
 
 		result := command.Execute()
+
+		// rdb.Persist()
 
 		_, err = conn.Write([]byte(result + "\n"))
 
