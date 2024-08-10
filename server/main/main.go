@@ -3,10 +3,14 @@ package main
 import (
 	"fmt"
 	"mmartinjoo/trees/aol"
+	"mmartinjoo/trees/cache"
+	"mmartinjoo/trees/factory"
+
 	// aolreplayer "mmartinjoo/trees/aol_replayer"
 	commandparser "mmartinjoo/trees/command_parser"
 	"mmartinjoo/trees/rdb"
 	"net"
+
 	"github.com/gookit/event"
 )
 
@@ -25,21 +29,29 @@ func main() {
 
 		aol.Write(command, key, args)
 
-		if numberOfWriteCommands % 10 == 0 {
+		if numberOfWriteCommands%10 == 0 {
 			rdb.Persist()
 		}
 
 		return nil
-	}));
+	}))
 
 	fmt.Println("Replaying AOL...")
 	aol.Replay()
 	fmt.Println("DONE")
 
+	lru := cache.NewLRU(len(factory.Store))
+
+	for key := range factory.Store {
+		lru.Put(key)
+	}
+
+	fmt.Println(lru.Map)
+	fmt.Println(lru.Items)
+
 	// fmt.Println("Reloading RDB...")
 	// rdb.Reload()
 	// fmt.Println("DONE")
-
 
 	listener, err := net.Listen("tcp", ":2222")
 
