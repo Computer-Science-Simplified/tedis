@@ -2,12 +2,32 @@ package main
 
 import (
 	"fmt"
+	"mmartinjoo/trees/aol"
+	aolreplayer "mmartinjoo/trees/aol_replayer"
 	commandparser "mmartinjoo/trees/command_parser"
 	"net"
+
+	"github.com/gookit/event"
 )
 
 func main() {
 	fmt.Println("Starting Tedis...")
+
+	event.On("write_command_executed", event.ListenerFunc(func(e event.Event) error {
+		data := e.Data()
+		command, _ := data["command"].(string)
+		key, _ := data["key"].(string)
+		args, _ := data["args"].([]int64)
+
+		aol.Write(command, key, args)
+
+		return nil
+	}));
+
+	fmt.Println("Replaying AOL...")
+	aolreplayer.Replay()
+	fmt.Println("DONE")
+
 	listener, err := net.Listen("tcp", ":2222")
 
 	if err != nil {

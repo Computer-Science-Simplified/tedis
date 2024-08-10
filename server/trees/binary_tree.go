@@ -2,7 +2,7 @@ package trees
 
 import (
 	"fmt"
-	// "mmartinjoo/trees/aol"
+	"github.com/gookit/event"
 )
 
 type BinaryTree struct {
@@ -17,7 +17,11 @@ type BinaryTreeNode struct {
 }
 
 func (tree *BinaryTree) Insert(value int64, node *BinaryTreeNode) *BinaryTreeNode {
-	// aol.Write("BTADD", tree.Key, []int64{value})
+	event.MustFire("write_command_executed", event.M{
+		"command": "BTADD", 
+		"key": tree.Key, 
+		"args": []int64{value},
+	})
 
 	if tree.Root == nil {
 		newNode := BinaryTreeNode{Value: value}
