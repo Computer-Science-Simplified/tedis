@@ -1,8 +1,6 @@
 package trees
 
 import (
-	"fmt"
-
 	"github.com/gookit/event"
 )
 
@@ -17,12 +15,14 @@ type BinaryTreeNode struct {
 	Right *BinaryTreeNode
 }
 
-func (tree *BinaryTree) Insert(value int64, node *BinaryTreeNode) *BinaryTreeNode {
-	event.MustFire("write_command_executed", event.M{
-		"command": "BTADD",
-		"key":     tree.Key,
-		"args":    []int64{value},
-	})
+func (tree *BinaryTree) Insert(value int64, node *BinaryTreeNode, shouldReport bool) *BinaryTreeNode {
+	if shouldReport {
+		event.MustFire("write_command_executed", event.M{
+			"command": "BTADD",
+			"key":     tree.Key,
+			"args":    []int64{value},
+		})
+	}
 
 	if tree.Root == nil {
 		newNode := BinaryTreeNode{Value: value}
@@ -56,9 +56,6 @@ func (tree *BinaryTree) ToArray() []int64 {
 		current := queue[0]
 
 		queue = queue[1:]
-
-		fmt.Println(current)
-		fmt.Println(current.Value)
 
 		values = append(values, current.Value)
 
@@ -119,7 +116,6 @@ func (tree *BinaryTree) remove(value int64, node *BinaryTreeNode, parent *Binary
 
 	if node.Value == value {
 		if parent == tree.Root || parent == nil {
-			fmt.Println(value)
 			tree.Root = nil
 
 			return

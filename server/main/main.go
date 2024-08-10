@@ -13,7 +13,11 @@ import (
 func main() {
 	fmt.Println("Starting Tedis...")
 
+	numberOfWriteCommands := 0
+
 	event.On("write_command_executed", event.ListenerFunc(func(e event.Event) error {
+		numberOfWriteCommands++
+
 		data := e.Data()
 		command, _ := data["command"].(string)
 		key, _ := data["key"].(string)
@@ -21,16 +25,20 @@ func main() {
 
 		aol.Write(command, key, args)
 
+		if numberOfWriteCommands % 10 == 0 {
+			rdb.Persist()
+		}
+
 		return nil
 	}));
 
-	// fmt.Println("Replaying AOL...")
-	// aolreplayer.Replay()
-	// fmt.Println("DONE")
-
-	fmt.Println("Reloading RDB...")
-	rdb.Reload()
+	fmt.Println("Replaying AOL...")
+	aol.Replay()
 	fmt.Println("DONE")
+
+	// fmt.Println("Reloading RDB...")
+	// rdb.Reload()
+	// fmt.Println("DONE")
 
 
 	listener, err := net.Listen("tcp", ":2222")
@@ -81,8 +89,6 @@ func handleConnection(conn net.Conn) {
 		}
 
 		result := command.Execute()
-
-		rdb.Persist()
 
 		_, err = conn.Write([]byte(result + "\n"))
 

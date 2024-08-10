@@ -4,8 +4,10 @@ import (
 	"bufio"
 	"encoding/binary"
 	"errors"
+	"fmt"
 	"io"
 	"mmartinjoo/trees/command"
+	"mmartinjoo/trees/factory"
 	"os"
 )
 
@@ -157,4 +159,28 @@ func Read() ([]command.Command, error) {
 	}
 
 	return commands, nil
+}
+
+func Replay() {
+	commands, err := Read()
+
+	numberOfReplayedCommands := 0
+
+	if err != nil {
+		fmt.Println(err.Error())
+
+		return
+	}
+
+	for _, command := range commands {
+		tree := factory.Create(command.Key, "binary_tree")
+
+		if command.Name == "BTADD" {
+			tree.Insert(command.Args[0], tree.Root, false)
+
+			numberOfReplayedCommands++
+		}
+	}
+
+	fmt.Printf("Replayed %d commands\n", numberOfReplayedCommands)
 }

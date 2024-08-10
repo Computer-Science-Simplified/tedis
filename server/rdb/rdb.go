@@ -13,6 +13,8 @@ import (
 )
 
 func Persist() {
+	fmt.Println("RDB persisting to disk")
+
 	file, err := os.OpenFile("rdb.bin", os.O_RDWR|os.O_CREATE|os.O_TRUNC, 0644)
 
 	if err != nil {
@@ -20,10 +22,10 @@ func Persist() {
 	}
 
 	defer file.Close()
-	
+
 	for _, item := range factory.Store {
 		if item.Type == "binary_tree" {
-			persistBinaryTree(item.Value.Key, item.Value, file)	
+			persistBinaryTree(item.Value.Key, item.Value, file)
 		}
 	}
 }
@@ -36,7 +38,7 @@ func Reload() (string, error) {
 	}
 
 	defer file.Close()
-	
+
 	for {
 		var keyLength byte
 
@@ -105,8 +107,8 @@ func Reload() (string, error) {
 
 		for _, value := range values {
 			cmd := command.Command{
-				Key: keyName,
-				Name: "BTADD",				
+				Key:  keyName,
+				Name: "BTADD",
 				Args: []int64{value},
 				Type: "binary_tree",
 			}
@@ -133,7 +135,7 @@ func persistBinaryTree(key string, tree *trees.BinaryTree, file *os.File) {
 		panic(err)
 	}
 
-	err = binary.Write(writer, binary.LittleEndian, []byte(key))	
+	err = binary.Write(writer, binary.LittleEndian, []byte(key))
 	if err != nil {
 		panic(err)
 	}
@@ -143,7 +145,7 @@ func persistBinaryTree(key string, tree *trees.BinaryTree, file *os.File) {
 		panic(err)
 	}
 
-	err = binary.Write(writer, binary.LittleEndian, []byte(treeType))	
+	err = binary.Write(writer, binary.LittleEndian, []byte(treeType))
 	if err != nil {
 		panic(err)
 	}

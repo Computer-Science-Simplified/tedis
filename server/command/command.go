@@ -16,7 +16,7 @@ func (c *Command) Execute() string {
 	tree := factory.Create(c.Key, c.Type)
 
 	if c.Name == "BTADD" {
-		tree.Insert(c.Args[0], tree.Root)
+		tree.Insert(c.Args[0], tree.Root, true)
 
 		return "ok"
 	}
