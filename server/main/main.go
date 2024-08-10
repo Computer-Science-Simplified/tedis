@@ -3,11 +3,10 @@ package main
 import (
 	"fmt"
 	"mmartinjoo/trees/aol"
-	aolreplayer "mmartinjoo/trees/aol_replayer"
+	// aolreplayer "mmartinjoo/trees/aol_replayer"
 	commandparser "mmartinjoo/trees/command_parser"
 	"mmartinjoo/trees/rdb"
 	"net"
-
 	"github.com/gookit/event"
 )
 
@@ -25,9 +24,14 @@ func main() {
 		return nil
 	}));
 
-	fmt.Println("Replaying AOL...")
-	aolreplayer.Replay()
+	// fmt.Println("Replaying AOL...")
+	// aolreplayer.Replay()
+	// fmt.Println("DONE")
+
+	fmt.Println("Reloading RDB...")
+	rdb.Reload()
 	fmt.Println("DONE")
+
 
 	listener, err := net.Listen("tcp", ":2222")
 
@@ -36,8 +40,6 @@ func main() {
 	}
 
 	defer listener.Close()
-
-	rdb.Reload()
 
 	fmt.Println("Tedis is listening on port 2222")
 	fmt.Println("Ready to accept connections")
@@ -80,7 +82,7 @@ func handleConnection(conn net.Conn) {
 
 		result := command.Execute()
 
-		// rdb.Persist()
+		rdb.Persist()
 
 		_, err = conn.Write([]byte(result + "\n"))
 

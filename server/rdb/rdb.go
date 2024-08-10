@@ -6,6 +6,7 @@ import (
 	"errors"
 	"fmt"
 	"io"
+	"mmartinjoo/trees/command"
 	"mmartinjoo/trees/factory"
 	"mmartinjoo/trees/trees"
 	"os"
@@ -91,7 +92,7 @@ func Reload() (string, error) {
 
 		var values []int64
 
-		for i := 0; i < int(valuesLength) - 2; i++ {
+		for i := 0; i < int(valuesLength); i++ {
 			var value int64
 			err = binary.Read(file, binary.LittleEndian, &value)
 
@@ -102,7 +103,18 @@ func Reload() (string, error) {
 			values = append(values, value)
 		}
 
-		fmt.Println(values)
+		for _, value := range values {
+			cmd := command.Command{
+				Key: keyName,
+				Name: "BTADD",				
+				Args: []int64{value},
+				Type: "binary_tree",
+			}
+
+			cmd.Execute()
+		}
+
+		fmt.Printf("Reloaded %d values into %s\n", valuesLength, keyName)
 	}
 
 	return "", nil

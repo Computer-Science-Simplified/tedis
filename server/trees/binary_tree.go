@@ -7,21 +7,21 @@ import (
 )
 
 type BinaryTree struct {
-	Key string
+	Key  string
 	Root *BinaryTreeNode
 }
 
 type BinaryTreeNode struct {
-    Value int64
-    Left  *BinaryTreeNode
-    Right *BinaryTreeNode
+	Value int64
+	Left  *BinaryTreeNode
+	Right *BinaryTreeNode
 }
 
 func (tree *BinaryTree) Insert(value int64, node *BinaryTreeNode) *BinaryTreeNode {
 	event.MustFire("write_command_executed", event.M{
-		"command": "BTADD", 
-		"key": tree.Key, 
-		"args": []int64{value},
+		"command": "BTADD",
+		"key":     tree.Key,
+		"args":    []int64{value},
 	})
 
 	if tree.Root == nil {
@@ -46,14 +46,19 @@ func (tree *BinaryTree) Remove(value int64) {
 func (tree *BinaryTree) ToArray() []int64 {
 	queue := make([]*BinaryTreeNode, 0)
 
-	queue = append(queue, tree.Root)
+	if tree.Root != nil {
+		queue = append(queue, tree.Root)
+	}
 
 	values := make([]int64, 0)
 
-	for len(queue) != 0 {
+	for len(queue) > 0 {
 		current := queue[0]
 
 		queue = queue[1:]
+
+		fmt.Println(current)
+		fmt.Println(current.Value)
 
 		values = append(values, current.Value)
 
