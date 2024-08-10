@@ -2,6 +2,7 @@ package trees
 
 import (
 	"fmt"
+
 	"github.com/gookit/event"
 )
 
@@ -40,6 +41,32 @@ func (tree *BinaryTree) Exists(value int64) bool {
 
 func (tree *BinaryTree) Remove(value int64) {
 	tree.remove(value, tree.Root, nil)
+}
+
+func (tree *BinaryTree) ToArray() []int64 {
+	queue := make([]*BinaryTreeNode, 0)
+
+	queue = append(queue, tree.Root)
+
+	values := make([]int64, 0)
+
+	for len(queue) != 0 {
+		current := queue[0]
+
+		queue = queue[1:]
+
+		values = append(values, current.Value)
+
+		if current.Left != nil {
+			queue = append(queue, current.Left)
+		}
+
+		if current.Right != nil {
+			queue = append(queue, current.Right)
+		}
+	}
+
+	return values
 }
 
 // -------- Private functions --------

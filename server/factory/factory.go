@@ -2,11 +2,16 @@ package factory
 
 import "mmartinjoo/trees/trees"
 
-var store = make(map[string]*trees.BinaryTree)
+var Store = make(map[string]*StoreItem)
+
+type StoreItem struct {
+	Value *trees.BinaryTree
+	Type string
+}
 
 func Create(key string, treeType string) *trees.BinaryTree {
-	if tree, ok := store[key]; ok {
-		return tree
+	if item, ok := Store[key]; ok {
+		return item.Value
 	}
 
 	if treeType == "binary_tree" {
@@ -14,7 +19,10 @@ func Create(key string, treeType string) *trees.BinaryTree {
 			Key: key,
 		}
 
-		store[key] = &tree
+		Store[key] = &StoreItem{
+			Value: &tree,
+			Type: "binary_tree",
+		}
 
 		return &tree
 	}

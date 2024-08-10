@@ -5,6 +5,7 @@ import (
 	"mmartinjoo/trees/aol"
 	aolreplayer "mmartinjoo/trees/aol_replayer"
 	commandparser "mmartinjoo/trees/command_parser"
+	"mmartinjoo/trees/rdb"
 	"net"
 
 	"github.com/gookit/event"
@@ -27,6 +28,8 @@ func main() {
 	fmt.Println("Replaying AOL...")
 	aolreplayer.Replay()
 	fmt.Println("DONE")
+
+	rdb.Persist()
 
 	listener, err := net.Listen("tcp", ":2222")
 

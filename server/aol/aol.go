@@ -3,6 +3,7 @@ package aol
 import (
 	"bufio"
 	"encoding/binary"
+	"errors"
 	"io"
 	"mmartinjoo/trees/command"
 	"os"
@@ -73,13 +74,13 @@ func Write(command string, key string, args []int64) {
     }
 }
 
-func Read() []command.Command {
+func Read() ([]command.Command, error) {
 	var commands []command.Command
 
 	file, err := os.Open("aol.bin")
 
 	if err != nil {
-		panic(err)
+		return []command.Command{}, errors.New("AOL file not found. Skipping replay.")
 	}
 
 	defer file.Close()
@@ -94,7 +95,7 @@ func Read() []command.Command {
 				break
 			}
 
-			panic(err)
+			return []command.Command{}, errors.New("AOL cannot be loaded. Skipping replay.")
 		}
 
 		var commandLength byte
@@ -102,7 +103,7 @@ func Read() []command.Command {
 		err = binary.Read(file, binary.LittleEndian, &commandLength)
 
 		if err != nil {
-			panic(err)
+			return []command.Command{}, errors.New("AOL cannot be loaded. Skipping replay.")
 		}
 
 		var commandName string
@@ -111,7 +112,7 @@ func Read() []command.Command {
 			err = binary.Read(file, binary.LittleEndian, &c)
 
 			if err != nil {
-				panic(err)
+				return []command.Command{}, errors.New("AOL cannot be loaded. Skipping replay.")
 			}
 
 			commandName += string(c)
@@ -122,7 +123,7 @@ func Read() []command.Command {
 		err = binary.Read(file, binary.LittleEndian, &keyLength)
 
 		if err != nil {
-			panic(err)
+			return []command.Command{}, errors.New("AOL cannot be loaded. Skipping replay.")
 		}
 
 		var key string
@@ -131,7 +132,7 @@ func Read() []command.Command {
 			err = binary.Read(file, binary.LittleEndian, &c)
 
 			if err != nil {
-				panic(err)
+				return []command.Command{}, errors.New("AOL cannot be loaded. Skipping replay.")
 			}
 
 			key += string(c)
@@ -144,7 +145,7 @@ func Read() []command.Command {
 			err = binary.Read(file, binary.LittleEndian, &arg)
 
 			if err != nil {
-				panic(err)
+				return []command.Command{}, errors.New("AOL cannot be loaded. Skipping replay.")
 			}
 
 			args = append(args, arg)
@@ -155,5 +156,5 @@ func Read() []command.Command {
 		commands = append(commands, cmd)
 	}
 
-	return commands
+	return commands, nil
 }
