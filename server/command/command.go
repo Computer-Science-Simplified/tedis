@@ -1,6 +1,7 @@
 package command
 
 import (
+	"fmt"
 	"mmartinjoo/trees/factory"
 	"strconv"
 )
@@ -25,6 +26,12 @@ func (c *Command) Execute() string {
 		exists := tree.Exists(c.Args[0])
 
 		return strconv.FormatBool(exists)
+	}
+
+	if c.Name == "BTGETALL" {
+		values := tree.ToArray()
+
+		return fmt.Sprintf("%v", values)
 	}
 
 	return "ok"

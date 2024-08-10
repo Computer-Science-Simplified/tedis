@@ -31,12 +31,20 @@ func Parse(line string) (command.Command, error) {
 		return command.Command{}, fmt.Errorf("btexists requires exactly 1 argument but %d given", len(args))
 	}
 
-	formattedArgs := make([]int64, len(args) - 1)
+	if name == "BTGETALL" && len(args) != 0 {
+		return command.Command{}, fmt.Errorf("btexists requires exactly 0 argument but %d given", len(args))
+	}
 
-	for _, arg := range args {
-		val, _ := strconv.Atoi(arg)
+	formattedArgs := make([]int64, 0)
 
-		formattedArgs = append(formattedArgs, int64(val))
+	if (len(args) > 0) {
+		formattedArgs = make([]int64, len(args) - 1)
+
+		for _, arg := range args {
+			val, _ := strconv.Atoi(arg)
+	
+			formattedArgs = append(formattedArgs, int64(val))
+		}
 	}
 
 	cmd, err := command.Create(name, key, formattedArgs)
