@@ -5,7 +5,7 @@ import (
 	"mmartinjoo/trees/aol"
 	"mmartinjoo/trees/store"
 
-	commandparser "mmartinjoo/trees/command_parser"
+	"mmartinjoo/trees/command"
 	"mmartinjoo/trees/rdb"
 	"net"
 
@@ -135,7 +135,7 @@ func handleConnection(conn net.Conn) {
 
 		fmt.Printf("Received: %s", commandName)
 
-		command, err := commandparser.Parse(commandName)
+		command, err := command.Parse(commandName)
 		if err != nil {
 			conn.Write([]byte(err.Error() + "\n"))
 		}

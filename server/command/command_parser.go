@@ -1,20 +1,19 @@
-package commandparser
+package command
 
 import (
 	"errors"
 	"fmt"
-	"mmartinjoo/trees/command"
 	"strconv"
 	"strings"
 )
 
-func Parse(line string) (command.Command, error) {
+func Parse(line string) (Command, error) {
 	trimmedCommand := strings.TrimRight(line, "\n")
 
 	parts := strings.Split(trimmedCommand, " ")
 
 	if len(parts) < 2 {
-		return command.Command{}, errors.New("command and key are required")
+		return Command{}, errors.New("command and key are required")
 	}
 
 	name := parts[0]
@@ -24,15 +23,15 @@ func Parse(line string) (command.Command, error) {
 	args := parts[2:]
 
 	if name == "BTADD" && len(args) != 1 {
-		return command.Command{}, fmt.Errorf("btadd requires exactly 1 argument but %d given", len(args))
+		return Command{}, fmt.Errorf("btadd requires exactly 1 argument but %d given", len(args))
 	}
 
 	if name == "BTEXISTS" && len(args) != 1 {
-		return command.Command{}, fmt.Errorf("btexists requires exactly 1 argument but %d given", len(args))
+		return Command{}, fmt.Errorf("btexists requires exactly 1 argument but %d given", len(args))
 	}
 
 	if name == "BTGETALL" && len(args) != 0 {
-		return command.Command{}, fmt.Errorf("btexists requires exactly 0 argument but %d given", len(args))
+		return Command{}, fmt.Errorf("btexists requires exactly 0 argument but %d given", len(args))
 	}
 
 	formattedArgs := make([]int64, 0)
@@ -47,10 +46,10 @@ func Parse(line string) (command.Command, error) {
 		}
 	}
 
-	cmd, err := command.Create(name, key, formattedArgs)
+	cmd, err := Create(name, key, formattedArgs)
 
 	if err != nil {
-		return command.Command{}, err
+		return Command{}, err
 	}
 
 	return cmd, nil
