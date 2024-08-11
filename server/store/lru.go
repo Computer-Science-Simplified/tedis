@@ -10,8 +10,8 @@ type LRU struct {
 	Capacity int
 }
 
-func NewLRU(capacity int) LRU {
-	return LRU{
+func NewLRU(capacity int) *LRU {
+	return &LRU{
 		Capacity: capacity,
 		Map: make(map[string]string, capacity),
 		Items: make([]string, capacity),
@@ -49,18 +49,25 @@ func (lru *LRU) Count() int {
 }
 
 func (lru *LRU) GetLeastRecentlyUsed(n int) []string {
-	return lru.Items[len(lru.Items) - n:]
+	targets := make([]string, n)
+
+	copy(targets, lru.Items[len(lru.Items)-n:])
+
+	return targets
 }
 
 func (lru *LRU) Remove(key string) {
 	delete(lru.Map, key)
 
-	for idx, value := range lru.Items {
-		if value == key {
-			lru.Items = append(lru.Items[:idx], lru.Items[idx+1:]...)
-			break
+	newItems := make([]string, 0)
+
+	for _, value := range lru.Items {
+		if value != key {
+			newItems = append(newItems, value)
 		}
 	}
+
+	lru.Items = newItems
 }
 
 func (lru *LRU) update(key string) {

@@ -85,7 +85,7 @@ func handleConnection(conn net.Conn) {
 	}
 }
 
-func addEventListeners(lru store.LRU) {
+func addEventListeners(lru *store.LRU) {
 	event.On("write_command_executed", event.ListenerFunc(func(e event.Event) error {
 		store.CurrentUnsavedWriteCommands++
 

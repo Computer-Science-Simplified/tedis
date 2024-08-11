@@ -17,8 +17,8 @@ type StoreItem struct {
 
 var maxCapacity = 5
 
-func Evict(lru LRU) {
-	if len(Store) >= maxCapacity {
+func Evict(lru *LRU) {
+	if len(Store) > maxCapacity {
 		fmt.Println("Store capacity exceeded. Evicting LRU keys...")
 
 		evictionTargets := lru.GetLeastRecentlyUsed(len(Store) - maxCapacity)
