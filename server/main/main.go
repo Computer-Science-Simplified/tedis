@@ -4,7 +4,9 @@ import (
 	"fmt"
 	"mmartinjoo/trees/aol"
 	"mmartinjoo/trees/listeners"
+	"mmartinjoo/trees/rdb"
 	"mmartinjoo/trees/store"
+	"os"
 
 	"mmartinjoo/trees/command"
 	"net"
@@ -15,13 +17,7 @@ import (
 func main() {
 	fmt.Println("Starting Tedis...")
 
-	fmt.Println("Replaying AOL...")
-	aol.Replay()
-	fmt.Println("DONE")
-
-	// fmt.Println("Reloading RDB...")
-	// rdb.Reload()
-	// fmt.Println("DONE")
+	restoreDatabase()
 
 	lru := store.NewLRU(len(store.Store))
 
@@ -101,4 +97,30 @@ func addEventListeners(lru store.LRU) {
 
 		return nil
 	}))
+}
+
+func restoreDatabase() {
+	fmt.Println("Checking environment for persistence layer")
+
+	// Possible values: aol, rdb
+	persistenceLayer, exists := os.LookupEnv("PERSISTENCE_LAYER")
+
+	if !exists {
+		fmt.Println("PERSISTENCE_LAYER not set. Defaulting to AOL")
+		persistenceLayer = "aol"
+	} else {
+		fmt.Printf("PERSISTENCE_LAYER is set to %s\n", persistenceLayer)
+	}
+
+	if persistenceLayer == "aol" {
+		fmt.Println("Replaying AOL...")
+		aol.Replay()
+		fmt.Println("DONE")
+	}
+
+	if (persistenceLayer == "rdb") {
+		fmt.Println("Reloading RDB...")
+		rdb.Reload()
+		fmt.Println("DONE")
+	}
 }

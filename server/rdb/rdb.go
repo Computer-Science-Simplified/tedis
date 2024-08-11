@@ -39,6 +39,8 @@ func Reload() (string, error) {
 
 	defer file.Close()
 
+	numberOfItems := 0
+
 	for {
 		var keyLength byte
 
@@ -114,10 +116,12 @@ func Reload() (string, error) {
 			}
 
 			cmd.Execute()
-		}
 
-		fmt.Printf("Reloaded %d values into %s\n", valuesLength, keyName)
+			numberOfItems++
+		}
 	}
+
+	fmt.Printf("Reloaded %d values\n", numberOfItems)
 
 	return "", nil
 }
