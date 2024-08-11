@@ -3,7 +3,6 @@ package main
 import (
 	"fmt"
 	"mmartinjoo/trees/aol"
-	"mmartinjoo/trees/cache"
 	"mmartinjoo/trees/store"
 
 	commandparser "mmartinjoo/trees/command_parser"
@@ -28,7 +27,7 @@ func main() {
 		capacity = min(len(store.Store), 6)
 	}
 
-	lru := cache.NewLRU(capacity)
+	lru := store.NewLRU(capacity)
 
 	for key := range store.Store {
 		lru.Put(key)
