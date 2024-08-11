@@ -29,23 +29,7 @@ func main() {
 		lru.Put(key)
 	}
 
-	event.On("write_command_executed", event.ListenerFunc(func(e event.Event) error {
-		store.CurrentUnsavedWriteCommands++
-
-		data := e.Data()
-
-		listeners.LogWriteCommand(data)
-
-		return nil
-	}))
-
-	event.On("command_executed", event.ListenerFunc(func(e event.Event) error {
-		data := e.Data()
-
-		listeners.EvictOldKeys(data, lru)
-
-		return nil
-	}))
+	addEventListeners(lru)
 
 	listener, err := net.Listen("tcp", ":2222")
 
@@ -103,4 +87,18 @@ func handleConnection(conn net.Conn) {
 			return
 		}
 	}
+}
+
+func addEventListeners(lru store.LRU) {
+	event.On("write_command_executed", event.ListenerFunc(func(e event.Event) error {
+		store.CurrentUnsavedWriteCommands++
+
+		data := e.Data()
+
+		listeners.LogWriteCommand(data)
+
+		listeners.EvictOldKeys(data, lru)
+
+		return nil
+	}))
 }
