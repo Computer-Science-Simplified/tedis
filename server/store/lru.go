@@ -59,15 +59,12 @@ func (lru *LRU) GetLeastRecentlyUsed(n int) []string {
 func (lru *LRU) Remove(key string) {
 	delete(lru.Map, key)
 
-	newItems := make([]string, 0)
-
-	for _, value := range lru.Items {
-		if value != key {
-			newItems = append(newItems, value)
+	for idx, value := range lru.Items {
+		if value == key {
+			lru.Items = append(lru.Items[:idx], lru.Items[idx+1:]...)
+			break
 		}
 	}
-
-	lru.Items = newItems
 }
 
 func (lru *LRU) update(key string) {
