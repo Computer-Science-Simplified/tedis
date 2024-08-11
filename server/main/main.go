@@ -19,6 +19,10 @@ func main() {
 	aol.Replay()
 	fmt.Println("DONE")
 
+	// fmt.Println("Reloading RDB...")
+	// rdb.Reload()
+	// fmt.Println("DONE")
+
 	lru := store.NewLRU(len(store.Store))
 
 	for key := range store.Store {
@@ -58,13 +62,6 @@ func main() {
 
 		return nil
 	}))
-
-	fmt.Println(lru.Map)
-	fmt.Println(lru.Items)
-
-	// fmt.Println("Reloading RDB...")
-	// rdb.Reload()
-	// fmt.Println("DONE")
 
 	listener, err := net.Listen("tcp", ":2222")
 
