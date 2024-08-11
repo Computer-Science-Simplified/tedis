@@ -6,7 +6,6 @@ import (
 	"mmartinjoo/trees/cache"
 	"mmartinjoo/trees/factory"
 
-	// aolreplayer "mmartinjoo/trees/aol_replayer"
 	commandparser "mmartinjoo/trees/command_parser"
 	"mmartinjoo/trees/rdb"
 	"net"
@@ -16,6 +15,24 @@ import (
 
 func main() {
 	fmt.Println("Starting Tedis...")
+
+	fmt.Println("Replaying AOL...")
+	aol.Replay()
+	fmt.Println("DONE")
+
+	var capacity int
+
+	if len(factory.Store) == 0 {
+		capacity = 6
+	} else {
+		capacity = min(len(factory.Store), 6)
+	}
+
+	lru := cache.NewLRU(capacity)
+
+	for key := range factory.Store {
+		lru.Put(key)
+	}
 
 	numberOfWriteCommands := 0
 
@@ -36,15 +53,39 @@ func main() {
 		return nil
 	}))
 
-	fmt.Println("Replaying AOL...")
-	aol.Replay()
-	fmt.Println("DONE")
+	event.On("command_executed", event.ListenerFunc(func(e event.Event) error {
+		data := e.Data()
+		key, _ := data["key"].(string)
 
-	lru := cache.NewLRU(len(factory.Store))
+		_, err := lru.Get(key)
 
-	for key := range factory.Store {
-		lru.Put(key)
-	}
+		if err != nil {
+			lru.Put(key)
+		}
+
+		if len(factory.Store) >= 5 {
+			evictionTargets := lru.GetLeastRecentlyUsed(len(factory.Store) - 5)
+
+			for _, evictionTarget := range evictionTargets {
+				delete(factory.Store, evictionTarget)
+				lru.Remove(evictionTarget)
+			}
+
+		}
+
+		return nil
+	}))
+
+	event.On("key_created", event.ListenerFunc(func(e event.Event) error {
+		// data := e.Data()
+		// key, _ := data["key"].(string)
+
+		// TODO: same as command_execute
+
+		fmt.Println(len(factory.Store))
+
+		return nil
+	}))
 
 	fmt.Println(lru.Map)
 	fmt.Println(lru.Items)

@@ -1,6 +1,8 @@
 package cache
 
-import "errors"
+import (
+	"errors"
+)
 
 type LRU struct {
 	Map map[string]string
@@ -40,6 +42,25 @@ func (lru *LRU) Get(key string) (string, error) {
 	lru.update(key)
 
 	return lru.Map[key], nil
+}
+
+func (lru *LRU) Count() int {
+	return len(lru.Items)
+}
+
+func (lru *LRU) GetLeastRecentlyUsed(n int) []string {
+	return lru.Items[len(lru.Items) - n:]
+}
+
+func (lru *LRU) Remove(key string) {
+	delete(lru.Map, key)
+
+	for idx, value := range lru.Items {
+		if value == key {
+			lru.Items = append(lru.Items[:idx], lru.Items[idx+1:]...)
+			break
+		}
+	}
 }
 
 func (lru *LRU) update(key string) {

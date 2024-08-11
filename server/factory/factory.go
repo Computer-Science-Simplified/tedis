@@ -1,6 +1,10 @@
 package factory
 
-import "mmartinjoo/trees/trees"
+import (
+	"mmartinjoo/trees/trees"
+
+	"github.com/gookit/event"
+)
 
 var Store = make(map[string]*StoreItem)
 
@@ -23,6 +27,10 @@ func Create(key string, treeType string) *trees.BinaryTree {
 			Value: &tree,
 			Type: "binary_tree",
 		}
+
+		event.MustFire("key_created", event.M{
+			"key": key,
+		})
 
 		return &tree
 	}

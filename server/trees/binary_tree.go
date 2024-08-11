@@ -24,6 +24,12 @@ func (tree *BinaryTree) Insert(value int64, node *BinaryTreeNode, shouldReport b
 		})
 	}
 
+	event.MustFire("command_executed", event.M{
+		"command": "BTADD",
+		"key":     tree.Key,
+		"args":    []int64{value},
+	})
+
 	if tree.Root == nil {
 		newNode := BinaryTreeNode{Value: value}
 
@@ -36,14 +42,44 @@ func (tree *BinaryTree) Insert(value int64, node *BinaryTreeNode, shouldReport b
 }
 
 func (tree *BinaryTree) Exists(value int64) bool {
+	event.MustFire("command_executed", event.M{
+		"command": "BTADD",
+		"key":     tree.Key,
+		"args":    []int64{value},
+	})
+
+	event.MustFire("write_command_executed", event.M{
+		"command": "BTADD",
+		"key":     tree.Key,
+		"args":    []int64{value},
+	})
+
 	return tree.exists(value, tree.Root)
 }
 
 func (tree *BinaryTree) Remove(value int64) {
+	event.MustFire("command_executed", event.M{
+		"command": "BTADD",
+		"key":     tree.Key,
+		"args":    []int64{value},
+	})
+
+	event.MustFire("write_command_executed", event.M{
+		"command": "BTADD",
+		"key":     tree.Key,
+		"args":    []int64{value},
+	})
+
 	tree.remove(value, tree.Root, nil)
 }
 
 func (tree *BinaryTree) ToArray() []int64 {
+	event.MustFire("command_executed", event.M{
+		"command": "BTADD",
+		"key":     tree.Key,
+		"args":    []int64{},
+	})
+
 	queue := make([]*BinaryTreeNode, 0)
 
 	if tree.Root != nil {
