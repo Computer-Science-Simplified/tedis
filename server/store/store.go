@@ -7,6 +7,9 @@ import (
 
 var Store = make(map[string]*StoreItem)
 
+var CurrentUnsavedWriteCommands int = 0
+var MaxUnsavedWriteCommands int = 3
+
 type StoreItem struct {
 	Value *trees.BinaryTree
 	Type string
@@ -33,4 +36,8 @@ func Evict(lru LRU) {
 
 		fmt.Printf("Evicted %d keys\n", numberOfEvictedKeys)
 	}
+}
+
+func ShouldPersist() bool {
+	return CurrentUnsavedWriteCommands%MaxUnsavedWriteCommands == 0
 }

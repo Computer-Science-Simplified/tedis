@@ -29,14 +29,12 @@ func main() {
 		lru.Put(key)
 	}
 
-	numberOfWriteCommands := 0
-
 	event.On("write_command_executed", event.ListenerFunc(func(e event.Event) error {
-		numberOfWriteCommands++
+		store.CurrentUnsavedWriteCommands++
 
 		data := e.Data()
 
-		listeners.LogWriteCommand(data, numberOfWriteCommands)
+		listeners.LogWriteCommand(data)
 
 		return nil
 	}))
