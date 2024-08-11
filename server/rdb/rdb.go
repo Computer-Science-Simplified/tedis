@@ -7,7 +7,7 @@ import (
 	"fmt"
 	"io"
 	"mmartinjoo/trees/command"
-	"mmartinjoo/trees/factory"
+	"mmartinjoo/trees/store"
 	"mmartinjoo/trees/trees"
 	"os"
 )
@@ -23,7 +23,7 @@ func Persist() {
 
 	defer file.Close()
 
-	for _, item := range factory.Store {
+	for _, item := range store.Store {
 		if item.Type == "binary_tree" {
 			persistBinaryTree(item.Value.Key, item.Value, file)
 		}

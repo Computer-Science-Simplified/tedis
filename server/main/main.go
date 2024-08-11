@@ -4,7 +4,7 @@ import (
 	"fmt"
 	"mmartinjoo/trees/aol"
 	"mmartinjoo/trees/cache"
-	"mmartinjoo/trees/factory"
+	"mmartinjoo/trees/store"
 
 	commandparser "mmartinjoo/trees/command_parser"
 	"mmartinjoo/trees/rdb"
@@ -22,15 +22,15 @@ func main() {
 
 	var capacity int
 
-	if len(factory.Store) == 0 {
+	if len(store.Store) == 0 {
 		capacity = 6
 	} else {
-		capacity = min(len(factory.Store), 6)
+		capacity = min(len(store.Store), 6)
 	}
 
 	lru := cache.NewLRU(capacity)
 
-	for key := range factory.Store {
+	for key := range store.Store {
 		lru.Put(key)
 	}
 
@@ -63,11 +63,11 @@ func main() {
 			lru.Put(key)
 		}
 
-		if len(factory.Store) >= 5 {
-			evictionTargets := lru.GetLeastRecentlyUsed(len(factory.Store) - 5)
+		if len(store.Store) >= 5 {
+			evictionTargets := lru.GetLeastRecentlyUsed(len(store.Store) - 5)
 
 			for _, evictionTarget := range evictionTargets {
-				delete(factory.Store, evictionTarget)
+				delete(store.Store, evictionTarget)
 				lru.Remove(evictionTarget)
 			}
 
@@ -82,7 +82,7 @@ func main() {
 
 		// TODO: same as command_execute
 
-		fmt.Println(len(factory.Store))
+		fmt.Println(len(store.Store))
 
 		return nil
 	}))

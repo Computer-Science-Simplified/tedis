@@ -1,20 +1,21 @@
 package factory
 
 import (
+	"mmartinjoo/trees/store"
 	"mmartinjoo/trees/trees"
 
 	"github.com/gookit/event"
 )
 
-var Store = make(map[string]*StoreItem)
+// var Store = make(map[string]*StoreItem)
 
-type StoreItem struct {
-	Value *trees.BinaryTree
-	Type string
-}
+// type StoreItem struct {
+// 	Value *trees.BinaryTree
+// 	Type string
+// }
 
 func Create(key string, treeType string) *trees.BinaryTree {
-	if item, ok := Store[key]; ok {
+	if item, ok := store.Store[key]; ok {
 		return item.Value
 	}
 
@@ -23,7 +24,7 @@ func Create(key string, treeType string) *trees.BinaryTree {
 			Key: key,
 		}
 
-		Store[key] = &StoreItem{
+		store.Store[key] = &store.StoreItem{
 			Value: &tree,
 			Type: "binary_tree",
 		}
