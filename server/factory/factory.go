@@ -7,13 +7,6 @@ import (
 	"github.com/gookit/event"
 )
 
-// var Store = make(map[string]*StoreItem)
-
-// type StoreItem struct {
-// 	Value *trees.BinaryTree
-// 	Type string
-// }
-
 func Create(key string, treeType string) *trees.BinaryTree {
 	if item, ok := store.Store[key]; ok {
 		return item.Value
