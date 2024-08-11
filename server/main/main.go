@@ -19,15 +19,7 @@ func main() {
 	aol.Replay()
 	fmt.Println("DONE")
 
-	var capacity int
-
-	if len(store.Store) == 0 {
-		capacity = 6
-	} else {
-		capacity = min(len(store.Store), 6)
-	}
-
-	lru := store.NewLRU(capacity)
+	lru := store.NewLRU(len(store.Store))
 
 	for key := range store.Store {
 		lru.Put(key)
@@ -62,14 +54,7 @@ func main() {
 			lru.Put(key)
 		}
 
-		if len(store.Store) >= 5 {
-			evictionTargets := lru.GetLeastRecentlyUsed(len(store.Store) - 5)
-
-			for _, evictionTarget := range evictionTargets {
-				delete(store.Store, evictionTarget)
-				lru.Remove(evictionTarget)
-			}
-		}
+		store.Evict(lru)
 
 		return nil
 	}))
