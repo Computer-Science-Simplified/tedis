@@ -69,19 +69,7 @@ func main() {
 				delete(store.Store, evictionTarget)
 				lru.Remove(evictionTarget)
 			}
-
 		}
-
-		return nil
-	}))
-
-	event.On("key_created", event.ListenerFunc(func(e event.Event) error {
-		// data := e.Data()
-		// key, _ := data["key"].(string)
-
-		// TODO: same as command_execute
-
-		fmt.Println(len(store.Store))
 
 		return nil
 	}))
