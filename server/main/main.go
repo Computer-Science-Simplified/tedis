@@ -3,10 +3,10 @@ package main
 import (
 	"fmt"
 	"mmartinjoo/trees/aol"
+	"mmartinjoo/trees/listeners"
 	"mmartinjoo/trees/store"
 
 	"mmartinjoo/trees/command"
-	"mmartinjoo/trees/rdb"
 	"net"
 
 	"github.com/gookit/event"
@@ -35,30 +35,16 @@ func main() {
 		numberOfWriteCommands++
 
 		data := e.Data()
-		command, _ := data["command"].(string)
-		key, _ := data["key"].(string)
-		args, _ := data["args"].([]int64)
 
-		aol.Write(command, key, args)
-
-		if numberOfWriteCommands%10 == 0 {
-			rdb.Persist()
-		}
+		listeners.LogWriteCommand(data, numberOfWriteCommands)
 
 		return nil
 	}))
 
 	event.On("command_executed", event.ListenerFunc(func(e event.Event) error {
 		data := e.Data()
-		key, _ := data["key"].(string)
 
-		_, err := lru.Get(key)
-
-		if err != nil {
-			lru.Put(key)
-		}
-
-		store.Evict(lru)
+		listeners.EvictOldKeys(data, lru)
 
 		return nil
 	}))
