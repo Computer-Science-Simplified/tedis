@@ -1,6 +1,8 @@
 package trees
 
 import (
+	"mmartinjoo/trees/commands"
+
 	"github.com/gookit/event"
 )
 
@@ -18,7 +20,7 @@ type BSTNode struct {
 func (tree *BST) Insert(value int64, node *BSTNode, shouldReport bool) *BSTNode {
 	if shouldReport {
 		event.MustFire("write_command_executed", event.M{
-			"command": "BTADD",
+			"command": commands.BTADD,
 			"key":     tree.Key,
 			"args":    []int64{value},
 		})
@@ -41,7 +43,7 @@ func (tree *BST) Exists(value int64) bool {
 
 func (tree *BST) Remove(value int64) {
 	event.MustFire("write_command_executed", event.M{
-		"command": "BTADD",
+		"command": commands.BTADD,
 		"key":     tree.Key,
 		"args":    []int64{value},
 	})

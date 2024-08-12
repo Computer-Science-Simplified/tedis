@@ -7,6 +7,7 @@ import (
 	"fmt"
 	"io"
 	"mmartinjoo/trees/command"
+	"mmartinjoo/trees/commands"
 	"mmartinjoo/trees/store"
 	"mmartinjoo/trees/trees"
 	"os"
@@ -110,7 +111,7 @@ func Reload() (string, error) {
 		for _, value := range values {
 			cmd := command.Command{
 				Key:  keyName,
-				Name: "BTADD",
+				Name: commands.BTADD,
 				Args: []int64{value},
 				Type: "binary_tree",
 			}

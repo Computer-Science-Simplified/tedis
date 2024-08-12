@@ -7,6 +7,7 @@ import (
 	"fmt"
 	"io"
 	"mmartinjoo/trees/command"
+	"mmartinjoo/trees/commands"
 	"mmartinjoo/trees/factory"
 	"os"
 )
@@ -162,7 +163,7 @@ func Read() ([]command.Command, error) {
 }
 
 func Replay() {
-	commands, err := Read()
+	cmds, err := Read()
 
 	numberOfReplayedCommands := 0
 
@@ -172,11 +173,11 @@ func Replay() {
 		return
 	}
 
-	for _, command := range commands {
-		tree := factory.Create(command.Key, "binary_tree")
+	for _, cmd := range cmds {
+		tree := factory.Create(cmd.Key, "binary_tree")
 
-		if command.Name == "BTADD" {
-			tree.Insert(command.Args[0], tree.Root, false)
+		if cmd.Name == commands.BTADD {
+			tree.Insert(cmd.Args[0], tree.Root, false)
 
 			numberOfReplayedCommands++
 		}

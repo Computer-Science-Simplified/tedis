@@ -3,6 +3,7 @@ package command
 import (
 	"errors"
 	"fmt"
+	"mmartinjoo/trees/commands"
 	"strconv"
 	"strings"
 )
@@ -22,16 +23,20 @@ func Parse(line string) (Command, error) {
 
 	args := parts[2:]
 
-	if name == "BTADD" && len(args) != 1 {
-		return Command{}, fmt.Errorf("btadd requires exactly 1 argument but %d given", len(args))
+	if name == commands.BTADD && len(args) != 1 {
+		return Command{}, fmt.Errorf("%s requires exactly 1 argument but %d given", commands.BTADD, len(args))
 	}
 
-	if name == "BTEXISTS" && len(args) != 1 {
-		return Command{}, fmt.Errorf("btexists requires exactly 1 argument but %d given", len(args))
+	if name == commands.BTEXISTS && len(args) != 1 {
+		return Command{}, fmt.Errorf("%s requires exactly 1 argument but %d given", commands.BTEXISTS, len(args))
 	}
 
-	if name == "BTGETALL" && len(args) != 0 {
-		return Command{}, fmt.Errorf("btexists requires exactly 0 argument but %d given", len(args))
+	if name == commands.BTGETALL && len(args) != 0 {
+		return Command{}, fmt.Errorf("%s requires exactly 0 argument but %d given", commands.BTGETALL, len(args))
+	}
+
+	if name == commands.BTREM && len(args) != 1 {
+		return Command{}, fmt.Errorf("%s requires exactly 1 argument but %d given", commands.BTREM, len(args))
 	}
 
 	formattedArgs := make([]int64, 0)
