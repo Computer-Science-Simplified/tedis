@@ -17,7 +17,9 @@ func Parse(line string) (Command, error) {
 		return Command{}, errors.New("command and key are required")
 	}
 
-	name := parts[0]
+	name := strings.ToUpper(parts[0])
+
+	fmt.Println(name)
 
 	key := parts[1]
 
