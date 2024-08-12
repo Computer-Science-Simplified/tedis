@@ -77,15 +77,15 @@ func handleConnection(conn net.Conn) {
 		command, err := command.Parse(commandName)
 		if err != nil {
 			conn.Write([]byte(err.Error() + "\n"))
-		}
+		} else {
+			result := command.Execute()
 
-		result := command.Execute()
-
-		_, err = conn.Write([]byte(result + "\n"))
-
-		if err != nil {
-			fmt.Println("Error writing to connection")
-			return
+			_, err = conn.Write([]byte(result + "\n"))
+	
+			if err != nil {
+				fmt.Println("Error writing to connection")
+				return
+			}
 		}
 	}
 }
