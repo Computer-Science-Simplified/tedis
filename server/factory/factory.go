@@ -5,13 +5,13 @@ import (
 	"mmartinjoo/trees/trees"
 )
 
-func Create(key string, treeType string) *trees.BinaryTree {
+func Create(key string, treeType string) *trees.BST {
 	if item, ok := store.Store[key]; ok {
 		return item.Value
 	}
 
 	if treeType == "binary_tree" {
-		tree := trees.BinaryTree{
+		tree := trees.BST{
 			Key: key,
 		}
 

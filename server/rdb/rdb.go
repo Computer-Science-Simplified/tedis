@@ -126,7 +126,7 @@ func Reload() (string, error) {
 	return "", nil
 }
 
-func persistBinaryTree(key string, tree *trees.BinaryTree, file *os.File) {
+func persistBinaryTree(key string, tree *trees.BST, file *os.File) {
 	values := tree.ToArray()
 
 	treeType := "binary_tree"

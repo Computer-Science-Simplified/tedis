@@ -11,7 +11,7 @@ var CurrentUnsavedWriteCommands int = 0
 var MaxUnsavedWriteCommands int = 3
 
 type StoreItem struct {
-	Value *trees.BinaryTree
+	Value *trees.BST
 	Type string
 }
 

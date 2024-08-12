@@ -4,18 +4,18 @@ import (
 	"github.com/gookit/event"
 )
 
-type BinaryTree struct {
+type BST struct {
 	Key  string
-	Root *BinaryTreeNode
+	Root *BSTNode
 }
 
-type BinaryTreeNode struct {
+type BSTNode struct {
 	Value int64
-	Left  *BinaryTreeNode
-	Right *BinaryTreeNode
+	Left  *BSTNode
+	Right *BSTNode
 }
 
-func (tree *BinaryTree) Insert(value int64, node *BinaryTreeNode, shouldReport bool) *BinaryTreeNode {
+func (tree *BST) Insert(value int64, node *BSTNode, shouldReport bool) *BSTNode {
 	if shouldReport {
 		event.MustFire("write_command_executed", event.M{
 			"command": "BTADD",
@@ -25,7 +25,7 @@ func (tree *BinaryTree) Insert(value int64, node *BinaryTreeNode, shouldReport b
 	}
 
 	if tree.Root == nil {
-		newNode := BinaryTreeNode{Value: value}
+		newNode := BSTNode{Value: value}
 
 		tree.Root = &newNode
 
@@ -35,11 +35,11 @@ func (tree *BinaryTree) Insert(value int64, node *BinaryTreeNode, shouldReport b
 	return tree.insert(value, tree.Root)
 }
 
-func (tree *BinaryTree) Exists(value int64) bool {
+func (tree *BST) Exists(value int64) bool {
 	return tree.exists(value, tree.Root)
 }
 
-func (tree *BinaryTree) Remove(value int64) {
+func (tree *BST) Remove(value int64) {
 	event.MustFire("write_command_executed", event.M{
 		"command": "BTADD",
 		"key":     tree.Key,
@@ -49,8 +49,8 @@ func (tree *BinaryTree) Remove(value int64) {
 	tree.remove(value, tree.Root, nil)
 }
 
-func (tree *BinaryTree) ToArray() []int64 {
-	queue := make([]*BinaryTreeNode, 0)
+func (tree *BST) ToArray() []int64 {
+	queue := make([]*BSTNode, 0)
 
 	if tree.Root != nil {
 		queue = append(queue, tree.Root)
@@ -79,9 +79,9 @@ func (tree *BinaryTree) ToArray() []int64 {
 
 // -------- Private functions --------
 
-func (tree *BinaryTree) insert(value int64, node *BinaryTreeNode) *BinaryTreeNode {
+func (tree *BST) insert(value int64, node *BSTNode) *BSTNode {
 	if node == nil {
-		newNode := BinaryTreeNode{Value: value}
+		newNode := BSTNode{Value: value}
 
 		return &newNode
 	}
@@ -95,7 +95,7 @@ func (tree *BinaryTree) insert(value int64, node *BinaryTreeNode) *BinaryTreeNod
 	return node
 }
 
-func (tree *BinaryTree) exists(value int64, node *BinaryTreeNode) bool {
+func (tree *BST) exists(value int64, node *BSTNode) bool {
 	if node == nil {
 		return false
 	}
@@ -115,7 +115,7 @@ func (tree *BinaryTree) exists(value int64, node *BinaryTreeNode) bool {
 	return existsRight
 }
 
-func (tree *BinaryTree) remove(value int64, node *BinaryTreeNode, parent *BinaryTreeNode) {
+func (tree *BST) remove(value int64, node *BSTNode, parent *BSTNode) {
 	if node == nil {
 		return
 	}
