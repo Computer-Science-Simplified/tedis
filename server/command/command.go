@@ -31,7 +31,7 @@ func (c *Command) Execute() string {
 		return fmt.Sprintf("%v", values)
 
 	case commands.BSTREM:
-		tree.Remove(c.Args[0])
+		tree.Remove(c.Args[0], true)
 		return "ok"
 	default:
 		return "ok"

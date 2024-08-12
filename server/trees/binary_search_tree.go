@@ -41,12 +41,14 @@ func (tree *BST) Exists(value int64) bool {
 	return tree.exists(value, tree.Root)
 }
 
-func (tree *BST) Remove(value int64) {
-	event.MustFire("write_command_executed", event.M{
-		"command": commands.BSTADD,
-		"key":     tree.Key,
-		"args":    []int64{value},
-	})
+func (tree *BST) Remove(value int64, shouldReport bool) {
+	if shouldReport {
+		event.MustFire("write_command_executed", event.M{
+			"command": commands.BSTREM,
+			"key":     tree.Key,
+			"args":    []int64{value},
+		})
+	}
 
 	tree.remove(value, tree.Root, nil)
 }
@@ -123,19 +125,28 @@ func (tree *BST) remove(value int64, node *BSTNode, parent *BSTNode) {
 	}
 
 	if node.Value == value {
-		if parent == tree.Root || parent == nil {
-			tree.Root = nil
+		// No child
+		if node.Left == nil && node.Right == nil {
+			if value < parent.Value {
+				parent.Left = nil
+			} else {
+				parent.Right = nil
+			}
 
 			return
 		}
 
-		if value < parent.Value {
-			parent.Left = nil
-		} else {
-			parent.Right = nil
+		hasLeftChild := node.Left != nil && node.Right == nil
+		hasRightChild := node.Left == nil && node.Right != nil
+
+		// One child
+		if (hasLeftChild) {
+			parent.Left = node.Left
+		} else if (hasRightChild) {
+			parent.Right = node.Right
 		}
 	}
 
-	tree.remove(value, node, node.Left)
-	tree.remove(value, node, node.Right)
+	tree.remove(value, node.Left, node)
+	tree.remove(value, node.Right, node)
 }

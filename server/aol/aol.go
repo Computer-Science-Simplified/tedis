@@ -177,10 +177,17 @@ func Replay() {
 	for _, cmd := range cmds {
 		tree := factory.Create(cmd.Key, trees.BinarySearchTree)
 
-		if cmd.Name == commands.BSTADD {
+		switch cmd.Name {
+		case commands.BSTADD:
 			tree.Insert(cmd.Args[0], tree.Root, false)
-
 			numberOfReplayedCommands++
+
+			break
+		case commands.BSTREM:
+			tree.Remove(cmd.Args[0], false)
+			numberOfReplayedCommands++
+
+			break
 		}
 	}
 
