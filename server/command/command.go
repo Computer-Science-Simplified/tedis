@@ -18,19 +18,19 @@ func (c *Command) Execute() string {
 	tree := factory.Create(c.Key, c.Type)
 
 	switch c.Name {
-	case commands.BTADD:
+	case commands.BSTADD:
 		tree.Insert(c.Args[0], tree.Root, true)
 		return "ok"
 
-	case commands.BTEXISTS:
+	case commands.BSTEXISTS:
 		exists := tree.Exists(c.Args[0])
 		return strconv.FormatBool(exists)
 
-	case commands.BTGETALL:
+	case commands.BSTGETALL:
 		values := tree.ToArray()
 		return fmt.Sprintf("%v", values)
 
-	case commands.BTREM:
+	case commands.BSTREM:
 		tree.Remove(c.Args[0])
 		return "ok"
 	default:

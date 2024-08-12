@@ -9,6 +9,7 @@ import (
 	"mmartinjoo/trees/command"
 	"mmartinjoo/trees/commands"
 	"mmartinjoo/trees/factory"
+	"mmartinjoo/trees/trees"
 	"os"
 )
 
@@ -47,7 +48,7 @@ func Write(command string, key string, args []int64) {
 		panic(err)
 	}
 
-	err = binary.Write(writer, binary.LittleEndian, []byte(command))	
+	err = binary.Write(writer, binary.LittleEndian, []byte(command))
 	if err != nil {
 		panic(err)
 	}
@@ -57,7 +58,7 @@ func Write(command string, key string, args []int64) {
 		panic(err)
 	}
 
-	err = binary.Write(writer, binary.LittleEndian, []byte(key))	
+	err = binary.Write(writer, binary.LittleEndian, []byte(key))
 	if err != nil {
 		panic(err)
 	}
@@ -72,9 +73,9 @@ func Write(command string, key string, args []int64) {
 
 	err = writer.Flush()
 
-    if err != nil {
-        panic(err)
-    }
+	if err != nil {
+		panic(err)
+	}
 }
 
 func Read() ([]command.Command, error) {
@@ -143,7 +144,7 @@ func Read() ([]command.Command, error) {
 
 		var args []int64
 
-		for i := 0; i < int(length) - 2; i++ {
+		for i := 0; i < int(length)-2; i++ {
 			var arg int64
 			err = binary.Read(file, binary.LittleEndian, &arg)
 
@@ -174,9 +175,9 @@ func Replay() {
 	}
 
 	for _, cmd := range cmds {
-		tree := factory.Create(cmd.Key, "binary_tree")
+		tree := factory.Create(cmd.Key, trees.BinarySearchTree)
 
-		if cmd.Name == commands.BTADD {
+		if cmd.Name == commands.BSTADD {
 			tree.Insert(cmd.Args[0], tree.Root, false)
 
 			numberOfReplayedCommands++

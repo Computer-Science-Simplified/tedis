@@ -2,16 +2,17 @@ package command
 
 import (
 	"fmt"
+	"mmartinjoo/trees/trees"
 	"strings"
 )
 
 func Create(name string, key string, args []int64) (Command, error) {
-	if strings.HasPrefix(name, "BT") {
+	if strings.HasPrefix(name, "BST") {
 		return Command{
 			Name: name,
 			Key: key,
 			Args: args,
-			Type: "binary_tree",
+			Type: trees.BinarySearchTree,
 		}, nil
 	}
 

@@ -10,14 +10,14 @@ func Create(key string, treeType string) *trees.BST {
 		return item.Value
 	}
 
-	if treeType == "binary_tree" {
+	if treeType == trees.BinarySearchTree {
 		tree := trees.BST{
 			Key: key,
 		}
 
 		store.Store[key] = &store.StoreItem{
 			Value: &tree,
-			Type: "binary_tree",
+			Type: trees.BinarySearchTree,
 		}
 
 		return &tree

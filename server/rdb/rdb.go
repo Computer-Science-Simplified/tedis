@@ -25,7 +25,7 @@ func Persist() {
 	defer file.Close()
 
 	for _, item := range store.Store {
-		if item.Type == "binary_tree" {
+		if item.Type == trees.BinarySearchTree {
 			persistBinaryTree(item.Value.Key, item.Value, file)
 		}
 	}
@@ -111,9 +111,9 @@ func Reload() (string, error) {
 		for _, value := range values {
 			cmd := command.Command{
 				Key:  keyName,
-				Name: commands.BTADD,
+				Name: commands.BSTADD,
 				Args: []int64{value},
-				Type: "binary_tree",
+				Type: trees.BinarySearchTree,
 			}
 
 			cmd.Execute()
@@ -130,7 +130,7 @@ func Reload() (string, error) {
 func persistBinaryTree(key string, tree *trees.BST, file *os.File) {
 	values := tree.ToArray()
 
-	treeType := "binary_tree"
+	treeType := trees.BinarySearchTree
 	length := len(values)
 
 	writer := bufio.NewWriter(file)

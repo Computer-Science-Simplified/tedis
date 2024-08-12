@@ -1,8 +1,8 @@
 package commands
 
 const (
-	BTADD string = "BTADD"
-	BTEXISTS string = "BTEXISTS"
-	BTGETALL string = "BTGETALL"
-	BTREM string = "BTREM"
+	BSTADD    string = "BSTADD"
+	BSTEXISTS string = "BSTEXISTS"
+	BSTGETALL string = "BSTGETALL"
+	BSTREM    string = "BSTREM"
 )
