@@ -179,7 +179,7 @@ func Replay() {
 
 		switch cmd.Name {
 		case commands.BSTADD:
-			tree.Add(cmd.Args[0], tree.Root, false)
+			tree.Add(cmd.Args[0], false)
 			numberOfReplayedCommands++
 
 			break

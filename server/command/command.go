@@ -19,7 +19,7 @@ func (c *Command) Execute() string {
 
 	switch c.Name {
 	case commands.BSTADD:
-		tree.Add(c.Args[0], tree.Root, true)
+		tree.Add(c.Args[0], true)
 		return "ok"
 
 	case commands.BSTEXISTS:
@@ -27,7 +27,7 @@ func (c *Command) Execute() string {
 		return strconv.FormatBool(exists)
 
 	case commands.BSTGETALL:
-		values := tree.ToArray()
+		values := tree.GetAll()
 		return fmt.Sprintf("%v", values)
 
 	case commands.BSTREM:

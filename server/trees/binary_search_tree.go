@@ -17,7 +17,7 @@ type BSTNode struct {
 	Right *BSTNode
 }
 
-func (tree *BST) Add(value int64, node *BSTNode, shouldReport bool) *BSTNode {
+func (tree *BST) Add(value int64, shouldReport bool) {
 	if shouldReport {
 		event.MustFire("write_command_executed", event.M{
 			"command": commands.BSTADD,
@@ -26,15 +26,7 @@ func (tree *BST) Add(value int64, node *BSTNode, shouldReport bool) *BSTNode {
 		})
 	}
 
-	if tree.Root == nil {
-		newNode := BSTNode{Value: value}
-
-		tree.Root = &newNode
-
-		return &newNode
-	}
-
-	return tree.add(value, tree.Root)
+	tree.Root = tree.add(value, tree.Root)
 }
 
 func (tree *BST) Exists(value int64) bool {
@@ -53,7 +45,7 @@ func (tree *BST) Remove(value int64, shouldReport bool) {
 	tree.remove(value, tree.Root)
 }
 
-func (tree *BST) ToArray() []int64 {
+func (tree *BST) GetAll() []int64 {
 	queue := make([]*BSTNode, 0)
 
 	if tree.Root != nil {

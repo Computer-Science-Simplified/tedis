@@ -128,7 +128,7 @@ func Reload() (string, error) {
 }
 
 func persistBinaryTree(key string, tree *trees.BST, file *os.File) {
-	values := tree.ToArray()
+	values := tree.GetAll()
 
 	treeType := trees.BinarySearchTree
 	length := len(values)
