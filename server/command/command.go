@@ -19,7 +19,7 @@ func (c *Command) Execute() string {
 
 	switch c.Name {
 	case commands.BSTADD:
-		tree.Insert(c.Args[0], tree.Root, true)
+		tree.Add(c.Args[0], tree.Root, true)
 		return "ok"
 
 	case commands.BSTEXISTS:

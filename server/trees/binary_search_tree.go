@@ -17,7 +17,7 @@ type BSTNode struct {
 	Right *BSTNode
 }
 
-func (tree *BST) Insert(value int64, node *BSTNode, shouldReport bool) *BSTNode {
+func (tree *BST) Add(value int64, node *BSTNode, shouldReport bool) *BSTNode {
 	if shouldReport {
 		event.MustFire("write_command_executed", event.M{
 			"command": commands.BSTADD,
@@ -34,7 +34,7 @@ func (tree *BST) Insert(value int64, node *BSTNode, shouldReport bool) *BSTNode 
 		return &newNode
 	}
 
-	return tree.insert(value, tree.Root)
+	return tree.add(value, tree.Root)
 }
 
 func (tree *BST) Exists(value int64) bool {
@@ -83,7 +83,7 @@ func (tree *BST) ToArray() []int64 {
 
 // -------- Private functions --------
 
-func (tree *BST) insert(value int64, node *BSTNode) *BSTNode {
+func (tree *BST) add(value int64, node *BSTNode) *BSTNode {
 	if node == nil {
 		newNode := BSTNode{Value: value}
 
@@ -91,9 +91,9 @@ func (tree *BST) insert(value int64, node *BSTNode) *BSTNode {
 	}
 
 	if value < node.Value {
-		node.Left = tree.insert(value, node.Left)
+		node.Left = tree.add(value, node.Left)
 	} else {
-		node.Right = tree.insert(value, node.Right)
+		node.Right = tree.add(value, node.Right)
 	}
 
 	return node
