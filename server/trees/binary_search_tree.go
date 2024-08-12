@@ -50,7 +50,7 @@ func (tree *BST) Remove(value int64, shouldReport bool) {
 		})
 	}
 
-	tree.remove(value, tree.Root, nil)
+	tree.remove(value, tree.Root)
 }
 
 func (tree *BST) ToArray() []int64 {
@@ -119,34 +119,38 @@ func (tree *BST) exists(value int64, node *BSTNode) bool {
 	return existsRight
 }
 
-func (tree *BST) remove(value int64, node *BSTNode, parent *BSTNode) {
+func (tree *BST) remove(value int64, node *BSTNode) *BSTNode {
 	if node == nil {
-		return
+		return nil
 	}
 
 	if node.Value == value {
-		// No child
-		if node.Left == nil && node.Right == nil {
-			if value < parent.Value {
-				parent.Left = nil
-			} else {
-				parent.Right = nil
-			}
-
-			return
+		// No child or only one child
+		if node.Left == nil {
+			return node.Right
+		} else if node.Right == nil {
+			return node.Left
 		}
 
-		hasLeftChild := node.Left != nil && node.Right == nil
-		hasRightChild := node.Left == nil && node.Right != nil
+		smallestNode := tree.findSmallestNode(node)
+		node.Value = smallestNode.Value
+		node.Right = tree.remove(smallestNode.Value, node.Right)
 
-		// One child
-		if (hasLeftChild) {
-			parent.Left = node.Left
-		} else if (hasRightChild) {
-			parent.Right = node.Right
-		}
+	} else if value < node.Value {
+		node.Left = tree.remove(value, node.Left)
+	} else {
+		node.Right = tree.remove(value, node.Right)
 	}
 
-	tree.remove(value, node.Left, node)
-	tree.remove(value, node.Right, node)
+	return node
+}
+
+func (tree *BST) findSmallestNode(node *BSTNode) *BSTNode {
+	current := node
+
+	for current.Right != nil {
+		current = current.Right
+	}
+
+	return current
 }
