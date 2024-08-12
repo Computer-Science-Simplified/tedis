@@ -132,7 +132,8 @@ func (tree *BST) remove(value int64, node *BSTNode) *BSTNode {
 			return node.Left
 		}
 
-		smallestNode := tree.findSmallestNode(node)
+		// Two children
+		smallestNode := tree.findSmallestNode(node.Right)
 		node.Value = smallestNode.Value
 		node.Right = tree.remove(smallestNode.Value, node.Right)
 
@@ -148,8 +149,8 @@ func (tree *BST) remove(value int64, node *BSTNode) *BSTNode {
 func (tree *BST) findSmallestNode(node *BSTNode) *BSTNode {
 	current := node
 
-	for current.Right != nil {
-		current = current.Right
+	for current.Left != nil {
+		current = current.Left
 	}
 
 	return current
