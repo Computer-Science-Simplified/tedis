@@ -24,7 +24,13 @@ func Persist() {
 
 	defer file.Close()
 
-	for _, item := range store.Store {
+	for _, key := range store.Keys() {
+		item, ok := store.Get(key)
+
+		if !ok {
+			continue
+		}
+
 		if item.Type == trees.BinarySearchTree {
 			persistBinaryTree(item.Value.Key, item.Value, file)
 		}

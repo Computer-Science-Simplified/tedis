@@ -19,14 +19,14 @@ func main() {
 
 	restoreDatabase()
 
-	capacity := len(store.Store)
+	capacity := store.Len()
 	if capacity == 0 {
 		capacity = 10
 	} 
 
 	lru := store.NewLRU(capacity)
 
-	for key := range store.Store {
+	for _, key := range store.Keys() {
 		lru.Put(key)
 	}
 

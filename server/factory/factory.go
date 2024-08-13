@@ -6,7 +6,7 @@ import (
 )
 
 func Create(key string, treeType string) *trees.BST {
-	if item, ok := store.Store[key]; ok {
+	if item, ok := store.Get(key); ok {
 		return item.Value
 	}
 
@@ -15,10 +15,7 @@ func Create(key string, treeType string) *trees.BST {
 			Key: key,
 		}
 
-		store.Store[key] = &store.StoreItem{
-			Value: &tree,
-			Type: trees.BinarySearchTree,
-		}
+		store.Set(key, &tree, trees.BinarySearchTree)
 
 		return &tree
 	}
