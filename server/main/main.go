@@ -15,6 +15,9 @@ import (
 )
 
 func main() {
+	item, ok := store.Get("nope")
+	fmt.Println(item, ok)
+	
 	fmt.Println("Starting Tedis...")
 
 	restoreDatabase()
@@ -75,10 +78,16 @@ func handleConnection(conn net.Conn) {
 		fmt.Printf("Received: %s", commandName)
 
 		command, err := command.Parse(commandName)
+
 		if err != nil {
 			conn.Write([]byte(err.Error() + "\n"))
 		} else {
-			result := command.Execute()
+			result, err := command.Execute()
+
+			if err != nil {
+				conn.Write([]byte(err.Error() + "\n"))
+				return
+			}
 
 			_, err = conn.Write([]byte(result + "\n"))
 	

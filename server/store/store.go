@@ -10,14 +10,12 @@ var store = make(map[string]trees.Tree)
 var CurrentUnsavedWriteCommands int = 0
 var MaxUnsavedWriteCommands int = 3
 
+var maxCapacity = 5
+
 func Get(key string) (trees.Tree, bool) {
 	item, ok := store[key]
 
-	if ok {
-		return item, ok
-	} else {
-		return nil, ok
-	}
+	return item, ok
 }
 
 func Set(key string, tree trees.Tree) {
@@ -37,8 +35,6 @@ func Keys() []string {
 
 	return keys
 }
-
-var maxCapacity = 5
 
 func Evict(lru *LRU) {
 	if len(store) > maxCapacity {

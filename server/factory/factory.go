@@ -1,13 +1,14 @@
 package factory
 
 import (
+	"fmt"
 	"mmartinjoo/trees/store"
 	"mmartinjoo/trees/trees"
 )
 
-func Create(key string, treeType string) trees.Tree {
+func Create(key string, treeType string) (trees.Tree, error) {
 	if item, ok := store.Get(key); ok {
-		return item
+		return item, nil
 	}
 
 	if treeType == trees.BinarySearchTree {
@@ -17,8 +18,8 @@ func Create(key string, treeType string) trees.Tree {
 
 		store.Set(key, tree)
 
-		return tree
+		return tree, nil
 	}
 
-	panic("Type not found")
+	return nil, fmt.Errorf("tree type not found: %s", treeType)
 }
