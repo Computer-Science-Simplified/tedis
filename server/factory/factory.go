@@ -5,19 +5,19 @@ import (
 	"mmartinjoo/trees/trees"
 )
 
-func Create(key string, treeType string) *trees.BST {
+func Create(key string, treeType string) trees.Tree {
 	if item, ok := store.Get(key); ok {
 		return item.Value
 	}
 
 	if treeType == trees.BinarySearchTree {
-		tree := trees.BST{
+		tree := &trees.BST{
 			Key: key,
 		}
 
-		store.Set(key, &tree, trees.BinarySearchTree)
+		store.Set(key, tree, trees.BinarySearchTree)
 
-		return &tree
+		return tree
 	}
 
 	panic("Type not found")

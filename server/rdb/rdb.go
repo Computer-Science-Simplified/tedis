@@ -32,7 +32,7 @@ func Persist() {
 		}
 
 		if item.Type == trees.BinarySearchTree {
-			persistBinaryTree(item.Value.Key, item.Value, file)
+			persistBinaryTree(item.Value.GetKey(), item.Value, file)
 		}
 	}
 }
@@ -133,7 +133,7 @@ func Reload() (string, error) {
 	return "", nil
 }
 
-func persistBinaryTree(key string, tree *trees.BST, file *os.File) {
+func persistBinaryTree(key string, tree trees.Tree, file *os.File) {
 	values := tree.GetAll()
 
 	treeType := trees.BinarySearchTree

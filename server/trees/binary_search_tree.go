@@ -17,6 +17,10 @@ type BSTNode struct {
 	Right *BSTNode
 }
 
+func (tree *BST) GetKey() string {
+	return tree.Key
+}
+
 func (tree *BST) Add(value int64, shouldReport bool) {
 	if shouldReport {
 		event.MustFire("write_command_executed", event.M{
