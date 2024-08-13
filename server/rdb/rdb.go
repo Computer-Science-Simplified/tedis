@@ -25,14 +25,14 @@ func Persist() {
 	defer file.Close()
 
 	for _, key := range store.Keys() {
-		item, ok := store.Get(key)
+		tree, ok := store.Get(key)
 
 		if !ok {
 			continue
 		}
 
-		if item.Type == trees.BinarySearchTree {
-			persistBinaryTree(item.Value.GetKey(), item.Value, file)
+		if tree.GetType() == trees.BinarySearchTree {
+			persistBinaryTree(tree.GetKey(), tree, file)
 		}
 	}
 }
@@ -136,7 +136,6 @@ func Reload() (string, error) {
 func persistBinaryTree(key string, tree trees.Tree, file *os.File) {
 	values := tree.GetAll()
 
-	treeType := trees.BinarySearchTree
 	length := len(values)
 
 	writer := bufio.NewWriter(file)
@@ -151,12 +150,12 @@ func persistBinaryTree(key string, tree trees.Tree, file *os.File) {
 		panic(err)
 	}
 
-	err = binary.Write(writer, binary.LittleEndian, byte(len(treeType)))
+	err = binary.Write(writer, binary.LittleEndian, byte(len(tree.GetType())))
 	if err != nil {
 		panic(err)
 	}
 
-	err = binary.Write(writer, binary.LittleEndian, []byte(treeType))
+	err = binary.Write(writer, binary.LittleEndian, []byte(tree.GetType()))
 	if err != nil {
 		panic(err)
 	}

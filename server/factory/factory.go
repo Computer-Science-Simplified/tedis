@@ -7,7 +7,7 @@ import (
 
 func Create(key string, treeType string) trees.Tree {
 	if item, ok := store.Get(key); ok {
-		return item.Value
+		return item
 	}
 
 	if treeType == trees.BinarySearchTree {
@@ -15,7 +15,7 @@ func Create(key string, treeType string) trees.Tree {
 			Key: key,
 		}
 
-		store.Set(key, tree, trees.BinarySearchTree)
+		store.Set(key, tree)
 
 		return tree
 	}

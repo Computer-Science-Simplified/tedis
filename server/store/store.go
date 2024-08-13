@@ -5,17 +5,17 @@ import (
 	"mmartinjoo/trees/trees"
 )
 
-var store = make(map[string]*StoreItem)
+var store = make(map[string]trees.Tree)
 
 var CurrentUnsavedWriteCommands int = 0
 var MaxUnsavedWriteCommands int = 3
 
-type StoreItem struct {
-	Value trees.Tree
-	Type string
-}
+// type StoreItem struct {
+// 	Value trees.Tree
+// 	Type string
+// }
 
-func Get(key string) (*StoreItem, bool) {
+func Get(key string) (trees.Tree, bool) {
 	item, ok := store[key]
 
 	if ok {
@@ -25,11 +25,8 @@ func Get(key string) (*StoreItem, bool) {
 	}
 }
 
-func Set(key string, tree *trees.BST, treeType string) {
-	store[key] = &StoreItem{
-		Value: tree,
-		Type: treeType,
-	}
+func Set(key string, tree trees.Tree) {
+	store[key] = tree
 }
 
 func Len() int {
