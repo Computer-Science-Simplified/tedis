@@ -10,11 +10,6 @@ var store = make(map[string]trees.Tree)
 var CurrentUnsavedWriteCommands int = 0
 var MaxUnsavedWriteCommands int = 3
 
-// type StoreItem struct {
-// 	Value trees.Tree
-// 	Type string
-// }
-
 func Get(key string) (trees.Tree, bool) {
 	item, ok := store[key]
 
