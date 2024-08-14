@@ -2,12 +2,12 @@ package main
 
 import (
 	"fmt"
-	"mmartinjoo/trees/internal/command"
-	"mmartinjoo/trees/internal/persistence/aol"
-	persistencelistener "mmartinjoo/trees/internal/persistence/aol/listeners"
-	"mmartinjoo/trees/internal/persistence/rdb"
-	"mmartinjoo/trees/internal/store"
-	storelistener "mmartinjoo/trees/internal/store/listeners"
+	"mmartinjoo/tedis/internal/command"
+	"mmartinjoo/tedis/internal/persistence/aol"
+	persistencelistener "mmartinjoo/tedis/internal/persistence/aol/listeners"
+	"mmartinjoo/tedis/internal/persistence/rdb"
+	"mmartinjoo/tedis/internal/store"
+	storelistener "mmartinjoo/tedis/internal/store/listeners"
 	"os"
 
 	"net"

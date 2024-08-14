@@ -3,7 +3,7 @@ package command
 import (
 	"errors"
 	"fmt"
-	"mmartinjoo/trees/internal/enum"
+	"mmartinjoo/tedis/internal/enum"
 	"strconv"
 	"strings"
 )

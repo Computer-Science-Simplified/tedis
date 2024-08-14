@@ -1,4 +1,4 @@
-module mmartinjoo/trees
+module mmartinjoo/tedis
 
 go 1.23.0
 

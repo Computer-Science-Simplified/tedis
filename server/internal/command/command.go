@@ -2,8 +2,8 @@ package command
 
 import (
 	"fmt"
-	"mmartinjoo/trees/internal/enum"
-	"mmartinjoo/trees/internal/tree"
+	"mmartinjoo/tedis/internal/enum"
+	"mmartinjoo/tedis/internal/tree"
 	"strconv"
 )
 

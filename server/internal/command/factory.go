@@ -2,7 +2,7 @@ package command
 
 import (
 	"fmt"
-	"mmartinjoo/trees/internal/enum"
+	"mmartinjoo/tedis/internal/enum"
 	"strings"
 )
 

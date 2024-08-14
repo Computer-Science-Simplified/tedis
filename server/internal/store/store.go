@@ -2,7 +2,7 @@ package store
 
 import (
 	"fmt"
-	"mmartinjoo/trees/internal/model"
+	"mmartinjoo/tedis/internal/model"
 )
 
 var store = make(map[string]model.Tree)

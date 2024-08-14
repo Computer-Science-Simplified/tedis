@@ -6,10 +6,10 @@ import (
 	"errors"
 	"fmt"
 	"io"
-	"mmartinjoo/trees/internal/command"
-	"mmartinjoo/trees/internal/enum"
-	"mmartinjoo/trees/internal/model"
-	"mmartinjoo/trees/internal/store"
+	"mmartinjoo/tedis/internal/command"
+	"mmartinjoo/tedis/internal/enum"
+	"mmartinjoo/tedis/internal/model"
+	"mmartinjoo/tedis/internal/store"
 	"os"
 )
 

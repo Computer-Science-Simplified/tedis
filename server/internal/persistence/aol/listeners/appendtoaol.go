@@ -1,9 +1,9 @@
 package listeners
 
 import (
-	"mmartinjoo/trees/internal/persistence/aol"
-	"mmartinjoo/trees/internal/persistence/rdb"
-	"mmartinjoo/trees/internal/store"
+	"mmartinjoo/tedis/internal/persistence/aol"
+	"mmartinjoo/tedis/internal/persistence/rdb"
+	"mmartinjoo/tedis/internal/store"
 )
 
 func AppendToAol(data map[string]any) {
