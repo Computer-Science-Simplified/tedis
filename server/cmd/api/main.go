@@ -75,12 +75,12 @@ func handleConnection(conn net.Conn) {
 
 		fmt.Printf("Received: %s", commandName)
 
-		command, err := command.Parse(commandName)
+		cmd, err := command.Parse(commandName)
 
 		if err != nil {
 			conn.Write([]byte(err.Error() + "\n"))
 		} else {
-			result, err := command.Execute()
+			result, err := cmd.Execute()
 
 			if err != nil {
 				conn.Write([]byte(err.Error() + "\n"))
