@@ -2,7 +2,7 @@ package command
 
 import (
 	"fmt"
-	"mmartinjoo/trees/internal/trees"
+	"mmartinjoo/trees/internal/tree"
 	"strings"
 )
 
@@ -12,7 +12,7 @@ func Create(name string, key string, args []int64) (Command, error) {
 			Name: name,
 			Key:  key,
 			Args: args,
-			Type: trees.BinarySearchTree,
+			Type: tree.BinarySearchTree,
 		}, nil
 	}
 

@@ -1,4 +1,4 @@
-package trees
+package tree
 
 import (
 	"mmartinjoo/trees/internal/commands"

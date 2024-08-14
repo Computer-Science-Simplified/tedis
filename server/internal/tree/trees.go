@@ -1,4 +1,4 @@
-package trees
+package tree
 
 const (
 	BinarySearchTree string = "binary_search_tree"

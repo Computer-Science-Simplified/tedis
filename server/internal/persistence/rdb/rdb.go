@@ -10,7 +10,7 @@ import (
 	"mmartinjoo/trees/internal/commands"
 	"mmartinjoo/trees/internal/model"
 	"mmartinjoo/trees/internal/store"
-	trees2 "mmartinjoo/trees/internal/trees"
+	trees2 "mmartinjoo/trees/internal/tree"
 	"os"
 )
 
