@@ -3,8 +3,8 @@ package main
 import (
 	"fmt"
 	"mmartinjoo/trees/internal/command"
-	listeners2 "mmartinjoo/trees/internal/listeners"
 	"mmartinjoo/trees/internal/persistence/aol"
+	listeners2 "mmartinjoo/trees/internal/persistence/aol/listeners"
 	"mmartinjoo/trees/internal/persistence/rdb"
 	store2 "mmartinjoo/trees/internal/store"
 	"mmartinjoo/trees/internal/store/listeners"
