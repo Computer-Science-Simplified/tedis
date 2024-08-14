@@ -1,18 +1,18 @@
-package factory
+package trees
 
 import (
 	"fmt"
+	"mmartinjoo/trees/internal/model"
 	"mmartinjoo/trees/internal/store"
-	"mmartinjoo/trees/internal/trees"
 )
 
-func Create(key string, treeType string) (trees.Tree, error) {
+func Create(key string, treeType string) (model.Tree, error) {
 	if item, ok := store.Get(key); ok {
 		return item, nil
 	}
 
-	if treeType == trees.BinarySearchTree {
-		tree := &trees.BST{
+	if treeType == BinarySearchTree {
+		tree := &BST{
 			Key: key,
 		}
 

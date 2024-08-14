@@ -3,7 +3,7 @@ package command
 import (
 	"fmt"
 	"mmartinjoo/trees/internal/commands"
-	"mmartinjoo/trees/internal/factory"
+	"mmartinjoo/trees/internal/trees"
 	"strconv"
 )
 
@@ -15,7 +15,7 @@ type Command struct {
 }
 
 func (c *Command) Execute() (string, error) {
-	tree, err := factory.Create(c.Key, c.Type)
+	tree, err := trees.Create(c.Key, c.Type)
 
 	if err != nil {
 		return "", err

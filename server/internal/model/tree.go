@@ -1,4 +1,4 @@
-package trees
+package model
 
 type Tree interface {
 	GetKey() string

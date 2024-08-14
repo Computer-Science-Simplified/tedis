@@ -8,7 +8,6 @@ import (
 	"io"
 	command2 "mmartinjoo/trees/internal/command"
 	"mmartinjoo/trees/internal/commands"
-	"mmartinjoo/trees/internal/factory"
 	"mmartinjoo/trees/internal/trees"
 	"os"
 )
@@ -175,7 +174,7 @@ func Replay() {
 	}
 
 	for _, cmd := range cmds {
-		tree, err := factory.Create(cmd.Key, trees.BinarySearchTree)
+		tree, err := trees.Create(cmd.Key, trees.BinarySearchTree)
 
 		if err != nil {
 			fmt.Println(err.Error())

@@ -8,6 +8,7 @@ import (
 	"io"
 	"mmartinjoo/trees/internal/command"
 	"mmartinjoo/trees/internal/commands"
+	"mmartinjoo/trees/internal/model"
 	"mmartinjoo/trees/internal/store"
 	trees2 "mmartinjoo/trees/internal/trees"
 	"os"
@@ -133,7 +134,7 @@ func Reload() (string, error) {
 	return "", nil
 }
 
-func persistBinaryTree(key string, tree trees2.Tree, file *os.File) {
+func persistBinaryTree(key string, tree model.Tree, file *os.File) {
 	values := tree.GetAll()
 
 	length := len(values)

@@ -2,23 +2,23 @@ package store
 
 import (
 	"fmt"
-	"mmartinjoo/trees/internal/trees"
+	"mmartinjoo/trees/internal/model"
 )
 
-var store = make(map[string]trees.Tree)
+var store = make(map[string]model.Tree)
 
 var CurrentUnsavedWriteCommands int = 0
 var MaxUnsavedWriteCommands int = 3
 
 var maxCapacity = 5
 
-func Get(key string) (trees.Tree, bool) {
+func Get(key string) (model.Tree, bool) {
 	item, ok := store[key]
 
 	return item, ok
 }
 
-func Set(key string, tree trees.Tree) {
+func Set(key string, tree model.Tree) {
 	store[key] = tree
 }
 
