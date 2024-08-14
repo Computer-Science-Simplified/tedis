@@ -4,10 +4,10 @@ import (
 	"fmt"
 	"mmartinjoo/trees/internal/command"
 	"mmartinjoo/trees/internal/persistence/aol"
-	listeners2 "mmartinjoo/trees/internal/persistence/aol/listeners"
+	persistencelistener "mmartinjoo/trees/internal/persistence/aol/listeners"
 	"mmartinjoo/trees/internal/persistence/rdb"
-	store2 "mmartinjoo/trees/internal/store"
-	"mmartinjoo/trees/internal/store/listeners"
+	"mmartinjoo/trees/internal/store"
+	storelistener "mmartinjoo/trees/internal/store/listeners"
 	"os"
 
 	"net"
@@ -20,14 +20,14 @@ func main() {
 
 	restoreDatabase()
 
-	capacity := store2.Len()
+	capacity := store.Len()
 	if capacity == 0 {
 		capacity = 10
 	}
 
-	lru := store2.NewLRU(capacity)
+	lru := store.NewLRU(capacity)
 
-	for _, key := range store2.Keys() {
+	for _, key := range store.Keys() {
 		lru.Put(key)
 	}
 
@@ -97,15 +97,15 @@ func handleConnection(conn net.Conn) {
 	}
 }
 
-func addEventListeners(lru *store2.LRU) {
+func addEventListeners(lru *store.LRU) {
 	event.On("write_command_executed", event.ListenerFunc(func(e event.Event) error {
-		store2.CurrentUnsavedWriteCommands++
+		store.CurrentUnsavedWriteCommands++
 
 		data := e.Data()
 
-		listeners2.AppendToAol(data)
+		persistencelistener.AppendToAol(data)
 
-		listeners.EvictOldKeys(data, lru)
+		storelistener.EvictOldKeys(data, lru)
 
 		return nil
 	}))
