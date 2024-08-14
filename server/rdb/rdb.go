@@ -8,8 +8,8 @@ import (
 	"io"
 	"mmartinjoo/trees/command"
 	"mmartinjoo/trees/commands"
+	trees2 "mmartinjoo/trees/internal/trees"
 	"mmartinjoo/trees/store"
-	"mmartinjoo/trees/trees"
 	"os"
 )
 
@@ -31,7 +31,7 @@ func Persist() {
 			continue
 		}
 
-		if tree.GetType() == trees.BinarySearchTree {
+		if tree.GetType() == trees2.BinarySearchTree {
 			persistBinaryTree(tree.GetKey(), tree, file)
 		}
 	}
@@ -119,7 +119,7 @@ func Reload() (string, error) {
 				Key:  keyName,
 				Name: commands.BSTADD,
 				Args: []int64{value},
-				Type: trees.BinarySearchTree,
+				Type: trees2.BinarySearchTree,
 			}
 
 			cmd.Execute()
@@ -133,7 +133,7 @@ func Reload() (string, error) {
 	return "", nil
 }
 
-func persistBinaryTree(key string, tree trees.Tree, file *os.File) {
+func persistBinaryTree(key string, tree trees2.Tree, file *os.File) {
 	values := tree.GetAll()
 
 	length := len(values)

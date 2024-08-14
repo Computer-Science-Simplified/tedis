@@ -9,7 +9,7 @@ import (
 	"mmartinjoo/trees/command"
 	"mmartinjoo/trees/commands"
 	"mmartinjoo/trees/factory"
-	"mmartinjoo/trees/trees"
+	"mmartinjoo/trees/internal/trees"
 	"os"
 )
 

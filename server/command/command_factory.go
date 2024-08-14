@@ -2,7 +2,7 @@ package command
 
 import (
 	"fmt"
-	"mmartinjoo/trees/trees"
+	"mmartinjoo/trees/internal/trees"
 	"strings"
 )
 
@@ -10,7 +10,7 @@ func Create(name string, key string, args []int64) (Command, error) {
 	if strings.HasPrefix(name, "BST") {
 		return Command{
 			Name: name,
-			Key: key,
+			Key:  key,
 			Args: args,
 			Type: trees.BinarySearchTree,
 		}, nil

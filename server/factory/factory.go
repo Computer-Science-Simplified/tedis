@@ -2,8 +2,8 @@ package factory
 
 import (
 	"fmt"
+	"mmartinjoo/trees/internal/trees"
 	"mmartinjoo/trees/store"
-	"mmartinjoo/trees/trees"
 )
 
 func Create(key string, treeType string) (trees.Tree, error) {

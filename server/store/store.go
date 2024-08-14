@@ -2,7 +2,7 @@ package store
 
 import (
 	"fmt"
-	"mmartinjoo/trees/trees"
+	"mmartinjoo/trees/internal/trees"
 )
 
 var store = make(map[string]trees.Tree)

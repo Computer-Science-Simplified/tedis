@@ -22,7 +22,7 @@ func main() {
 	capacity := store.Len()
 	if capacity == 0 {
 		capacity = 10
-	} 
+	}
 
 	lru := store.NewLRU(capacity)
 
@@ -87,7 +87,7 @@ func handleConnection(conn net.Conn) {
 			}
 
 			_, err = conn.Write([]byte(result + "\n"))
-	
+
 			if err != nil {
 				fmt.Println("Error writing to connection")
 				return
@@ -129,7 +129,7 @@ func restoreDatabase() {
 		fmt.Println("DONE")
 	}
 
-	if (persistenceLayer == "rdb") {
+	if persistenceLayer == "rdb" {
 		fmt.Println("Reloading RDB...")
 		rdb.Reload()
 		fmt.Println("DONE")
