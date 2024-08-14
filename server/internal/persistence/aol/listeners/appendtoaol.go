@@ -6,14 +6,21 @@ import (
 	"github.com/Computer-Science-Simplified/tedis/server/internal/store"
 )
 
-func AppendToAol(data map[string]any) {
+func AppendToAol(data map[string]any) error {
 	command, _ := data["command"].(string)
 	key, _ := data["key"].(string)
 	args, _ := data["args"].([]int64)
 
-	aol.Write(command, key, args)
+	err := aol.Write(command, key, args)
+
+	if err != nil {
+		// Add the command to a dead letter queue and retry it later
+		return err
+	}
 
 	if store.ShouldPersist() {
 		rdb.Persist()
 	}
+
+	return nil
 }

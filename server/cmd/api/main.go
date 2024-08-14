@@ -103,7 +103,11 @@ func addEventListeners(lru *store.LRU) {
 
 		data := e.Data()
 
-		persistencelistener.AppendToAol(data)
+		err := persistencelistener.AppendToAol(data)
+
+		if err != nil {
+			fmt.Println(fmt.Errorf("could not append to AOL: %s", err.Error()))
+		}
 
 		storelistener.EvictOldKeys(data, lru)
 
@@ -126,13 +130,29 @@ func restoreDatabase() {
 
 	if persistenceLayer == "aol" {
 		fmt.Println("Replaying AOL...")
-		aol.Replay()
+
+		count, err := aol.Replay()
+
+		if err != nil {
+			fmt.Println(fmt.Errorf("could not replay AOL: %s", err.Error()))
+		}
+
+		fmt.Printf("Replayed %d commands\n", count)
+
 		fmt.Println("DONE")
 	}
 
 	if persistenceLayer == "rdb" {
 		fmt.Println("Reloading RDB...")
-		rdb.Reload()
+
+		count, err := rdb.Reload()
+
+		if err != nil {
+			fmt.Println(fmt.Errorf("could not reload RDB: %s", err.Error()))
+		}
+
+		fmt.Printf("Reloaded %d items\n", count)
+
 		fmt.Println("DONE")
 	}
 }

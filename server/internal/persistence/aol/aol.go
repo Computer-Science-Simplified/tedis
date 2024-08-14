@@ -4,7 +4,6 @@ import (
 	"bufio"
 	"encoding/binary"
 	"errors"
-	"fmt"
 	"github.com/Computer-Science-Simplified/tedis/server/internal/command"
 	"github.com/Computer-Science-Simplified/tedis/server/internal/enum"
 	"github.com/Computer-Science-Simplified/tedis/server/internal/tree"
@@ -12,19 +11,7 @@ import (
 	"os"
 )
 
-/*
- * SET key1 value1
- *
-  3
-  3
-  SET
-  4
-  key1
-  6
-  value1
-*/
-
-func Write(command string, key string, args []int64) {
+func Write(command string, key string, args []int64) error {
 	var length byte = byte(len(args) + 2)
 
 	file, err := os.OpenFile("resources/aol.bin", os.O_APPEND|os.O_CREATE|os.O_WRONLY, 0644)
@@ -39,42 +26,44 @@ func Write(command string, key string, args []int64) {
 
 	err = binary.Write(writer, binary.LittleEndian, length)
 	if err != nil {
-		panic(err)
+		return err
 	}
 
 	err = binary.Write(writer, binary.LittleEndian, byte(len(command)))
 	if err != nil {
-		panic(err)
+		return err
 	}
 
 	err = binary.Write(writer, binary.LittleEndian, []byte(command))
 	if err != nil {
-		panic(err)
+		return err
 	}
 
 	err = binary.Write(writer, binary.LittleEndian, byte(len(key)))
 	if err != nil {
-		panic(err)
+		return err
 	}
 
 	err = binary.Write(writer, binary.LittleEndian, []byte(key))
 	if err != nil {
-		panic(err)
+		return err
 	}
 
 	for _, arg := range args {
 		err = binary.Write(writer, binary.LittleEndian, arg)
 
 		if err != nil {
-			panic(err)
+			return err
 		}
 	}
 
 	err = writer.Flush()
 
 	if err != nil {
-		panic(err)
+		return err
 	}
+
+	return nil
 }
 
 func Read() ([]command.Command, error) {
@@ -162,35 +151,31 @@ func Read() ([]command.Command, error) {
 	return cmds, nil
 }
 
-func Replay() {
+func Replay() (int, error) {
 	cmds, err := Read()
 
 	numberOfReplayedCommands := 0
 
 	if err != nil {
-		fmt.Println(err.Error())
-
-		return
+		return 0, err
 	}
 
 	for _, cmd := range cmds {
-		tree, err := tree.Create(cmd.Key, enum.BinarySearchTree)
+		t, err := tree.Create(cmd.Key, enum.BinarySearchTree)
 
 		if err != nil {
-			fmt.Println(err.Error())
-
-			return
+			return numberOfReplayedCommands, err
 		}
 
 		switch cmd.Name {
 		case enum.BSTADD:
-			tree.Add(cmd.Args[0], false)
+			t.Add(cmd.Args[0], false)
 			numberOfReplayedCommands++
 		case enum.BSTREM:
-			tree.Remove(cmd.Args[0], false)
+			t.Remove(cmd.Args[0], false)
 			numberOfReplayedCommands++
 		}
 	}
 
-	fmt.Printf("Replayed %d commands\n", numberOfReplayedCommands)
+	return numberOfReplayedCommands, nil
 }

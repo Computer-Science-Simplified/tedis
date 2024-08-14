@@ -37,11 +37,11 @@ func Persist() {
 	}
 }
 
-func Reload() (string, error) {
+func Reload() (int, error) {
 	file, err := os.Open("resources/rdb.bin")
 
 	if err != nil {
-		return "", errors.New("couldn't read RDB")
+		return 0, errors.New("couldn't read RDB")
 	}
 
 	defer file.Close()
@@ -58,7 +58,7 @@ func Reload() (string, error) {
 				break
 			}
 
-			return "", errors.New("rdb cannot be loaded. skipping reload")
+			return numberOfItems, errors.New("rdb cannot be loaded. skipping reload")
 		}
 
 		var keyName string
@@ -67,7 +67,7 @@ func Reload() (string, error) {
 			err = binary.Read(file, binary.LittleEndian, &c)
 
 			if err != nil {
-				return "", errors.New("rdb cannot be loaded. skipping reload")
+				return numberOfItems, errors.New("rdb cannot be loaded. skipping reload")
 			}
 
 			keyName += string(c)
@@ -78,7 +78,7 @@ func Reload() (string, error) {
 		err = binary.Read(file, binary.LittleEndian, &treeTypeLength)
 
 		if err != nil {
-			return "", errors.New("rdb cannot be loaded. skipping reload")
+			return numberOfItems, errors.New("rdb cannot be loaded. skipping reload")
 		}
 
 		var treeType string
@@ -87,7 +87,7 @@ func Reload() (string, error) {
 			err = binary.Read(file, binary.LittleEndian, &c)
 
 			if err != nil {
-				return "", errors.New("rdb cannot be loaded. skipping reload")
+				return numberOfItems, errors.New("rdb cannot be loaded. skipping reload")
 			}
 
 			treeType += string(c)
@@ -98,7 +98,7 @@ func Reload() (string, error) {
 		err = binary.Read(file, binary.LittleEndian, &valuesLength)
 
 		if err != nil {
-			return "", errors.New("rdb cannot be loaded. skipping reload")
+			return numberOfItems, errors.New("rdb cannot be loaded. skipping reload")
 		}
 
 		var values []int64
@@ -108,7 +108,7 @@ func Reload() (string, error) {
 			err = binary.Read(file, binary.LittleEndian, &value)
 
 			if err != nil {
-				return "", errors.New("rdb cannot be loaded. skipping replay")
+				return numberOfItems, errors.New("rdb cannot be loaded. skipping replay")
 			}
 
 			values = append(values, value)
@@ -122,7 +122,11 @@ func Reload() (string, error) {
 				Type: enum.BinarySearchTree,
 			}
 
-			cmd.Execute()
+			_, err := cmd.Execute()
+
+			if err != nil {
+				return numberOfItems, err
+			}
 
 			numberOfItems++
 		}
@@ -130,7 +134,7 @@ func Reload() (string, error) {
 
 	fmt.Printf("Reloaded %d values\n", numberOfItems)
 
-	return "", nil
+	return numberOfItems, nil
 }
 
 func persistBinaryTree(key string, tree model.Tree, file *os.File) {
