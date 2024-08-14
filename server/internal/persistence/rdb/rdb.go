@@ -10,7 +10,6 @@ import (
 	"mmartinjoo/trees/internal/enum"
 	"mmartinjoo/trees/internal/model"
 	"mmartinjoo/trees/internal/store"
-	trees2 "mmartinjoo/trees/internal/tree"
 	"os"
 )
 
@@ -32,7 +31,7 @@ func Persist() {
 			continue
 		}
 
-		if tree.GetType() == trees2.BinarySearchTree {
+		if tree.GetType() == enum.BinarySearchTree {
 			persistBinaryTree(tree.GetKey(), tree, file)
 		}
 	}
@@ -120,7 +119,7 @@ func Reload() (string, error) {
 				Key:  keyName,
 				Name: enum.BSTADD,
 				Args: []int64{value},
-				Type: trees2.BinarySearchTree,
+				Type: enum.BinarySearchTree,
 			}
 
 			cmd.Execute()

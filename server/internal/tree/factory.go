@@ -2,6 +2,7 @@ package tree
 
 import (
 	"fmt"
+	"mmartinjoo/trees/internal/enum"
 	"mmartinjoo/trees/internal/model"
 	"mmartinjoo/trees/internal/store"
 )
@@ -11,7 +12,7 @@ func Create(key string, treeType string) (model.Tree, error) {
 		return item, nil
 	}
 
-	if treeType == BinarySearchTree {
+	if treeType == enum.BinarySearchTree {
 		tree := &BST{
 			Key: key,
 		}

@@ -2,7 +2,7 @@ package command
 
 import (
 	"fmt"
-	"mmartinjoo/trees/internal/tree"
+	"mmartinjoo/trees/internal/enum"
 	"strings"
 )
 
@@ -12,7 +12,7 @@ func Create(name string, key string, args []int64) (Command, error) {
 			Name: name,
 			Key:  key,
 			Args: args,
-			Type: tree.BinarySearchTree,
+			Type: enum.BinarySearchTree,
 		}, nil
 	}
 

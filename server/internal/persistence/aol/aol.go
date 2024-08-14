@@ -174,7 +174,7 @@ func Replay() {
 	}
 
 	for _, cmd := range cmds {
-		tree, err := tree.Create(cmd.Key, tree.BinarySearchTree)
+		tree, err := tree.Create(cmd.Key, enum.BinarySearchTree)
 
 		if err != nil {
 			fmt.Println(err.Error())

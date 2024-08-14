@@ -22,7 +22,7 @@ func (tree *BST) GetKey() string {
 }
 
 func (tree *BST) GetType() string {
-	return BinarySearchTree
+	return enum.BinarySearchTree
 }
 
 func (tree *BST) Add(value int64, shouldReport bool) {
