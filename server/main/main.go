@@ -15,9 +15,6 @@ import (
 )
 
 func main() {
-	item, ok := store.Get("nope")
-	fmt.Println(item, ok)
-	
 	fmt.Println("Starting Tedis...")
 
 	restoreDatabase()
