@@ -2,12 +2,12 @@ package main
 
 import (
 	"fmt"
-	"mmartinjoo/tedis/internal/command"
-	"mmartinjoo/tedis/internal/persistence/aol"
-	persistencelistener "mmartinjoo/tedis/internal/persistence/aol/listeners"
-	"mmartinjoo/tedis/internal/persistence/rdb"
-	"mmartinjoo/tedis/internal/store"
-	storelistener "mmartinjoo/tedis/internal/store/listeners"
+	"github.com/Computer-Science-Simplified/tedis/server/internal/command"
+	"github.com/Computer-Science-Simplified/tedis/server/internal/persistence/aol"
+	persistencelistener "github.com/Computer-Science-Simplified/tedis/server/internal/persistence/aol/listeners"
+	"github.com/Computer-Science-Simplified/tedis/server/internal/persistence/rdb"
+	"github.com/Computer-Science-Simplified/tedis/server/internal/store"
+	storelistener "github.com/Computer-Science-Simplified/tedis/server/internal/store/listeners"
 	"os"
 
 	"net"

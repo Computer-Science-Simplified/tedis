@@ -3,7 +3,7 @@ package command
 import (
 	"errors"
 	"fmt"
-	"mmartinjoo/tedis/internal/enum"
+	"github.com/Computer-Science-Simplified/tedis/server/internal/enum"
 	"strconv"
 	"strings"
 )

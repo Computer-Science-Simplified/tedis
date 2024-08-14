@@ -1,7 +1,7 @@
 package listeners
 
 import (
-	"mmartinjoo/tedis/internal/store"
+	"github.com/Computer-Science-Simplified/tedis/server/internal/store"
 )
 
 func EvictOldKeys(data map[string]any, lru *store.LRU) {

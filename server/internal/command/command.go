@@ -2,8 +2,8 @@ package command
 
 import (
 	"fmt"
-	"mmartinjoo/tedis/internal/enum"
-	"mmartinjoo/tedis/internal/tree"
+	"github.com/Computer-Science-Simplified/tedis/server/internal/enum"
+	"github.com/Computer-Science-Simplified/tedis/server/internal/tree"
 	"strconv"
 )
 

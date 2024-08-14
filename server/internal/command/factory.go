@@ -2,7 +2,7 @@ package command
 
 import (
 	"fmt"
-	"mmartinjoo/tedis/internal/enum"
+	"github.com/Computer-Science-Simplified/tedis/server/internal/enum"
 	"strings"
 )
 

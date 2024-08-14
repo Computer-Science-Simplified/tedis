@@ -1,7 +1,7 @@
 package tree
 
 import (
-	"mmartinjoo/tedis/internal/enum"
+	"github.com/Computer-Science-Simplified/tedis/server/internal/enum"
 
 	"github.com/gookit/event"
 )

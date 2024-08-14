@@ -2,9 +2,9 @@ package tree
 
 import (
 	"fmt"
-	"mmartinjoo/tedis/internal/enum"
-	"mmartinjoo/tedis/internal/model"
-	"mmartinjoo/tedis/internal/store"
+	"github.com/Computer-Science-Simplified/tedis/server/internal/enum"
+	"github.com/Computer-Science-Simplified/tedis/server/internal/model"
+	"github.com/Computer-Science-Simplified/tedis/server/internal/store"
 )
 
 func Create(key string, treeType string) (model.Tree, error) {

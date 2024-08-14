@@ -5,11 +5,11 @@ import (
 	"encoding/binary"
 	"errors"
 	"fmt"
+	"github.com/Computer-Science-Simplified/tedis/server/internal/command"
+	"github.com/Computer-Science-Simplified/tedis/server/internal/enum"
+	"github.com/Computer-Science-Simplified/tedis/server/internal/model"
+	"github.com/Computer-Science-Simplified/tedis/server/internal/store"
 	"io"
-	"mmartinjoo/tedis/internal/command"
-	"mmartinjoo/tedis/internal/enum"
-	"mmartinjoo/tedis/internal/model"
-	"mmartinjoo/tedis/internal/store"
 	"os"
 )
 
