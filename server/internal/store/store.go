@@ -7,8 +7,8 @@ import (
 
 var store = make(map[string]model.Tree)
 
-var CurrentUnsavedWriteCommands int = 0
-var MaxUnsavedWriteCommands int = 3
+var CurrentUnsavedWriteCommands = 0
+var MaxUnsavedWriteCommands = 3
 
 var maxCapacity = 5
 

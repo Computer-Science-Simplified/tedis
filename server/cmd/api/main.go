@@ -39,7 +39,13 @@ func main() {
 		panic(err)
 	}
 
-	defer listener.Close()
+	defer func(listener net.Listener) {
+		err := listener.Close()
+		if err != nil {
+			fmt.Println(fmt.Errorf("unable to close listener: %s. exiting", err.Error()))
+			os.Exit(1)
+		}
+	}(listener)
 
 	fmt.Println("Tedis is listening on port 2222")
 	fmt.Println("Ready to accept connections")
@@ -59,7 +65,12 @@ func main() {
 func handleConnection(conn net.Conn) {
 	fmt.Printf("Connection established with: %s\n", conn.RemoteAddr().String())
 
-	defer conn.Close()
+	defer func(conn net.Conn) {
+		err := conn.Close()
+		if err != nil {
+			fmt.Println(fmt.Errorf("unable to close connection: %s", err.Error()))
+		}
+	}(conn)
 
 	buffer := make([]byte, 1024)
 
@@ -78,12 +89,12 @@ func handleConnection(conn net.Conn) {
 		cmd, err := command.Parse(commandName)
 
 		if err != nil {
-			conn.Write([]byte(err.Error() + "\n"))
+			_, _ = conn.Write([]byte(err.Error() + "\n"))
 		} else {
 			result, err := cmd.Execute()
 
 			if err != nil {
-				conn.Write([]byte(err.Error() + "\n"))
+				_, _ = conn.Write([]byte(err.Error() + "\n"))
 				return
 			}
 

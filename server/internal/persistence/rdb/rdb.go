@@ -13,16 +13,14 @@ import (
 	"os"
 )
 
-func Persist() {
+func Persist() error {
 	fmt.Println("RDB persisting to disk")
 
 	file, err := os.OpenFile("resources/rdb.bin", os.O_RDWR|os.O_CREATE|os.O_TRUNC, 0644)
 
 	if err != nil {
-		panic(err)
+		return err
 	}
-
-	defer file.Close()
 
 	for _, key := range store.Keys() {
 		tree, ok := store.Get(key)
@@ -32,9 +30,16 @@ func Persist() {
 		}
 
 		if tree.GetType() == enum.BinarySearchTree {
-			persistBinaryTree(tree.GetKey(), tree, file)
+			persistTree(tree.GetKey(), tree, file)
 		}
 	}
+
+	err = file.Close()
+	if err != nil {
+		return err
+	}
+
+	return nil
 }
 
 func Reload() (int, error) {
@@ -43,8 +48,6 @@ func Reload() (int, error) {
 	if err != nil {
 		return 0, errors.New("couldn't read RDB")
 	}
-
-	defer file.Close()
 
 	numberOfItems := 0
 
@@ -134,10 +137,15 @@ func Reload() (int, error) {
 
 	fmt.Printf("Reloaded %d values\n", numberOfItems)
 
+	err = file.Close()
+	if err != nil {
+		return numberOfItems, err
+	}
+
 	return numberOfItems, nil
 }
 
-func persistBinaryTree(key string, tree model.Tree, file *os.File) {
+func persistTree(key string, tree model.Tree, file *os.File) {
 	values := tree.GetAll()
 
 	length := len(values)
@@ -170,7 +178,7 @@ func persistBinaryTree(key string, tree model.Tree, file *os.File) {
 	}
 
 	for _, value := range values {
-		err = binary.Write(writer, binary.LittleEndian, int64(value))
+		err = binary.Write(writer, binary.LittleEndian, value)
 		if err != nil {
 			panic(err)
 		}

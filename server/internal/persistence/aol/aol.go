@@ -4,6 +4,7 @@ import (
 	"bufio"
 	"encoding/binary"
 	"errors"
+	"fmt"
 	"github.com/Computer-Science-Simplified/tedis/server/internal/command"
 	"github.com/Computer-Science-Simplified/tedis/server/internal/enum"
 	"github.com/Computer-Science-Simplified/tedis/server/internal/tree"
@@ -12,7 +13,7 @@ import (
 )
 
 func Write(command string, key string, args []int64) error {
-	var length byte = byte(len(args) + 2)
+	length := byte(len(args) + 2)
 
 	file, err := os.OpenFile("resources/aol.bin", os.O_APPEND|os.O_CREATE|os.O_WRONLY, 0644)
 
@@ -20,7 +21,12 @@ func Write(command string, key string, args []int64) error {
 		panic(err)
 	}
 
-	defer file.Close()
+	defer func(file *os.File) {
+		err := file.Close()
+		if err != nil {
+			fmt.Println(fmt.Errorf("unable to close file: %s because: %s", file.Name(), err.Error()))
+		}
+	}(file)
 
 	writer := bufio.NewWriter(file)
 
@@ -75,7 +81,12 @@ func Read() ([]command.Command, error) {
 		return []command.Command{}, errors.New("aol file not found. Skipping replay")
 	}
 
-	defer file.Close()
+	defer func(file *os.File) {
+		err := file.Close()
+		if err != nil {
+			fmt.Println(fmt.Errorf("unable to close file: %s because: %s", file.Name(), err.Error()))
+		}
+	}(file)
 
 	for {
 		var length byte

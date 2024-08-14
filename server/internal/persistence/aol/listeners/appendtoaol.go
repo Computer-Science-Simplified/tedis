@@ -19,7 +19,10 @@ func AppendToAol(data map[string]any) error {
 	}
 
 	if store.ShouldPersist() {
-		rdb.Persist()
+		err := rdb.Persist()
+		if err != nil {
+			return err
+		}
 	}
 
 	return nil

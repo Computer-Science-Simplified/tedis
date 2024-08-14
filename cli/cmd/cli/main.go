@@ -14,7 +14,13 @@ func main() {
 		os.Exit(1)
 	}
 
-	defer conn.Close()
+	defer func(conn net.Conn) {
+		err := conn.Close()
+		if err != nil {
+			fmt.Println("Unable to close connection. Exiting...")
+			os.Exit(1)
+		}
+	}(conn)
 
 	for {
 		reader := bufio.NewReader(os.Stdin)
