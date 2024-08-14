@@ -7,6 +7,7 @@ import (
 	"mmartinjoo/trees/internal/persistence/aol"
 	"mmartinjoo/trees/internal/persistence/rdb"
 	store2 "mmartinjoo/trees/internal/store"
+	"mmartinjoo/trees/internal/store/listeners"
 	"os"
 
 	"net"
@@ -104,7 +105,7 @@ func addEventListeners(lru *store2.LRU) {
 
 		listeners2.LogWriteCommand(data)
 
-		listeners2.EvictOldKeys(data, lru)
+		listeners.EvictOldKeys(data, lru)
 
 		return nil
 	}))
