@@ -2,13 +2,13 @@ package main
 
 import (
 	"fmt"
-	"mmartinjoo/trees/aol"
-	"mmartinjoo/trees/listeners"
-	"mmartinjoo/trees/rdb"
-	"mmartinjoo/trees/store"
+	"mmartinjoo/trees/internal/aol"
+	"mmartinjoo/trees/internal/command"
+	listeners2 "mmartinjoo/trees/internal/listeners"
+	"mmartinjoo/trees/internal/rdb"
+	store2 "mmartinjoo/trees/internal/store"
 	"os"
 
-	"mmartinjoo/trees/command"
 	"net"
 
 	"github.com/gookit/event"
@@ -19,14 +19,14 @@ func main() {
 
 	restoreDatabase()
 
-	capacity := store.Len()
+	capacity := store2.Len()
 	if capacity == 0 {
 		capacity = 10
 	}
 
-	lru := store.NewLRU(capacity)
+	lru := store2.NewLRU(capacity)
 
-	for _, key := range store.Keys() {
+	for _, key := range store2.Keys() {
 		lru.Put(key)
 	}
 
@@ -96,15 +96,15 @@ func handleConnection(conn net.Conn) {
 	}
 }
 
-func addEventListeners(lru *store.LRU) {
+func addEventListeners(lru *store2.LRU) {
 	event.On("write_command_executed", event.ListenerFunc(func(e event.Event) error {
-		store.CurrentUnsavedWriteCommands++
+		store2.CurrentUnsavedWriteCommands++
 
 		data := e.Data()
 
-		listeners.LogWriteCommand(data)
+		listeners2.LogWriteCommand(data)
 
-		listeners.EvictOldKeys(data, lru)
+		listeners2.EvictOldKeys(data, lru)
 
 		return nil
 	}))

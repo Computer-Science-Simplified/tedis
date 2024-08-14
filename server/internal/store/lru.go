@@ -5,24 +5,24 @@ import (
 )
 
 type LRU struct {
-	Map map[string]string
-	Items []string
+	Map      map[string]string
+	Items    []string
 	Capacity int
 }
 
 func NewLRU(capacity int) *LRU {
 	return &LRU{
 		Capacity: capacity,
-		Map: make(map[string]string, capacity),
-		Items: make([]string, capacity),
+		Map:      make(map[string]string, capacity),
+		Items:    make([]string, capacity),
 	}
 }
 
 func (lru *LRU) Put(key string) {
 	if len(lru.Items) >= lru.Capacity {
-		removedKey := lru.Items[len(lru.Items) - 1]
+		removedKey := lru.Items[len(lru.Items)-1]
 
-		lru.Items = lru.Items[:len(lru.Items) - 1]
+		lru.Items = lru.Items[:len(lru.Items)-1]
 
 		delete(lru.Map, removedKey)
 	}
@@ -73,7 +73,7 @@ func (lru *LRU) update(key string) {
 	for i, value := range lru.Items {
 		if value == key {
 			idx = i
-			break;
+			break
 		}
 	}
 

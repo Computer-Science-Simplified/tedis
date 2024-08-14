@@ -3,7 +3,7 @@ package command
 import (
 	"errors"
 	"fmt"
-	"mmartinjoo/trees/commands"
+	"mmartinjoo/trees/internal/commands"
 	"strconv"
 	"strings"
 )

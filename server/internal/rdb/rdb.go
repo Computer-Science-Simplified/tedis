@@ -6,10 +6,10 @@ import (
 	"errors"
 	"fmt"
 	"io"
-	"mmartinjoo/trees/command"
-	"mmartinjoo/trees/commands"
+	"mmartinjoo/trees/internal/command"
+	"mmartinjoo/trees/internal/commands"
+	"mmartinjoo/trees/internal/store"
 	trees2 "mmartinjoo/trees/internal/trees"
-	"mmartinjoo/trees/store"
 	"os"
 )
 

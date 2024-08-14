@@ -1,7 +1,7 @@
 package trees
 
 import (
-	"mmartinjoo/trees/commands"
+	"mmartinjoo/trees/internal/commands"
 
 	"github.com/gookit/event"
 )

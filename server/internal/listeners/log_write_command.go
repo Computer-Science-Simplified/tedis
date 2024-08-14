@@ -1,9 +1,9 @@
 package listeners
 
 import (
-	"mmartinjoo/trees/aol"
-	"mmartinjoo/trees/rdb"
-	"mmartinjoo/trees/store"
+	"mmartinjoo/trees/internal/aol"
+	"mmartinjoo/trees/internal/rdb"
+	"mmartinjoo/trees/internal/store"
 )
 
 func LogWriteCommand(data map[string]any) {

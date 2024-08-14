@@ -2,8 +2,8 @@ package command
 
 import (
 	"fmt"
-	"mmartinjoo/trees/commands"
-	"mmartinjoo/trees/factory"
+	"mmartinjoo/trees/internal/commands"
+	"mmartinjoo/trees/internal/factory"
 	"strconv"
 )
 
