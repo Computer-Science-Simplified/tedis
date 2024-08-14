@@ -1,7 +1,7 @@
 package tree
 
 import (
-	"mmartinjoo/trees/internal/commands"
+	"mmartinjoo/trees/internal/enum"
 
 	"github.com/gookit/event"
 )
@@ -28,7 +28,7 @@ func (tree *BST) GetType() string {
 func (tree *BST) Add(value int64, shouldReport bool) {
 	if shouldReport {
 		event.MustFire("write_command_executed", event.M{
-			"command": commands.BSTADD,
+			"command": enum.BSTADD,
 			"key":     tree.Key,
 			"args":    []int64{value},
 		})
@@ -44,7 +44,7 @@ func (tree *BST) Exists(value int64) bool {
 func (tree *BST) Remove(value int64, shouldReport bool) {
 	if shouldReport {
 		event.MustFire("write_command_executed", event.M{
-			"command": commands.BSTREM,
+			"command": enum.BSTREM,
 			"key":     tree.Key,
 			"args":    []int64{value},
 		})

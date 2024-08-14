@@ -3,7 +3,7 @@ package command
 import (
 	"errors"
 	"fmt"
-	"mmartinjoo/trees/internal/commands"
+	"mmartinjoo/trees/internal/enum"
 	"strconv"
 	"strings"
 )
@@ -25,20 +25,20 @@ func Parse(line string) (Command, error) {
 
 	args := parts[2:]
 
-	if name == commands.BSTADD && len(args) != 1 {
-		return Command{}, fmt.Errorf("%s requires exactly 1 argument but %d given", commands.BSTADD, len(args))
+	if name == enum.BSTADD && len(args) != 1 {
+		return Command{}, fmt.Errorf("%s requires exactly 1 argument but %d given", enum.BSTADD, len(args))
 	}
 
-	if name == commands.BSTEXISTS && len(args) != 1 {
-		return Command{}, fmt.Errorf("%s requires exactly 1 argument but %d given", commands.BSTEXISTS, len(args))
+	if name == enum.BSTEXISTS && len(args) != 1 {
+		return Command{}, fmt.Errorf("%s requires exactly 1 argument but %d given", enum.BSTEXISTS, len(args))
 	}
 
-	if name == commands.BSTGETALL && len(args) != 0 {
-		return Command{}, fmt.Errorf("%s requires exactly 0 argument but %d given", commands.BSTGETALL, len(args))
+	if name == enum.BSTGETALL && len(args) != 0 {
+		return Command{}, fmt.Errorf("%s requires exactly 0 argument but %d given", enum.BSTGETALL, len(args))
 	}
 
-	if name == commands.BSTREM && len(args) != 1 {
-		return Command{}, fmt.Errorf("%s requires exactly 1 argument but %d given", commands.BSTREM, len(args))
+	if name == enum.BSTREM && len(args) != 1 {
+		return Command{}, fmt.Errorf("%s requires exactly 1 argument but %d given", enum.BSTREM, len(args))
 	}
 
 	formattedArgs := make([]int64, 0)

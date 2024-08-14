@@ -1,4 +1,4 @@
-package commands
+package enum
 
 const (
 	BSTADD    string = "BSTADD"

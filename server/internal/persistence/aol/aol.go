@@ -7,7 +7,7 @@ import (
 	"fmt"
 	"io"
 	command2 "mmartinjoo/trees/internal/command"
-	"mmartinjoo/trees/internal/commands"
+	"mmartinjoo/trees/internal/enum"
 	"mmartinjoo/trees/internal/tree"
 	"os"
 )
@@ -183,10 +183,10 @@ func Replay() {
 		}
 
 		switch cmd.Name {
-		case commands.BSTADD:
+		case enum.BSTADD:
 			tree.Add(cmd.Args[0], false)
 			numberOfReplayedCommands++
-		case commands.BSTREM:
+		case enum.BSTREM:
 			tree.Remove(cmd.Args[0], false)
 			numberOfReplayedCommands++
 		}

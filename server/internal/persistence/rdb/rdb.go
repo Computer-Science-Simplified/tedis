@@ -7,7 +7,7 @@ import (
 	"fmt"
 	"io"
 	"mmartinjoo/trees/internal/command"
-	"mmartinjoo/trees/internal/commands"
+	"mmartinjoo/trees/internal/enum"
 	"mmartinjoo/trees/internal/model"
 	"mmartinjoo/trees/internal/store"
 	trees2 "mmartinjoo/trees/internal/tree"
@@ -118,7 +118,7 @@ func Reload() (string, error) {
 		for _, value := range values {
 			cmd := command.Command{
 				Key:  keyName,
-				Name: commands.BSTADD,
+				Name: enum.BSTADD,
 				Args: []int64{value},
 				Type: trees2.BinarySearchTree,
 			}

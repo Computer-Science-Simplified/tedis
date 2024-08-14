@@ -2,7 +2,7 @@ package command
 
 import (
 	"fmt"
-	"mmartinjoo/trees/internal/commands"
+	"mmartinjoo/trees/internal/enum"
 	"mmartinjoo/trees/internal/tree"
 	"strconv"
 )
@@ -22,19 +22,19 @@ func (c *Command) Execute() (string, error) {
 	}
 
 	switch c.Name {
-	case commands.BSTADD:
+	case enum.BSTADD:
 		t.Add(c.Args[0], true)
 		return "ok", nil
 
-	case commands.BSTEXISTS:
+	case enum.BSTEXISTS:
 		exists := t.Exists(c.Args[0])
 		return strconv.FormatBool(exists), nil
 
-	case commands.BSTGETALL:
+	case enum.BSTGETALL:
 		values := t.GetAll()
 		return fmt.Sprintf("%v", values), nil
 
-	case commands.BSTREM:
+	case enum.BSTREM:
 		t.Remove(c.Args[0], true)
 		return "ok", nil
 	default:
