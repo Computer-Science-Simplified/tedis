@@ -78,12 +78,12 @@ func Write(command string, key string, args []int64) {
 }
 
 func Read() ([]command2.Command, error) {
-	var commands []command2.Command
+	var cmds []command2.Command
 
 	file, err := os.Open("aol.bin")
 
 	if err != nil {
-		return []command2.Command{}, errors.New("AOL file not found. Skipping replay.")
+		return []command2.Command{}, errors.New("aol file not found. Skipping replay")
 	}
 
 	defer file.Close()
@@ -98,7 +98,7 @@ func Read() ([]command2.Command, error) {
 				break
 			}
 
-			return []command2.Command{}, errors.New("AOL cannot be loaded. Skipping replay.")
+			return []command2.Command{}, errors.New("aol cannot be loaded. Skipping reply")
 		}
 
 		var commandLength byte
@@ -106,7 +106,7 @@ func Read() ([]command2.Command, error) {
 		err = binary.Read(file, binary.LittleEndian, &commandLength)
 
 		if err != nil {
-			return []command2.Command{}, errors.New("AOL cannot be loaded. Skipping replay.")
+			return []command2.Command{}, errors.New("aol cannot be loaded. Skipping replay")
 		}
 
 		var commandName string
@@ -115,7 +115,7 @@ func Read() ([]command2.Command, error) {
 			err = binary.Read(file, binary.LittleEndian, &c)
 
 			if err != nil {
-				return []command2.Command{}, errors.New("AOL cannot be loaded. Skipping replay.")
+				return []command2.Command{}, errors.New("aol cannot be loaded. Skipping replay")
 			}
 
 			commandName += string(c)
@@ -126,7 +126,7 @@ func Read() ([]command2.Command, error) {
 		err = binary.Read(file, binary.LittleEndian, &keyLength)
 
 		if err != nil {
-			return []command2.Command{}, errors.New("AOL cannot be loaded. Skipping replay.")
+			return []command2.Command{}, errors.New("aol cannot be loaded. Skipping replay")
 		}
 
 		var key string
@@ -135,7 +135,7 @@ func Read() ([]command2.Command, error) {
 			err = binary.Read(file, binary.LittleEndian, &c)
 
 			if err != nil {
-				return []command2.Command{}, errors.New("AOL cannot be loaded. Skipping replay.")
+				return []command2.Command{}, errors.New("aol cannot be loaded. Skipping replay")
 			}
 
 			key += string(c)
@@ -148,7 +148,7 @@ func Read() ([]command2.Command, error) {
 			err = binary.Read(file, binary.LittleEndian, &arg)
 
 			if err != nil {
-				return []command2.Command{}, errors.New("AOL cannot be loaded. Skipping replay.")
+				return []command2.Command{}, errors.New("aol cannot be loaded. Skipping replay")
 			}
 
 			args = append(args, arg)
@@ -156,10 +156,10 @@ func Read() ([]command2.Command, error) {
 
 		cmd, _ := command2.Create(commandName, key, args)
 
-		commands = append(commands, cmd)
+		cmds = append(cmds, cmd)
 	}
 
-	return commands, nil
+	return cmds, nil
 }
 
 func Replay() {

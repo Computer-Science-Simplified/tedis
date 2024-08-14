@@ -15,7 +15,7 @@ type Command struct {
 }
 
 func (c *Command) Execute() (string, error) {
-	tree, err := tree.Create(c.Key, c.Type)
+	t, err := tree.Create(c.Key, c.Type)
 
 	if err != nil {
 		return "", err
@@ -23,19 +23,19 @@ func (c *Command) Execute() (string, error) {
 
 	switch c.Name {
 	case commands.BSTADD:
-		tree.Add(c.Args[0], true)
+		t.Add(c.Args[0], true)
 		return "ok", nil
 
 	case commands.BSTEXISTS:
-		exists := tree.Exists(c.Args[0])
+		exists := t.Exists(c.Args[0])
 		return strconv.FormatBool(exists), nil
 
 	case commands.BSTGETALL:
-		values := tree.GetAll()
+		values := t.GetAll()
 		return fmt.Sprintf("%v", values), nil
 
 	case commands.BSTREM:
-		tree.Remove(c.Args[0], true)
+		t.Remove(c.Args[0], true)
 		return "ok", nil
 	default:
 		return "", fmt.Errorf("command not found: %s", c.Name)
