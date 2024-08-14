@@ -1,8 +1,8 @@
 package listeners
 
 import (
-	"mmartinjoo/trees/internal/aol"
-	"mmartinjoo/trees/internal/rdb"
+	"mmartinjoo/trees/internal/persistence/aol"
+	"mmartinjoo/trees/internal/persistence/rdb"
 	"mmartinjoo/trees/internal/store"
 )
 

@@ -2,10 +2,10 @@ package main
 
 import (
 	"fmt"
-	"mmartinjoo/trees/internal/aol"
 	"mmartinjoo/trees/internal/command"
 	listeners2 "mmartinjoo/trees/internal/listeners"
-	"mmartinjoo/trees/internal/rdb"
+	"mmartinjoo/trees/internal/persistence/aol"
+	"mmartinjoo/trees/internal/persistence/rdb"
 	store2 "mmartinjoo/trees/internal/store"
 	"os"
 
