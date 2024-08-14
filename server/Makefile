@@ -9,3 +9,6 @@ build: analyze
 
 run: build
 	bin/tedis
+
+migrate:
+	go run cmd/migrate/main.go
