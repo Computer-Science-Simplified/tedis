@@ -6,7 +6,7 @@ import (
 	"mmartinjoo/trees/internal/store"
 )
 
-func LogWriteCommand(data map[string]any) {
+func AppenToAol(data map[string]any) {
 	command, _ := data["command"].(string)
 	key, _ := data["key"].(string)
 	args, _ := data["args"].([]int64)
