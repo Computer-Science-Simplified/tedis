@@ -10,21 +10,78 @@ import (
 	"github.com/Computer-Science-Simplified/tedis/server/internal/tree"
 	"io"
 	"os"
+	"strconv"
+	"strings"
 )
 
-/*
- * Writes the given command into the AOL log file
- * "bstadd categories 12" becomes
- * 36bstadd10categories12
- * Where:
- * - 3 is the number of arguments + 2
- * - 6 is the length of "bstadd"
- * - bstadd is the command
- * - 10 is the length of "categories"
- * - cateagories is the key
- * - 12 is the argument
- */
 func Write(command string, key string, args []int64) error {
+	file, err := os.OpenFile("resources/aol.bin", os.O_APPEND|os.O_CREATE|os.O_WRONLY, 0644)
+
+	if err != nil {
+		panic(err)
+	}
+
+	defer func(file *os.File) {
+		err := file.Close()
+		if err != nil {
+			fmt.Println(fmt.Errorf("unable to close file: %s because: %s", file.Name(), err.Error()))
+		}
+	}(file)
+
+	writer := bufio.NewWriter(file)
+
+	_, err = writer.WriteString(fmt.Sprintf("%s;%s;%v\n", command, key, args))
+
+	if err != nil {
+		return err
+	}
+
+	err = writer.Flush()
+	if err != nil {
+		return err
+	}
+
+	return nil
+}
+
+func Read() ([]command.Command, error) {
+	var cmds []command.Command
+
+	file, err := os.Open("resources/aol.bin")
+
+	if err != nil {
+		return []command.Command{}, errors.New("aol file not found. Skipping replay")
+	}
+
+	defer func(file *os.File) {
+		err := file.Close()
+		if err != nil {
+			fmt.Println(fmt.Errorf("unable to close file: %s because: %s", file.Name(), err.Error()))
+		}
+	}(file)
+
+	scanner := bufio.NewScanner(file)
+
+	for scanner.Scan() {
+		line := scanner.Text()
+		parts := strings.Split(line, ";")
+		argsStr := parts[2]
+		args := parseArgs(argsStr)
+
+		cmd, err := command.Create(parts[0], parts[1], args)
+		if err != nil {
+			return []command.Command{}, errors.New("aol file not found. Skipping replay")
+		}
+
+		cmds = append(cmds, cmd)
+	}
+
+	fmt.Println(cmds)
+
+	return cmds, nil
+}
+
+func Write2(command string, key string, args []int64) error {
 	length := byte(len(args))
 
 	file, err := os.OpenFile("resources/aol.bin", os.O_APPEND|os.O_CREATE|os.O_WRONLY, 0644)
@@ -84,7 +141,7 @@ func Write(command string, key string, args []int64) error {
 	return nil
 }
 
-func Read() ([]command.Command, error) {
+func Read2() ([]command.Command, error) {
 	var cmds []command.Command
 
 	file, err := os.Open("resources/aol.bin")
@@ -182,4 +239,18 @@ func Replay() (int, error) {
 	}
 
 	return numberOfReplayedCommands, nil
+}
+
+func parseArgs(args string) []int64 {
+	argsTrimmedLeft := strings.TrimLeft(args, "[")
+	argsTrimmed := strings.TrimRight(argsTrimmedLeft, "]")
+	argsFormatted := strings.Split(argsTrimmed, " ")
+	argsInt := make([]int64, 0)
+
+	for _, arg := range argsFormatted {
+		argInt, _ := strconv.Atoi(arg)
+		argsInt = append(argsInt, int64(argInt))
+	}
+
+	return argsInt
 }
