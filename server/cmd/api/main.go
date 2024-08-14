@@ -103,7 +103,7 @@ func addEventListeners(lru *store2.LRU) {
 
 		data := e.Data()
 
-		listeners2.AppenToAol(data)
+		listeners2.AppendToAol(data)
 
 		listeners.EvictOldKeys(data, lru)
 
