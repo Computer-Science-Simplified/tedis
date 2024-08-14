@@ -27,7 +27,7 @@ import (
 func Write(command string, key string, args []int64) {
 	var length byte = byte(len(args) + 2)
 
-	file, err := os.OpenFile("aol.bin", os.O_APPEND|os.O_CREATE|os.O_WRONLY, 0644)
+	file, err := os.OpenFile("resources/aol.bin", os.O_APPEND|os.O_CREATE|os.O_WRONLY, 0644)
 
 	if err != nil {
 		panic(err)
@@ -80,7 +80,7 @@ func Write(command string, key string, args []int64) {
 func Read() ([]command.Command, error) {
 	var cmds []command.Command
 
-	file, err := os.Open("aol.bin")
+	file, err := os.Open("resources/aol.bin")
 
 	if err != nil {
 		return []command.Command{}, errors.New("aol file not found. Skipping replay")

@@ -16,7 +16,7 @@ import (
 func Persist() {
 	fmt.Println("RDB persisting to disk")
 
-	file, err := os.OpenFile("rdb.bin", os.O_RDWR|os.O_CREATE|os.O_TRUNC, 0644)
+	file, err := os.OpenFile("resources/rdb.bin", os.O_RDWR|os.O_CREATE|os.O_TRUNC, 0644)
 
 	if err != nil {
 		panic(err)
@@ -38,7 +38,7 @@ func Persist() {
 }
 
 func Reload() (string, error) {
-	file, err := os.Open("rdb.bin")
+	file, err := os.Open("resources/rdb.bin")
 
 	if err != nil {
 		return "", errors.New("couldn't read RDB")
