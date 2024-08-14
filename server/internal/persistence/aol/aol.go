@@ -90,7 +90,6 @@ func Read() ([]command.Command, error) {
 
 	for {
 		var length byte
-
 		err = binary.Read(file, binary.LittleEndian, &length)
 
 		if err != nil {
@@ -102,59 +101,41 @@ func Read() ([]command.Command, error) {
 		}
 
 		var commandLength byte
-
 		err = binary.Read(file, binary.LittleEndian, &commandLength)
 
 		if err != nil {
 			return []command.Command{}, errors.New("aol cannot be loaded. Skipping replay")
 		}
 
-		var commandName string
-		for i := 0; i < int(commandLength); i++ {
-			var c byte
-			err = binary.Read(file, binary.LittleEndian, &c)
+		commandName := make([]byte, commandLength)
+		err = binary.Read(file, binary.LittleEndian, &commandName)
 
-			if err != nil {
-				return []command.Command{}, errors.New("aol cannot be loaded. Skipping replay")
-			}
-
-			commandName += string(c)
+		if err != nil {
+			return []command.Command{}, errors.New("aol cannot be loaded. Skipping replay")
 		}
 
 		var keyLength byte
-
 		err = binary.Read(file, binary.LittleEndian, &keyLength)
 
 		if err != nil {
 			return []command.Command{}, errors.New("aol cannot be loaded. Skipping replay")
 		}
 
-		var key string
-		for i := 0; i < int(keyLength); i++ {
-			var c byte
-			err = binary.Read(file, binary.LittleEndian, &c)
+		key := make([]byte, keyLength)
+		err = binary.Read(file, binary.LittleEndian, &key)
 
-			if err != nil {
-				return []command.Command{}, errors.New("aol cannot be loaded. Skipping replay")
-			}
-
-			key += string(c)
+		if err != nil {
+			return []command.Command{}, errors.New("aol cannot be loaded. Skipping replay")
 		}
 
-		var args []int64
+		args := make([]int64, length-2)
+		err = binary.Read(file, binary.LittleEndian, &args)
 
-		for i := 0; i < int(length)-2; i++ {
-			var arg int64
-			err = binary.Read(file, binary.LittleEndian, &arg)
-
-			if err != nil {
-				return []command.Command{}, errors.New("aol cannot be loaded. Skipping replay")
-			}
-
-			args = append(args, arg)
+		if err != nil {
+			return []command.Command{}, errors.New("aol cannot be loaded. Skipping replay")
 		}
 
-		cmd, _ := command.Create(commandName, key, args)
+		cmd, _ := command.Create(string(commandName), string(key), args)
 
 		cmds = append(cmds, cmd)
 	}
@@ -172,7 +153,7 @@ func Replay() (int, error) {
 	}
 
 	for _, cmd := range cmds {
-		t, err := tree.Create(cmd.Key, enum.BinarySearchTree)
+		t, err := tree.Create(cmd.Key, cmd.Type)
 
 		if err != nil {
 			return numberOfReplayedCommands, err
