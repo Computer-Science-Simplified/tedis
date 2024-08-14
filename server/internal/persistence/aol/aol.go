@@ -12,8 +12,20 @@ import (
 	"os"
 )
 
+/*
+ * Writes the given command into the AOL log file
+ * "bstadd categories 12" becomes
+ * 36bstadd10categories12
+ * Where:
+ * - 3 is the number of arguments + 2
+ * - 6 is the length of "bstadd"
+ * - bstadd is the command
+ * - 10 is the length of "categories"
+ * - cateagories is the key
+ * - 12 is the argument
+ */
 func Write(command string, key string, args []int64) error {
-	length := byte(len(args) + 2)
+	length := byte(len(args))
 
 	file, err := os.OpenFile("resources/aol.bin", os.O_APPEND|os.O_CREATE|os.O_WRONLY, 0644)
 
@@ -128,7 +140,7 @@ func Read() ([]command.Command, error) {
 			return []command.Command{}, errors.New("aol cannot be loaded. Skipping replay")
 		}
 
-		args := make([]int64, length-2)
+		args := make([]int64, length)
 		err = binary.Read(file, binary.LittleEndian, &args)
 
 		if err != nil {
