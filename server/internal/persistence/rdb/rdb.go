@@ -131,7 +131,7 @@ func Reload() (int, error) {
 				Type: enum.BinarySearchTree,
 			}
 
-			_, err := cmd.Execute()
+			_, err := cmd.Execute(false)
 
 			if err != nil {
 				return numberOfItems, err

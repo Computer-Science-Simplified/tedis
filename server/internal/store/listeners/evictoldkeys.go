@@ -4,13 +4,13 @@ import (
 	"github.com/Computer-Science-Simplified/tedis/server/internal/store"
 )
 
-func EvictOldKeys(data map[string]any, lru *store.LRU) {
-	key, _ := data["key"].(string)
+func EvictOldKeys(mruKey string, lru *store.LRU) {
+	// By accessing it, LRU puts the most recently used key at the beginning
+	_, err := lru.Get(mruKey)
 
-	_, err := lru.Get(key)
-
+	// If it's not found for some reason we put it at the end
 	if err != nil {
-		lru.Put(key)
+		lru.Put(mruKey)
 	}
 
 	store.Evict(lru)

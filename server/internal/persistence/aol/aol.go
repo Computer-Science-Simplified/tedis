@@ -4,8 +4,6 @@ import (
 	"bufio"
 	"fmt"
 	"github.com/Computer-Science-Simplified/tedis/server/internal/command"
-	"github.com/Computer-Science-Simplified/tedis/server/internal/enum"
-	"github.com/Computer-Science-Simplified/tedis/server/internal/tree"
 	"os"
 	"strconv"
 	"strings"
@@ -93,20 +91,15 @@ func Replay() (int, error) {
 	}
 
 	for _, cmd := range cmds {
-		t, err := tree.Create(cmd.Key, cmd.Type)
+		_, err := cmd.Execute(false)
 
 		if err != nil {
-			fmt.Printf("unable to create tree from command: %s\n", cmd.String())
-			continue
-		}
+			fmt.Printf(
+				"unable to create tree from command: %s\n",
+				cmd.String(),
+			)
 
-		switch cmd.Name {
-		case enum.BSTADD:
-			t.Add(cmd.Args[0], false)
-			numberOfReplayedCommands++
-		case enum.BSTREM:
-			t.Remove(cmd.Args[0], false)
-			numberOfReplayedCommands++
+			continue
 		}
 	}
 
@@ -119,11 +112,11 @@ func Replay() (int, error) {
 
 func parseArgs(args string) []int64 {
 	argsFormatted := strings.Split(args, ",")
-	argsInt := make([]int64, 0)
+	argsInt := make([]int64, len(argsFormatted))
 
-	for _, arg := range argsFormatted {
+	for i, arg := range argsFormatted {
 		argInt, _ := strconv.Atoi(arg)
-		argsInt = append(argsInt, int64(argInt))
+		argsInt[i] = int64(argInt)
 	}
 
 	return argsInt

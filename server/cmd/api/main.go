@@ -91,7 +91,7 @@ func handleConnection(conn net.Conn) {
 		if err != nil {
 			_, _ = conn.Write([]byte(err.Error() + "\n"))
 		} else {
-			result, err := cmd.Execute()
+			result, err := cmd.Execute(true)
 
 			if err != nil {
 				_, _ = conn.Write([]byte(err.Error() + "\n"))
@@ -113,14 +113,15 @@ func addEventListeners(lru *store.LRU) {
 		store.CurrentUnsavedWriteCommands++
 
 		data := e.Data()
+		cmd, _ := data["command"].(*command.Command)
 
-		err := persistencelistener.AppendToAol(data)
+		err := persistencelistener.AppendToAol(cmd)
 
 		if err != nil {
 			fmt.Println(fmt.Errorf("could not append to AOL: %s", err.Error()))
 		}
 
-		storelistener.EvictOldKeys(data, lru)
+		storelistener.EvictOldKeys(cmd.Key, lru)
 
 		return nil
 	}))

@@ -2,8 +2,6 @@ package tree
 
 import (
 	"github.com/Computer-Science-Simplified/tedis/server/internal/enum"
-
-	"github.com/gookit/event"
 )
 
 type BST struct {
@@ -25,15 +23,7 @@ func (tree *BST) GetType() string {
 	return enum.BinarySearchTree
 }
 
-func (tree *BST) Add(value int64, shouldReport bool) {
-	if shouldReport {
-		event.MustFire("write_command_executed", event.M{
-			"command": enum.BSTADD,
-			"key":     tree.Key,
-			"args":    []int64{value},
-		})
-	}
-
+func (tree *BST) Add(value int64) {
 	tree.Root = tree.add(value, tree.Root)
 }
 
@@ -41,15 +31,7 @@ func (tree *BST) Exists(value int64) bool {
 	return tree.exists(value, tree.Root)
 }
 
-func (tree *BST) Remove(value int64, shouldReport bool) {
-	if shouldReport {
-		event.MustFire("write_command_executed", event.M{
-			"command": enum.BSTREM,
-			"key":     tree.Key,
-			"args":    []int64{value},
-		})
-	}
-
+func (tree *BST) Remove(value int64) {
 	tree.remove(value, tree.Root)
 }
 

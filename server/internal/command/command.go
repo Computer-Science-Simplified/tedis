@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"github.com/Computer-Science-Simplified/tedis/server/internal/enum"
 	"github.com/Computer-Science-Simplified/tedis/server/internal/tree"
+	"github.com/gookit/event"
 	"strconv"
 )
 
@@ -14,7 +15,7 @@ type Command struct {
 	Type string
 }
 
-func (c *Command) Execute() (string, error) {
+func (c *Command) Execute(shouldReport bool) (string, error) {
 	t, err := tree.Create(c.Key, c.Type)
 
 	if err != nil {
@@ -23,7 +24,14 @@ func (c *Command) Execute() (string, error) {
 
 	switch c.Name {
 	case enum.BSTADD:
-		t.Add(c.Args[0], true)
+		t.Add(c.Args[0])
+
+		if shouldReport {
+			event.MustFire("write_command_executed", event.M{
+				"command": c,
+			})
+		}
+
 		return "ok", nil
 
 	case enum.BSTEXISTS:
@@ -35,7 +43,14 @@ func (c *Command) Execute() (string, error) {
 		return fmt.Sprintf("%v", values), nil
 
 	case enum.BSTREM:
-		t.Remove(c.Args[0], true)
+		t.Remove(c.Args[0])
+
+		if shouldReport {
+			event.MustFire("write_command_executed", event.M{
+				"command": c,
+			})
+		}
+
 		return "ok", nil
 	default:
 		return "", fmt.Errorf("command not found: %s", c.Name)

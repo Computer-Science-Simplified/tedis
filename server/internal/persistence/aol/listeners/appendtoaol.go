@@ -1,17 +1,14 @@
 package listeners
 
 import (
+	"github.com/Computer-Science-Simplified/tedis/server/internal/command"
 	"github.com/Computer-Science-Simplified/tedis/server/internal/persistence/aol"
 	"github.com/Computer-Science-Simplified/tedis/server/internal/persistence/rdb"
 	"github.com/Computer-Science-Simplified/tedis/server/internal/store"
 )
 
-func AppendToAol(data map[string]any) error {
-	command, _ := data["command"].(string)
-	key, _ := data["key"].(string)
-	args, _ := data["args"].([]int64)
-
-	err := aol.Append(command, key, args)
+func AppendToAol(cmd *command.Command) error {
+	err := aol.Append(cmd.Name, cmd.Key, cmd.Args)
 
 	if err != nil {
 		// Add the command to a dead letter queue and retry it later
