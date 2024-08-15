@@ -3,6 +3,7 @@ package main
 import (
 	"fmt"
 	"github.com/Computer-Science-Simplified/tedis/server/internal/command"
+	"github.com/Computer-Science-Simplified/tedis/server/internal/enum"
 	"github.com/Computer-Science-Simplified/tedis/server/internal/persistence/aol"
 	persistencelistener "github.com/Computer-Science-Simplified/tedis/server/internal/persistence/aol/listeners"
 	"github.com/Computer-Science-Simplified/tedis/server/internal/persistence/rdb"
@@ -109,7 +110,7 @@ func handleConnection(conn net.Conn) {
 }
 
 func addEventListeners(lru *store.LRU) {
-	event.On("write_command_executed", event.ListenerFunc(func(e event.Event) error {
+	event.On(enum.WriteCommandExecuted, event.ListenerFunc(func(e event.Event) error {
 		store.CurrentUnsavedWriteCommands++
 
 		data := e.Data()

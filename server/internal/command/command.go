@@ -27,7 +27,7 @@ func (c *Command) Execute(shouldReport bool) (string, error) {
 		t.Add(c.Args[0])
 
 		if shouldReport {
-			event.MustFire("write_command_executed", event.M{
+			event.MustFire(enum.WriteCommandExecuted, event.M{
 				"command": c,
 			})
 		}
@@ -46,7 +46,7 @@ func (c *Command) Execute(shouldReport bool) (string, error) {
 		t.Remove(c.Args[0])
 
 		if shouldReport {
-			event.MustFire("write_command_executed", event.M{
+			event.MustFire(enum.WriteCommandExecuted, event.M{
 				"command": c,
 			})
 		}
