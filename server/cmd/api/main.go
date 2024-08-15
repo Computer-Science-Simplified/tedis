@@ -149,8 +149,6 @@ func restoreDatabase() {
 		}
 
 		fmt.Printf("Replayed %d commands\n", count)
-
-		fmt.Println("DONE")
 	}
 
 	if persistenceLayer == "rdb" {
@@ -163,7 +161,5 @@ func restoreDatabase() {
 		}
 
 		fmt.Printf("Reloaded %d items\n", count)
-
-		fmt.Println("DONE")
 	}
 }

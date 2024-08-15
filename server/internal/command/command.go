@@ -41,3 +41,7 @@ func (c *Command) Execute() (string, error) {
 		return "", fmt.Errorf("command not found: %s", c.Name)
 	}
 }
+
+func (c *Command) String() string {
+	return fmt.Sprintf("[%s] %s %s %v", c.Type, c.Name, c.Key, c.Args)
+}

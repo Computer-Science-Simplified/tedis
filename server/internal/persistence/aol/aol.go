@@ -16,7 +16,7 @@ func Write(command string, key string, args []int64) error {
 	file, err := os.OpenFile("resources/aol.bin", os.O_APPEND|os.O_CREATE|os.O_WRONLY, 0644)
 
 	if err != nil {
-		panic(err)
+		return err
 	}
 
 	defer func(file *os.File) {
@@ -28,7 +28,9 @@ func Write(command string, key string, args []int64) error {
 
 	writer := bufio.NewWriter(file)
 
-	_, err = writer.WriteString(fmt.Sprintf("%s;%s;%v\n", command, key, args))
+	_, err = writer.WriteString(
+		fmt.Sprintf("%s;%s;%s\n", command, key, convertArgs(args)),
+	)
 
 	if err != nil {
 		return err
@@ -78,7 +80,7 @@ func Read() ([]command.Command, error) {
 }
 
 func Replay() (int, error) {
-	start := time.Now().Unix()
+	start := time.Now().UnixMilli()
 
 	cmds, err := Read()
 
@@ -92,7 +94,7 @@ func Replay() (int, error) {
 		t, err := tree.Create(cmd.Key, cmd.Type)
 
 		if err != nil {
-			fmt.Printf("unable to create tree from command: %s/n", cmd)
+			fmt.Printf("unable to create tree from command: %s\n", cmd.String())
 			continue
 		}
 
@@ -106,17 +108,15 @@ func Replay() (int, error) {
 		}
 	}
 
-	end := time.Now().Unix()
+	end := time.Now().UnixMilli()
 
-	fmt.Printf("%d\n", end-start)
+	fmt.Printf("AOL replayed in %dms\n", end-start)
 
 	return numberOfReplayedCommands, nil
 }
 
 func parseArgs(args string) []int64 {
-	argsTrimmedLeft := strings.TrimLeft(args, "[")
-	argsTrimmed := strings.TrimRight(argsTrimmedLeft, "]")
-	argsFormatted := strings.Split(argsTrimmed, " ")
+	argsFormatted := strings.Split(args, ",")
 	argsInt := make([]int64, 0)
 
 	for _, arg := range argsFormatted {
@@ -125,4 +125,13 @@ func parseArgs(args string) []int64 {
 	}
 
 	return argsInt
+}
+
+func convertArgs(args []int64) string {
+	strArgs := make([]string, len(args))
+	for i, v := range args {
+		strArgs[i] = fmt.Sprint(v)
+	}
+
+	return strings.Join(strArgs, ",")
 }
