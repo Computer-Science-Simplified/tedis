@@ -13,10 +13,12 @@ import (
 	"os"
 )
 
+const fileName = "resources/rdb.bin"
+
 func Persist() error {
 	fmt.Println("RDB persisting to disk")
 
-	file, err := os.OpenFile("resources/rdb.bin", os.O_RDWR|os.O_CREATE|os.O_TRUNC, 0644)
+	file, err := os.OpenFile(fileName, os.O_RDWR|os.O_CREATE|os.O_TRUNC, 0644)
 
 	if err != nil {
 		return err
@@ -43,7 +45,7 @@ func Persist() error {
 }
 
 func Reload() (int, error) {
-	file, err := os.Open("resources/rdb.bin")
+	file, err := os.Open(fileName)
 
 	if err != nil {
 		return 0, errors.New("couldn't read RDB")
