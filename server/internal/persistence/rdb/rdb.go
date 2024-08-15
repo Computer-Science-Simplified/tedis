@@ -32,7 +32,11 @@ func Persist() error {
 		}
 
 		if tree.GetType() == enum.BinarySearchTree {
-			persistTree(tree.GetKey(), tree, file)
+			err = persistTree(tree.GetKey(), tree, file)
+
+			if err != nil {
+				fmt.Println(err.Error())
+			}
 		}
 	}
 
@@ -147,7 +151,7 @@ func Reload() (int, error) {
 	return numberOfItems, nil
 }
 
-func persistTree(key string, tree model.Tree, file *os.File) {
+func persistTree(key string, tree model.Tree, file *os.File) error {
 	values := tree.GetAll()
 
 	length := len(values)
@@ -156,39 +160,41 @@ func persistTree(key string, tree model.Tree, file *os.File) {
 
 	err := binary.Write(writer, binary.LittleEndian, byte(len(key)))
 	if err != nil {
-		panic(err)
+		return err
 	}
 
 	err = binary.Write(writer, binary.LittleEndian, []byte(key))
 	if err != nil {
-		panic(err)
+		return err
 	}
 
 	err = binary.Write(writer, binary.LittleEndian, byte(len(tree.GetType())))
 	if err != nil {
-		panic(err)
+		return err
 	}
 
 	err = binary.Write(writer, binary.LittleEndian, []byte(tree.GetType()))
 	if err != nil {
-		panic(err)
+		return err
 	}
 
 	err = binary.Write(writer, binary.LittleEndian, int64(length))
 	if err != nil {
-		panic(err)
+		return err
 	}
 
 	for _, value := range values {
 		err = binary.Write(writer, binary.LittleEndian, value)
 		if err != nil {
-			panic(err)
+			return err
 		}
 	}
 
 	err = writer.Flush()
 
 	if err != nil {
-		panic(err)
+		return err
 	}
+
+	return nil
 }
