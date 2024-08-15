@@ -101,6 +101,8 @@ func Replay() (int, error) {
 
 			continue
 		}
+
+		numberOfReplayedCommands++
 	}
 
 	end := time.Now().UnixMilli()
