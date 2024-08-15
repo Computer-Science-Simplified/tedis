@@ -14,6 +14,6 @@ func main() {
 
 		value := int64(r.Intn(1000000) + 1)
 
-		aol.Write("bstadd", "a", []int64{value, 2})
+		aol.Append("bstadd", "a", []int64{value, 2})
 	}
 }

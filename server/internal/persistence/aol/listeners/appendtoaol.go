@@ -11,7 +11,7 @@ func AppendToAol(data map[string]any) error {
 	key, _ := data["key"].(string)
 	args, _ := data["args"].([]int64)
 
-	err := aol.Write(command, key, args)
+	err := aol.Append(command, key, args)
 
 	if err != nil {
 		// Add the command to a dead letter queue and retry it later

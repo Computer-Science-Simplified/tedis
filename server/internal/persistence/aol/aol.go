@@ -14,7 +14,7 @@ import (
 
 const fileName = "resources/aol.log"
 
-func Write(command string, key string, args []int64) error {
+func Append(command string, key string, args []int64) error {
 	file, err := os.OpenFile(fileName, os.O_APPEND|os.O_CREATE|os.O_WRONLY, 0644)
 
 	if err != nil {
