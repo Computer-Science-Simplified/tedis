@@ -6,9 +6,9 @@ import (
 	"strings"
 )
 
-func Create(name string, key string, args []int64) (Command, error) {
+func Create(name string, key string, args []int64) (*Command, error) {
 	if strings.HasPrefix(name, "BST") {
-		return Command{
+		return &Command{
 			Name: name,
 			Key:  key,
 			Args: args,
@@ -16,5 +16,5 @@ func Create(name string, key string, args []int64) (Command, error) {
 		}, nil
 	}
 
-	return Command{}, fmt.Errorf("command not found %s", name)
+	return nil, fmt.Errorf("command not found %s", name)
 }

@@ -8,13 +8,13 @@ import (
 	"strings"
 )
 
-func Parse(line string) (Command, error) {
+func Parse(line string) (*Command, error) {
 	trimmedCommand := strings.TrimRight(line, "\n")
 
 	parts := strings.Split(trimmedCommand, " ")
 
 	if len(parts) < 2 {
-		return Command{}, errors.New("command and key are required")
+		return nil, errors.New("command and key are required")
 	}
 
 	name := strings.ToUpper(parts[0])
@@ -26,19 +26,19 @@ func Parse(line string) (Command, error) {
 	args := parts[2:]
 
 	if name == enum.BSTADD && len(args) != 1 {
-		return Command{}, fmt.Errorf("%s requires exactly 1 argument but %d given", enum.BSTADD, len(args))
+		return nil, fmt.Errorf("%s requires exactly 1 argument but %d given", enum.BSTADD, len(args))
 	}
 
 	if name == enum.BSTEXISTS && len(args) != 1 {
-		return Command{}, fmt.Errorf("%s requires exactly 1 argument but %d given", enum.BSTEXISTS, len(args))
+		return nil, fmt.Errorf("%s requires exactly 1 argument but %d given", enum.BSTEXISTS, len(args))
 	}
 
 	if name == enum.BSTGETALL && len(args) != 0 {
-		return Command{}, fmt.Errorf("%s requires exactly 0 argument but %d given", enum.BSTGETALL, len(args))
+		return nil, fmt.Errorf("%s requires exactly 0 argument but %d given", enum.BSTGETALL, len(args))
 	}
 
 	if name == enum.BSTREM && len(args) != 1 {
-		return Command{}, fmt.Errorf("%s requires exactly 1 argument but %d given", enum.BSTREM, len(args))
+		return nil, fmt.Errorf("%s requires exactly 1 argument but %d given", enum.BSTREM, len(args))
 	}
 
 	formattedArgs := make([]int64, 0)
@@ -56,7 +56,7 @@ func Parse(line string) (Command, error) {
 	cmd, err := Create(name, key, formattedArgs)
 
 	if err != nil {
-		return Command{}, err
+		return nil, err
 	}
 
 	return cmd, nil

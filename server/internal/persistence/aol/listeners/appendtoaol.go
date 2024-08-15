@@ -8,7 +8,7 @@ import (
 )
 
 func AppendToAol(cmd *command.Command) error {
-	err := aol.Append(cmd.Name, cmd.Key, cmd.Args)
+	err := aol.Append(cmd)
 
 	if err != nil {
 		// Add the command to a dead letter queue and retry it later

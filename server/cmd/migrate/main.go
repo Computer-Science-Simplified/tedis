@@ -2,6 +2,7 @@ package main
 
 import (
 	"fmt"
+	"github.com/Computer-Science-Simplified/tedis/server/internal/command"
 	"github.com/Computer-Science-Simplified/tedis/server/internal/persistence/aol"
 	"math/rand"
 	"time"
@@ -15,7 +16,12 @@ func main() {
 
 		value := int64(r.Intn(1000000) + 1)
 
-		err := aol.Append("bstadd", "a", []int64{value})
+		cmd, err := command.Create("bstadd", "a", []int64{value})
+		if err != nil {
+			fmt.Println("could not create command")
+		}
+
+		err = aol.Append(cmd)
 		if err != nil {
 			fmt.Println("could not run command")
 		}
