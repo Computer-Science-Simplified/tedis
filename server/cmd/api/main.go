@@ -9,9 +9,8 @@ import (
 	"github.com/Computer-Science-Simplified/tedis/server/internal/persistence/rdb"
 	"github.com/Computer-Science-Simplified/tedis/server/internal/store"
 	storelistener "github.com/Computer-Science-Simplified/tedis/server/internal/store/listeners"
-	"os"
-
 	"net"
+	"os"
 
 	"github.com/gookit/event"
 )
@@ -50,6 +49,13 @@ func main() {
 
 	fmt.Println("Tedis is listening on port 2222")
 	fmt.Println("Ready to accept connections")
+
+	go func() {
+		err := rdb.PersistPeriodically()
+		if err != nil {
+			fmt.Println(fmt.Errorf("unable to persist RDB: %s", err.Error()))
+		}
+	}()
 
 	for {
 		conn, err := listener.Accept()
@@ -123,10 +129,12 @@ func addEventListeners(lru *store.LRU) {
 		}
 
 		if rdb.ShouldPersist() {
-			err := rdb.Persist()
-			if err != nil {
-				fmt.Println(fmt.Errorf("could not persist to RDB: %s", err.Error()))
-			}
+			go func() {
+				err := rdb.Persist()
+				if err != nil {
+					fmt.Println(fmt.Errorf("could not persist to RDB: %s", err.Error()))
+				}
+			}()
 		}
 
 		storelistener.EvictOldKeys(cmd.Key, lru)
