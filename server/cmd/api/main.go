@@ -111,7 +111,7 @@ func handleConnection(conn net.Conn) {
 
 func addEventListeners(lru *store.LRU) {
 	event.On(enum.WriteCommandExecuted, event.ListenerFunc(func(e event.Event) error {
-		store.CurrentUnsavedWriteCommands++
+		rdb.CurrentUnsavedWriteCommands++
 
 		data := e.Data()
 		cmd, _ := data["command"].(*command.Command)
@@ -120,6 +120,13 @@ func addEventListeners(lru *store.LRU) {
 
 		if err != nil {
 			fmt.Println(fmt.Errorf("could not append to AOL: %s", err.Error()))
+		}
+
+		if rdb.ShouldPersist() {
+			err := rdb.Persist()
+			if err != nil {
+				fmt.Println(fmt.Errorf("could not persist to RDB: %s", err.Error()))
+			}
 		}
 
 		storelistener.EvictOldKeys(cmd.Key, lru)
@@ -162,6 +169,6 @@ func restoreDatabase() {
 			fmt.Println(fmt.Errorf("could not reload RDB: %s", err.Error()))
 		}
 
-		fmt.Printf("Reloaded %d items\n", count)
+		fmt.Printf("Reloaded %d keys\n", count)
 	}
 }

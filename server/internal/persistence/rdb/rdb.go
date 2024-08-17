@@ -15,6 +15,13 @@ import (
 
 const fileName = "resources/rdb.bin"
 
+var CurrentUnsavedWriteCommands = 0
+var MaxUnsavedWriteCommands = 3
+
+func ShouldPersist() bool {
+	return CurrentUnsavedWriteCommands%MaxUnsavedWriteCommands == 0
+}
+
 func Persist() error {
 	fmt.Println("RDB persisting to disk")
 
@@ -45,6 +52,8 @@ func Persist() error {
 		return err
 	}
 
+	CurrentUnsavedWriteCommands = 0
+
 	return nil
 }
 
@@ -55,7 +64,7 @@ func Reload() (int, error) {
 		return 0, errors.New("couldn't read RDB")
 	}
 
-	numberOfItems := 0
+	numberOfKeys := 0
 
 	for {
 		var keyLength byte
@@ -67,7 +76,7 @@ func Reload() (int, error) {
 				break
 			}
 
-			return numberOfItems, errors.New("rdb cannot be loaded. skipping reload")
+			return numberOfKeys, errors.New("rdb cannot be loaded. skipping reload")
 		}
 
 		var keyName string
@@ -76,7 +85,7 @@ func Reload() (int, error) {
 			err = binary.Read(file, binary.LittleEndian, &c)
 
 			if err != nil {
-				return numberOfItems, errors.New("rdb cannot be loaded. skipping reload")
+				return numberOfKeys, errors.New("rdb cannot be loaded. skipping reload")
 			}
 
 			keyName += string(c)
@@ -87,7 +96,7 @@ func Reload() (int, error) {
 		err = binary.Read(file, binary.LittleEndian, &treeTypeLength)
 
 		if err != nil {
-			return numberOfItems, errors.New("rdb cannot be loaded. skipping reload")
+			return numberOfKeys, errors.New("rdb cannot be loaded. skipping reload")
 		}
 
 		var treeType string
@@ -96,7 +105,7 @@ func Reload() (int, error) {
 			err = binary.Read(file, binary.LittleEndian, &c)
 
 			if err != nil {
-				return numberOfItems, errors.New("rdb cannot be loaded. skipping reload")
+				return numberOfKeys, errors.New("rdb cannot be loaded. skipping reload")
 			}
 
 			treeType += string(c)
@@ -107,7 +116,7 @@ func Reload() (int, error) {
 		err = binary.Read(file, binary.LittleEndian, &valuesLength)
 
 		if err != nil {
-			return numberOfItems, errors.New("rdb cannot be loaded. skipping reload")
+			return numberOfKeys, errors.New("rdb cannot be loaded. skipping reload")
 		}
 
 		var values []int64
@@ -117,7 +126,7 @@ func Reload() (int, error) {
 			err = binary.Read(file, binary.LittleEndian, &value)
 
 			if err != nil {
-				return numberOfItems, errors.New("rdb cannot be loaded. skipping replay")
+				return numberOfKeys, errors.New("rdb cannot be loaded. skipping replay")
 			}
 
 			values = append(values, value)
@@ -134,21 +143,19 @@ func Reload() (int, error) {
 			_, err := cmd.Execute(false)
 
 			if err != nil {
-				return numberOfItems, err
+				return numberOfKeys, err
 			}
-
-			numberOfItems++
 		}
-	}
 
-	fmt.Printf("Reloaded %d values\n", numberOfItems)
+		numberOfKeys++
+	}
 
 	err = file.Close()
 	if err != nil {
-		return numberOfItems, err
+		return numberOfKeys, err
 	}
 
-	return numberOfItems, nil
+	return numberOfKeys, nil
 }
 
 func persistTree(key string, tree model.Tree, file *os.File) error {

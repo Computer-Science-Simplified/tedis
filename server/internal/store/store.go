@@ -7,9 +7,6 @@ import (
 
 var store = make(map[string]model.Tree)
 
-var CurrentUnsavedWriteCommands = 0
-var MaxUnsavedWriteCommands = 3
-
 var maxCapacity = 5
 
 func Get(key string) (model.Tree, bool) {
@@ -55,8 +52,4 @@ func Evict(lru *LRU) {
 
 		fmt.Printf("Evicted %d keys\n", numberOfEvictedKeys)
 	}
-}
-
-func ShouldPersist() bool {
-	return CurrentUnsavedWriteCommands%MaxUnsavedWriteCommands == 0
 }
