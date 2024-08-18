@@ -22,6 +22,8 @@ func (c *Command) Execute(shouldReport bool) (string, error) {
 		return "", err
 	}
 
+	var result string
+
 	switch c.Name {
 	case enum.BSTADD:
 		t.Add(c.Args[0])
@@ -32,15 +34,15 @@ func (c *Command) Execute(shouldReport bool) (string, error) {
 			})
 		}
 
-		return "ok", nil
+		result = "ok"
 
 	case enum.BSTEXISTS:
 		exists := t.Exists(c.Args[0])
-		return strconv.FormatBool(exists), nil
+		result = strconv.FormatBool(exists)
 
 	case enum.BSTGETALL:
 		values := t.GetAll()
-		return fmt.Sprintf("%v", values), nil
+		result = fmt.Sprintf("%v", values)
 
 	case enum.BSTREM:
 		t.Remove(c.Args[0])
@@ -51,10 +53,17 @@ func (c *Command) Execute(shouldReport bool) (string, error) {
 			})
 		}
 
-		return "ok", nil
+		result = "ok"
 	default:
-		return "", fmt.Errorf("command not found: %s", c.Name)
+		result = ""
+		err = fmt.Errorf("command not found: %s", c.Name)
 	}
+
+	event.MustFire(enum.CommandExecuted, event.M{
+		"command": c,
+	})
+
+	return result, err
 }
 
 func (c *Command) String() string {

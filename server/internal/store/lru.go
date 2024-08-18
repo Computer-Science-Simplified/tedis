@@ -67,6 +67,12 @@ func (lru *LRU) Remove(key string) {
 	}
 }
 
+func (lru *LRU) Exists(key string) bool {
+	_, ok := lru.Map[key]
+
+	return ok
+}
+
 func (lru *LRU) update(key string) {
 	idx := -1
 

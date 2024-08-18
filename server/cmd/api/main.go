@@ -20,10 +20,7 @@ func main() {
 
 	restoreDatabase()
 
-	capacity := store.Len()
-	if capacity == 0 {
-		capacity = 10
-	}
+	capacity := store.MaxCapacity
 
 	lru := store.NewLRU(capacity)
 
@@ -138,6 +135,20 @@ func addEventListeners(lru *store.LRU) {
 		}
 
 		storelistener.EvictOldKeys(cmd.Key, lru)
+
+		return nil
+	}))
+
+	event.On(enum.CommandExecuted, event.ListenerFunc(func(e event.Event) error {
+		data := e.Data()
+		cmd, _ := data["command"].(*command.Command)
+
+		err := storelistener.PutLRUItem(lru, cmd.Key)
+		if err != nil {
+			fmt.Println(fmt.Errorf("unable to access LRU: %s", err))
+		}
+
+		fmt.Println(lru.Items)
 
 		return nil
 	}))

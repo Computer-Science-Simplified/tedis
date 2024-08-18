@@ -7,7 +7,7 @@ import (
 
 var store = make(map[string]model.Tree)
 
-var maxCapacity = 5
+var MaxCapacity = 5
 
 func Get(key string) (model.Tree, bool) {
 	item, ok := store[key]
@@ -34,10 +34,10 @@ func Keys() []string {
 }
 
 func Evict(lru *LRU) {
-	if len(store) > maxCapacity {
+	if len(store) > MaxCapacity {
 		fmt.Println("Store capacity exceeded. Evicting LRU keys...")
 
-		evictionTargets := lru.GetLeastRecentlyUsed(len(store) - maxCapacity)
+		evictionTargets := lru.GetLeastRecentlyUsed(len(store) - MaxCapacity)
 
 		numberOfEvictedKeys := 0
 
