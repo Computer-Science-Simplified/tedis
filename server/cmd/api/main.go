@@ -20,9 +20,7 @@ func main() {
 
 	restoreDatabase()
 
-	capacity := store.MaxCapacity
-
-	lru := store.NewLRU(capacity)
+	lru := store.NewLRU()
 
 	for _, key := range store.Keys() {
 		lru.Put(key)

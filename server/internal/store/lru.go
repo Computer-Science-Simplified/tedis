@@ -10,11 +10,11 @@ type LRU struct {
 	Capacity int
 }
 
-func NewLRU(capacity int) *LRU {
+func NewLRU() *LRU {
 	return &LRU{
-		Capacity: capacity,
-		Map:      make(map[string]string, capacity),
-		Items:    make([]string, capacity),
+		Capacity: MaxCapacity,
+		Map:      make(map[string]string, MaxCapacity),
+		Items:    make([]string, MaxCapacity),
 	}
 }
 
