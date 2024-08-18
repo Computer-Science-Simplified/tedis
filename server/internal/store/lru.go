@@ -33,15 +33,15 @@ func (lru *LRU) Put(key string) {
 }
 
 func (lru *LRU) Get(key string) (string, error) {
-	_, exists := lru.Map[key]
+	res, ok := lru.Map[key]
 
-	if !exists {
+	if !ok {
 		return "", errors.New("key does not exist")
 	}
 
 	lru.update(key)
 
-	return lru.Map[key], nil
+	return res, nil
 }
 
 func (lru *LRU) Count() int {
