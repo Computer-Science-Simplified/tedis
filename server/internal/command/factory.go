@@ -19,13 +19,13 @@ func Create(name string, key string, args []int64) (Command, error) {
 
 		switch name {
 		case enum.BSTADD:
-			return bst.BSTAdd{BaseCommand: types.BaseCommand{Params: cp}}, nil
+			return bst.NewBSTAdd(cp), nil
 		case enum.BSTGETALL:
-			return bst.BSTGetAll{BaseCommand: types.BaseCommand{Params: cp}}, nil
+			return bst.NewBSTGetAll(cp), nil
 		case enum.BSTREM:
-			return bst.BSTRem{BaseCommand: types.BaseCommand{Params: cp}}, nil
+			return bst.NewBSTRem(cp), nil
 		case enum.BSTEXISTS:
-			return bst.BSTExists{BaseCommand: types.BaseCommand{Params: cp}}, nil
+			return bst.NewBSTExists(cp), nil
 		}
 	}
 

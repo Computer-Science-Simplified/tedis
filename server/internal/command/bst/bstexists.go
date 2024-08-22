@@ -10,6 +10,10 @@ type BSTExists struct {
 	types.BaseCommand
 }
 
+func NewBSTExists(params types.CommandParams) *BSTExists {
+	return &BSTExists{BaseCommand: types.BaseCommand{Params: params}}
+}
+
 func (b BSTExists) Execute(shouldReport bool) (string, error) {
 	t, err := tree.Create(b.Params.Key, b.Params.Type)
 

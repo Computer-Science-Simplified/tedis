@@ -10,6 +10,10 @@ type BSTGetAll struct {
 	types.BaseCommand
 }
 
+func NewBSTGetAll(params types.CommandParams) *BSTGetAll {
+	return &BSTGetAll{BaseCommand: types.BaseCommand{Params: params}}
+}
+
 func (b BSTGetAll) Execute(shouldReport bool) (string, error) {
 	t, err := tree.Create(b.Params.Key, b.Params.Type)
 

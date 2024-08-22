@@ -11,6 +11,10 @@ type BSTAdd struct {
 	types.BaseCommand
 }
 
+func NewBSTAdd(params types.CommandParams) *BSTAdd {
+	return &BSTAdd{BaseCommand: types.BaseCommand{Params: params}}
+}
+
 func (b BSTAdd) Execute(shouldReport bool) (string, error) {
 	t, err := tree.Create(b.Params.Key, b.Params.Type)
 
