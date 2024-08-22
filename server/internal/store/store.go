@@ -34,22 +34,24 @@ func Keys() []string {
 }
 
 func Evict(lru *LRU) {
-	if len(store) > MaxCapacity {
-		fmt.Println("Store capacity exceeded. Evicting LRU keys...")
-
-		evictionTargets := lru.GetLeastRecentlyUsed(len(store) - MaxCapacity)
-
-		numberOfEvictedKeys := 0
-
-		fmt.Printf("Eviction targets: %v\n", evictionTargets)
-
-		for _, evictionTarget := range evictionTargets {
-			delete(store, evictionTarget)
-			lru.Remove(evictionTarget)
-
-			numberOfEvictedKeys++
-		}
-
-		fmt.Printf("Evicted %d keys\n", numberOfEvictedKeys)
+	if len(store) <= MaxCapacity {
+		return
 	}
+
+	fmt.Println("Store capacity exceeded. Evicting LRU keys...")
+
+	evictionTargets := lru.GetLeastRecentlyUsed(len(store) - MaxCapacity)
+
+	numberOfEvictedKeys := 0
+
+	fmt.Printf("Eviction targets: %v\n", evictionTargets)
+
+	for _, evictionTarget := range evictionTargets {
+		delete(store, evictionTarget)
+		lru.Remove(evictionTarget)
+
+		numberOfEvictedKeys++
+	}
+
+	fmt.Printf("Evicted %d keys\n", numberOfEvictedKeys)
 }

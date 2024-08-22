@@ -5,7 +5,7 @@ import (
 	"github.com/Computer-Science-Simplified/tedis/server/internal/persistence/aol"
 )
 
-func AppendToAol(cmd *command.Command) error {
+func AppendToAol(cmd command.Command) error {
 	err := aol.Append(cmd)
 
 	if err != nil {

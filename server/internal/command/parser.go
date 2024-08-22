@@ -8,7 +8,7 @@ import (
 	"strings"
 )
 
-func Parse(line string) (*Command, error) {
+func Parse(line string) (Command, error) {
 	trimmedCommand := strings.TrimRight(line, "\n")
 
 	parts := strings.Split(trimmedCommand, " ")

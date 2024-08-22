@@ -9,6 +9,7 @@ import (
 	"github.com/Computer-Science-Simplified/tedis/server/internal/persistence/rdb"
 	"github.com/Computer-Science-Simplified/tedis/server/internal/store"
 	storelistener "github.com/Computer-Science-Simplified/tedis/server/internal/store/listeners"
+	"github.com/Computer-Science-Simplified/tedis/server/internal/types"
 	"net"
 	"os"
 
@@ -115,7 +116,7 @@ func addEventListeners(lru *store.LRU) {
 		rdb.CurrentUnsavedWriteCommands++
 
 		data := e.Data()
-		cmd, _ := data["command"].(*command.Command)
+		cmd, _ := data["command"].(command.Command)
 
 		err := persistencelistener.AppendToAol(cmd)
 
@@ -132,14 +133,14 @@ func addEventListeners(lru *store.LRU) {
 			}()
 		}
 
-		storelistener.EvictOldKeys(cmd.Key, lru)
+		storelistener.EvictOldKeys(cmd.GetParams().Key, lru)
 
 		return nil
 	}))
 
 	event.On(enum.CommandExecuted, event.ListenerFunc(func(e event.Event) error {
 		data := e.Data()
-		cmd, _ := data["command"].(*command.Command)
+		cmd, _ := data["command"].(*types.CommandParams)
 
 		err := storelistener.PutLRUItem(lru, cmd.Key)
 		if err != nil {

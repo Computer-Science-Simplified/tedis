@@ -12,7 +12,7 @@ import (
 
 const fileName = "resources/aol.log"
 
-func Append(cmd *command.Command) error {
+func Append(cmd command.Command) error {
 	file, err := os.OpenFile(fileName, os.O_APPEND|os.O_CREATE|os.O_WRONLY, 0644)
 
 	if err != nil {
@@ -29,7 +29,7 @@ func Append(cmd *command.Command) error {
 	writer := bufio.NewWriter(file)
 
 	_, err = writer.WriteString(
-		fmt.Sprintf("%s;%s;%s\n", cmd.Name, cmd.Key, convertArgs(cmd.Args)),
+		fmt.Sprintf("%s;%s;%s\n", cmd.GetParams().Name, cmd.GetParams().Key, convertArgs(cmd.GetParams().Args)),
 	)
 
 	if err != nil {
@@ -44,13 +44,13 @@ func Append(cmd *command.Command) error {
 	return nil
 }
 
-func Read() ([]*command.Command, error) {
-	var cmds []*command.Command
+func Read() ([]command.Command, error) {
+	var cmds []command.Command
 
 	file, err := os.Open(fileName)
 
 	if err != nil {
-		return []*command.Command{}, err
+		return []command.Command{}, err
 	}
 
 	defer func(file *os.File) {
@@ -70,7 +70,7 @@ func Read() ([]*command.Command, error) {
 
 		cmd, err := command.Create(strings.ToUpper(parts[0]), parts[1], args)
 		if err != nil {
-			return []*command.Command{}, err
+			return []command.Command{}, err
 		}
 
 		cmds = append(cmds, cmd)

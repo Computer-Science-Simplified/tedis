@@ -5,7 +5,6 @@ import (
 	"encoding/binary"
 	"errors"
 	"fmt"
-	"github.com/Computer-Science-Simplified/tedis/server/internal/command"
 	"github.com/Computer-Science-Simplified/tedis/server/internal/enum"
 	"github.com/Computer-Science-Simplified/tedis/server/internal/model"
 	"github.com/Computer-Science-Simplified/tedis/server/internal/store"
@@ -133,18 +132,19 @@ func Reload() (int, error) {
 		}
 
 		for _, value := range values {
-			cmd := command.Command{
-				Key:  keyName,
-				Name: enum.BSTADD,
-				Args: []int64{value},
-				Type: enum.BinarySearchTree,
-			}
+			fmt.Println(value)
+			//cmd := types.CommandParams{
+			//	Key:  keyName,
+			//	Name: enum.BSTADD,
+			//	Args: []int64{value},
+			//	Type: enum.BinarySearchTree,
+			//}
 
-			_, err := cmd.Execute(false)
+			//_, err := cmd.Execute(false)
 
-			if err != nil {
-				return numberOfKeys, err
-			}
+			//if err != nil {
+			//	return numberOfKeys, err
+			//}
 		}
 
 		numberOfKeys++
