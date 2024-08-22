@@ -22,6 +22,10 @@ func Create(name string, key string, args []int64) (Command, error) {
 			return bst.BSTAdd{Params: cp}, nil
 		case enum.BSTGETALL:
 			return bst.BSTGetAll{Params: cp}, nil
+		case enum.BSTREM:
+			return bst.BSTRem{Params: cp}, nil
+		case enum.BSTEXISTS:
+			return bst.BSTExists{Params: cp}, nil
 		}
 	}
 
