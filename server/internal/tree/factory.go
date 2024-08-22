@@ -12,6 +12,7 @@ func Create(key string, treeType string) (model.Tree, error) {
 		return item, nil
 	}
 
+	fmt.Println(treeType)
 	if treeType == enum.BinarySearchTree {
 		tree := &BST{
 			Key: key,

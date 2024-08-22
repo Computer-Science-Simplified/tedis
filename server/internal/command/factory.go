@@ -10,7 +10,7 @@ import (
 
 func Create(name string, key string, args []int64) (Command, error) {
 	if strings.HasPrefix(name, "BST") {
-		cp := types.CommandParams{
+		cp := &types.CommandParams{
 			Name: name,
 			Key:  key,
 			Args: args,

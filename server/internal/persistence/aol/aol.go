@@ -93,6 +93,8 @@ func Replay() (int, error) {
 	for _, cmd := range cmds {
 		_, err := cmd.Execute(false)
 
+		fmt.Println(err)
+
 		if err != nil {
 			fmt.Printf(
 				"unable to create tree from command: %s\n",

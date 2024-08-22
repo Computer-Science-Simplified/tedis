@@ -11,11 +11,16 @@ type BSTRem struct {
 	types.BaseCommand
 }
 
-func NewBSTRem(params types.CommandParams) *BSTRem {
-	return &BSTRem{BaseCommand: types.BaseCommand{Params: params}}
+func NewBSTRem(params *types.CommandParams) *BSTRem {
+	bst := &BSTRem{}
+
+	bst.DoExecuteFunc = bst.doExecute
+	bst.Params = params
+
+	return bst
 }
 
-func (b BSTRem) Execute(shouldReport bool) (string, error) {
+func (b *BSTRem) doExecute(shouldReport bool) (string, error) {
 	t, err := tree.Create(b.Params.Key, b.Params.Type)
 
 	if err != nil {
