@@ -7,7 +7,7 @@ import (
 )
 
 type BSTGetAll struct {
-	Params *types.CommandParams
+	types.BaseCommand
 }
 
 func (b BSTGetAll) Execute(shouldReport bool) (string, error) {
@@ -20,12 +20,4 @@ func (b BSTGetAll) Execute(shouldReport bool) (string, error) {
 	values := t.GetAll()
 
 	return fmt.Sprintf("%v", values), nil
-}
-
-func (b BSTGetAll) String() string {
-	return fmt.Sprintf("[%s] %s %s %v", b.Params.Type, b.Params.Name, b.Params.Key, b.Params.Args)
-}
-
-func (b BSTGetAll) GetParams() *types.CommandParams {
-	return b.Params
 }

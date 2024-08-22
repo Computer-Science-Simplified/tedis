@@ -10,7 +10,7 @@ import (
 
 func Create(name string, key string, args []int64) (Command, error) {
 	if strings.HasPrefix(name, "BST") {
-		cp := &types.CommandParams{
+		cp := types.CommandParams{
 			Name: name,
 			Key:  key,
 			Args: args,
@@ -19,13 +19,13 @@ func Create(name string, key string, args []int64) (Command, error) {
 
 		switch name {
 		case enum.BSTADD:
-			return bst.BSTAdd{Params: cp}, nil
+			return bst.BSTAdd{BaseCommand: types.BaseCommand{Params: cp}}, nil
 		case enum.BSTGETALL:
-			return bst.BSTGetAll{Params: cp}, nil
+			return bst.BSTGetAll{BaseCommand: types.BaseCommand{Params: cp}}, nil
 		case enum.BSTREM:
-			return bst.BSTRem{Params: cp}, nil
+			return bst.BSTRem{BaseCommand: types.BaseCommand{Params: cp}}, nil
 		case enum.BSTEXISTS:
-			return bst.BSTExists{Params: cp}, nil
+			return bst.BSTExists{BaseCommand: types.BaseCommand{Params: cp}}, nil
 		}
 	}
 

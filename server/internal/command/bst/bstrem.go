@@ -1,7 +1,6 @@
 package bst
 
 import (
-	"fmt"
 	"github.com/Computer-Science-Simplified/tedis/server/internal/enum"
 	"github.com/Computer-Science-Simplified/tedis/server/internal/tree"
 	"github.com/Computer-Science-Simplified/tedis/server/internal/types"
@@ -9,7 +8,7 @@ import (
 )
 
 type BSTRem struct {
-	Params *types.CommandParams
+	types.BaseCommand
 }
 
 func (b BSTRem) Execute(shouldReport bool) (string, error) {
@@ -28,12 +27,4 @@ func (b BSTRem) Execute(shouldReport bool) (string, error) {
 	}
 
 	return "ok", nil
-}
-
-func (b BSTRem) String() string {
-	return fmt.Sprintf("[%s] %s %s %v", b.Params.Type, b.Params.Name, b.Params.Key, b.Params.Args)
-}
-
-func (b BSTRem) GetParams() *types.CommandParams {
-	return b.Params
 }

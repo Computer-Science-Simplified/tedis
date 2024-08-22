@@ -1,14 +1,13 @@
 package bst
 
 import (
-	"fmt"
 	"github.com/Computer-Science-Simplified/tedis/server/internal/tree"
 	"github.com/Computer-Science-Simplified/tedis/server/internal/types"
 	"strconv"
 )
 
 type BSTExists struct {
-	Params *types.CommandParams
+	types.BaseCommand
 }
 
 func (b BSTExists) Execute(shouldReport bool) (string, error) {
@@ -21,12 +20,4 @@ func (b BSTExists) Execute(shouldReport bool) (string, error) {
 	exists := t.Exists(b.Params.Args[0])
 
 	return strconv.FormatBool(exists), nil
-}
-
-func (b BSTExists) String() string {
-	return fmt.Sprintf("[%s] %s %s %v", b.Params.Type, b.Params.Name, b.Params.Key, b.Params.Args)
-}
-
-func (b BSTExists) GetParams() *types.CommandParams {
-	return b.Params
 }
