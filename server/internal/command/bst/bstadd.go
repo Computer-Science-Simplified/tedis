@@ -20,7 +20,7 @@ func NewBSTAdd(params *types.CommandParams) *BSTAdd {
 	return bst
 }
 
-func (b *BSTAdd) doExecute(shouldReport bool) (string, error) {
+func (b *BSTAdd) doExecute() (string, error) {
 	t, err := tree.Create(b.Params.Key, b.Params.Type)
 
 	if err != nil {

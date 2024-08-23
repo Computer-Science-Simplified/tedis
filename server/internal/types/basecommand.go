@@ -12,14 +12,14 @@ type BaseCommand struct {
 	DoExecuteFunc ExecuteFunc
 }
 
-func (b BaseCommand) Execute(shouldReport bool) (string, error) {
-	res, err := b.DoExecuteFunc(shouldReport)
+func (b BaseCommand) Execute(shouldFireEvent bool) (string, error) {
+	res, err := b.DoExecuteFunc()
 
 	if err != nil {
 		return "", err
 	}
 
-	if b.AccessType == enum.WRITE && shouldReport {
+	if b.AccessType == enum.WRITE && shouldFireEvent {
 		event.MustFire(enum.WriteCommandExecuted, event.M{
 			"command": b,
 		})

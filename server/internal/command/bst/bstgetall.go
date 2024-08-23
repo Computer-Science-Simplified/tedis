@@ -21,7 +21,7 @@ func NewBSTGetAll(params *types.CommandParams) *BSTGetAll {
 	return bst
 }
 
-func (b *BSTGetAll) doExecute(shouldReport bool) (string, error) {
+func (b *BSTGetAll) doExecute() (string, error) {
 	t, err := tree.Create(b.Params.Key, b.Params.Type)
 
 	if err != nil {

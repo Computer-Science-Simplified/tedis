@@ -21,7 +21,7 @@ func NewBSTExists(params *types.CommandParams) *BSTExists {
 	return bst
 }
 
-func (b *BSTExists) doExecute(shouldReport bool) (string, error) {
+func (b *BSTExists) doExecute() (string, error) {
 	t, err := tree.Create(b.Params.Key, b.Params.Type)
 
 	if err != nil {
