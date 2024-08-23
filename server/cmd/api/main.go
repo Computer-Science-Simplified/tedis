@@ -9,7 +9,6 @@ import (
 	"github.com/Computer-Science-Simplified/tedis/server/internal/persistence/rdb"
 	"github.com/Computer-Science-Simplified/tedis/server/internal/store"
 	storelistener "github.com/Computer-Science-Simplified/tedis/server/internal/store/listeners"
-	"github.com/Computer-Science-Simplified/tedis/server/internal/types"
 	"net"
 	"os"
 
@@ -140,9 +139,9 @@ func addEventListeners(lru *store.LRU) {
 
 	event.On(enum.CommandExecuted, event.ListenerFunc(func(e event.Event) error {
 		data := e.Data()
-		cmd, _ := data["command"].(*types.CommandParams)
+		cmd, _ := data["command"].(command.Command)
 
-		err := storelistener.PutLRUItem(lru, cmd.Key)
+		err := storelistener.PutLRUItem(lru, cmd.GetParams().Key)
 		if err != nil {
 			fmt.Println(fmt.Errorf("unable to access LRU: %s", err))
 		}

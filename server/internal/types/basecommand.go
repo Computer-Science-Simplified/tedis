@@ -1,6 +1,10 @@
 package types
 
-import "fmt"
+import (
+	"fmt"
+	"github.com/Computer-Science-Simplified/tedis/server/internal/enum"
+	"github.com/gookit/event"
+)
 
 type BaseCommand struct {
 	Params *CommandParams
@@ -11,11 +15,13 @@ type BaseCommand struct {
 func (b BaseCommand) Execute(shouldReport bool) (string, error) {
 	res, err := b.DoExecuteFunc(shouldReport)
 
-	fmt.Println("template method")
-
 	if err != nil {
 		return "", err
 	}
+
+	event.MustFire(enum.CommandExecuted, event.M{
+		"command": b,
+	})
 
 	return res, nil
 }
