@@ -7,8 +7,8 @@ import (
 )
 
 type BaseCommand struct {
-	Params *CommandParams
-
+	Params        *CommandParams
+	AccessType    string
 	DoExecuteFunc ExecuteFunc
 }
 
@@ -17,6 +17,12 @@ func (b BaseCommand) Execute(shouldReport bool) (string, error) {
 
 	if err != nil {
 		return "", err
+	}
+
+	if b.AccessType == enum.WRITE && shouldReport {
+		event.MustFire(enum.WriteCommandExecuted, event.M{
+			"command": b,
+		})
 	}
 
 	event.MustFire(enum.CommandExecuted, event.M{

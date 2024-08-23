@@ -4,7 +4,6 @@ import (
 	"github.com/Computer-Science-Simplified/tedis/server/internal/enum"
 	"github.com/Computer-Science-Simplified/tedis/server/internal/tree"
 	"github.com/Computer-Science-Simplified/tedis/server/internal/types"
-	"github.com/gookit/event"
 )
 
 type BSTRem struct {
@@ -16,6 +15,7 @@ func NewBSTRem(params *types.CommandParams) *BSTRem {
 
 	bst.DoExecuteFunc = bst.doExecute
 	bst.Params = params
+	bst.AccessType = enum.WRITE
 
 	return bst
 }
@@ -28,12 +28,6 @@ func (b *BSTRem) doExecute(shouldReport bool) (string, error) {
 	}
 
 	t.Remove(b.Params.Args[0])
-
-	if shouldReport {
-		event.MustFire(enum.WriteCommandExecuted, event.M{
-			"command": b,
-		})
-	}
 
 	return "ok", nil
 }

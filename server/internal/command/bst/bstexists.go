@@ -1,6 +1,7 @@
 package bst
 
 import (
+	"github.com/Computer-Science-Simplified/tedis/server/internal/enum"
 	"github.com/Computer-Science-Simplified/tedis/server/internal/tree"
 	"github.com/Computer-Science-Simplified/tedis/server/internal/types"
 	"strconv"
@@ -15,6 +16,7 @@ func NewBSTExists(params *types.CommandParams) *BSTExists {
 
 	bst.DoExecuteFunc = bst.doExecute
 	bst.Params = params
+	bst.AccessType = enum.READ
 
 	return bst
 }

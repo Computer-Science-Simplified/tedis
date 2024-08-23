@@ -2,6 +2,7 @@ package bst
 
 import (
 	"fmt"
+	"github.com/Computer-Science-Simplified/tedis/server/internal/enum"
 	"github.com/Computer-Science-Simplified/tedis/server/internal/tree"
 	"github.com/Computer-Science-Simplified/tedis/server/internal/types"
 )
@@ -15,6 +16,7 @@ func NewBSTGetAll(params *types.CommandParams) *BSTGetAll {
 
 	bst.DoExecuteFunc = bst.doExecute
 	bst.Params = params
+	bst.AccessType = enum.READ
 
 	return bst
 }
