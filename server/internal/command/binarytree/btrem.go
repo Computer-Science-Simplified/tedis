@@ -1,7 +1,6 @@
 package binarytree
 
 import (
-	"fmt"
 	"github.com/Computer-Science-Simplified/tedis/server/internal/enum"
 	"github.com/Computer-Science-Simplified/tedis/server/internal/tree"
 	"github.com/Computer-Science-Simplified/tedis/server/internal/types"
@@ -23,9 +22,6 @@ func NewBTRem(params *types.CommandParams) *BTRem {
 
 func (b *BTRem) doExecute() (string, error) {
 	t, err := tree.Create(b.Params.Key, b.Params.Type)
-	fmt.Println(t.GetKey())
-	fmt.Println(t.GetType())
-
 	if err != nil {
 		return "", err
 	}

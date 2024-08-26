@@ -19,8 +19,6 @@ func Parse(line string) (Command, error) {
 
 	name := strings.ToUpper(parts[0])
 
-	fmt.Println(name)
-
 	key := parts[1]
 
 	args := parts[2:]

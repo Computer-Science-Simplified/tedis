@@ -1,7 +1,6 @@
 package tree
 
 import (
-	"fmt"
 	"github.com/Computer-Science-Simplified/tedis/server/internal/enum"
 )
 
@@ -131,13 +130,8 @@ func (tree *BinaryTree) remove(value int64) *BinaryTreeNode {
 
 	queue := []*BinaryTreeNode{tree.Root}
 
-	fmt.Println("queue")
-	fmt.Println(queue)
-
 	for len(queue) > 0 {
 		levelSize := len(queue)
-		fmt.Println("size")
-		fmt.Println(levelSize)
 		for i := 0; i < levelSize; i++ {
 			current := queue[0]
 			queue = queue[1:]
@@ -159,13 +153,6 @@ func (tree *BinaryTree) remove(value int64) *BinaryTreeNode {
 			}
 		}
 	}
-
-	fmt.Println("remove")
-	fmt.Println(nodeToRemove)
-	fmt.Println("last node")
-	fmt.Println(lastNode)
-	fmt.Println("last parent")
-	fmt.Println(lastParent)
 
 	if nodeToRemove == nil {
 		return nil

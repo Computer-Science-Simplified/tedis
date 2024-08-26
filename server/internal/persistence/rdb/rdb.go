@@ -32,7 +32,6 @@ func Persist() error {
 	}
 
 	for _, key := range store.Keys() {
-		fmt.Println(key)
 		tree, ok := store.Get(key)
 
 		if !ok {
