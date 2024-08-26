@@ -33,7 +33,7 @@ func (tree *BinaryTree) Exists(value int64) bool {
 }
 
 func (tree *BinaryTree) Remove(value int64) {
-	fmt.Println("remove")
+	tree.remove(value)
 }
 
 func (tree *BinaryTree) GetAll() []int64 {
@@ -118,4 +118,72 @@ func (tree *BinaryTree) exists(value int64, node *BinaryTreeNode) bool {
 	existsRight := tree.exists(value, node.Right)
 
 	return existsRight
+}
+
+func (tree *BinaryTree) remove(value int64) *BinaryTreeNode {
+	if tree.Root == nil {
+		return nil
+	}
+
+	var nodeToRemove *BinaryTreeNode
+	var lastParent *BinaryTreeNode
+	var lastNode *BinaryTreeNode
+
+	queue := []*BinaryTreeNode{tree.Root}
+
+	fmt.Println("queue")
+	fmt.Println(queue)
+
+	for len(queue) > 0 {
+		levelSize := len(queue)
+		fmt.Println("size")
+		fmt.Println(levelSize)
+		for i := 0; i < levelSize; i++ {
+			current := queue[0]
+			queue = queue[1:]
+
+			if current.Value == value {
+				nodeToRemove = current
+			}
+
+			if current.Left != nil {
+				lastNode = current.Left
+				lastParent = current
+				queue = append(queue, current.Left)
+			}
+
+			if current.Right != nil {
+				lastNode = current.Right
+				lastParent = current
+				queue = append(queue, current.Right)
+			}
+		}
+	}
+
+	fmt.Println("remove")
+	fmt.Println(nodeToRemove)
+	fmt.Println("last node")
+	fmt.Println(lastNode)
+	fmt.Println("last parent")
+	fmt.Println(lastParent)
+
+	if nodeToRemove == nil {
+		return nil
+	}
+
+	// The tree only contains a root node and it was deleted
+	if lastNode == nil || lastParent == nil {
+		tree.Root = nil
+		return nil
+	}
+
+	nodeToRemove.Value = lastNode.Value
+
+	if lastParent.Left == lastNode {
+		lastParent.Left = nil
+	} else {
+		lastParent.Right = nil
+	}
+
+	return nodeToRemove
 }

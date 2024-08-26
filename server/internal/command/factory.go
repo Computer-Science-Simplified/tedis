@@ -45,6 +45,8 @@ func Create(name string, key string, args []int64) (Command, error) {
 			return binarytree.NewBTGetAll(cp), nil
 		case enum.BTEXISTS:
 			return binarytree.NewBTExists(cp), nil
+		case enum.BTREM:
+			return binarytree.NewBTRem(cp), nil
 		}
 	}
 
