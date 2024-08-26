@@ -8,7 +8,9 @@ import (
 )
 
 func Create(key string, treeType string) (model.Tree, error) {
-	if item, ok := store.Get(key); ok {
+	formattedKey := fmt.Sprintf("%s-%s", key, treeType)
+
+	if item, ok := store.Get(formattedKey); ok {
 		return item, nil
 	}
 
@@ -17,7 +19,7 @@ func Create(key string, treeType string) (model.Tree, error) {
 			Key: key,
 		}
 
-		store.Set(key, tree)
+		store.Set(formattedKey, tree)
 
 		return tree, nil
 	}
@@ -27,7 +29,7 @@ func Create(key string, treeType string) (model.Tree, error) {
 			Key: key,
 		}
 
-		store.Set(key, tree)
+		store.Set(formattedKey, tree)
 
 		return tree, nil
 	}
