@@ -12,13 +12,13 @@ type BTGetAll struct {
 }
 
 func NewBTGetAll(params *types.CommandParams) *BTGetAll {
-	bst := &BTGetAll{}
+	cmd := &BTGetAll{}
 
-	bst.DoExecuteFunc = bst.doExecute
-	bst.Params = params
-	bst.AccessType = enum.READ
+	cmd.DoExecuteFunc = cmd.doExecute
+	cmd.Params = params
+	cmd.AccessType = enum.READ
 
-	return bst
+	return cmd
 }
 
 func (b *BTGetAll) doExecute() (string, error) {

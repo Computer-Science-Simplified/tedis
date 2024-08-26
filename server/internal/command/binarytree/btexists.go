@@ -12,13 +12,13 @@ type BTExists struct {
 }
 
 func NewBTExists(params *types.CommandParams) *BTExists {
-	bst := &BTExists{}
+	cmd := &BTExists{}
 
-	bst.DoExecuteFunc = bst.doExecute
-	bst.Params = params
-	bst.AccessType = enum.READ
+	cmd.DoExecuteFunc = cmd.doExecute
+	cmd.Params = params
+	cmd.AccessType = enum.READ
 
-	return bst
+	return cmd
 }
 
 func (b *BTExists) doExecute() (string, error) {

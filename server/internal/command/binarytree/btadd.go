@@ -11,13 +11,13 @@ type BTAdd struct {
 }
 
 func NewBTAdd(params *types.CommandParams) *BTAdd {
-	bst := &BTAdd{}
+	cmd := &BTAdd{}
 
-	bst.DoExecuteFunc = bst.doExecute
-	bst.Params = params
-	bst.AccessType = enum.WRITE
+	cmd.DoExecuteFunc = cmd.doExecute
+	cmd.Params = params
+	cmd.AccessType = enum.WRITE
 
-	return bst
+	return cmd
 }
 
 func (b *BTAdd) doExecute() (string, error) {
