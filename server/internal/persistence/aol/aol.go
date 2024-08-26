@@ -5,14 +5,22 @@ import (
 	"fmt"
 	"github.com/Computer-Science-Simplified/tedis/server/internal/command"
 	"os"
+	"path/filepath"
 	"strconv"
 	"strings"
 	"time"
 )
 
-const fileName = "resources/aol.log"
+const fileName = "./resources/aol.log"
 
 func Append(cmd command.Command) error {
+	dir := filepath.Dir(fileName)
+	err := os.MkdirAll(dir, 0755)
+
+	if err != nil {
+		return err
+	}
+
 	file, err := os.OpenFile(fileName, os.O_APPEND|os.O_CREATE|os.O_WRONLY, 0644)
 
 	if err != nil {

@@ -11,9 +11,10 @@ import (
 	"github.com/Computer-Science-Simplified/tedis/server/internal/store"
 	"io"
 	"os"
+	"path/filepath"
 )
 
-const fileName = "resources/rdb.bin"
+const fileName = "./resources/rdb.bin"
 
 var CurrentUnsavedWriteCommands = 0
 var MaxUnsavedWriteCommands = 3
@@ -24,6 +25,12 @@ func ShouldPersist() bool {
 
 func Persist() error {
 	fmt.Println("RDB persisting to disk")
+	dir := filepath.Dir(fileName)
+	err := os.MkdirAll(dir, 0755)
+
+	if err != nil {
+		return err
+	}
 
 	file, err := os.OpenFile(fileName, os.O_RDWR|os.O_CREATE|os.O_TRUNC, 0644)
 
