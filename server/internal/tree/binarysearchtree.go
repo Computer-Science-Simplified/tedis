@@ -90,15 +90,11 @@ func (tree *BST) exists(value int64, node *BSTNode) bool {
 		return true
 	}
 
-	existsLeft := tree.exists(value, node.Left)
-
-	if existsLeft {
-		return true
+	if value < node.Value {
+		return tree.exists(value, node.Left)
+	} else {
+		return tree.exists(value, node.Right)
 	}
-
-	existsRight := tree.exists(value, node.Right)
-
-	return existsRight
 }
 
 func (tree *BST) remove(value int64, node *BSTNode) *BSTNode {

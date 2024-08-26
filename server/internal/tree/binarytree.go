@@ -29,7 +29,7 @@ func (tree *BinaryTree) Add(value int64) {
 }
 
 func (tree *BinaryTree) Exists(value int64) bool {
-	return true
+	return tree.exists(value, tree.Root)
 }
 
 func (tree *BinaryTree) Remove(value int64) {
@@ -98,4 +98,24 @@ func (tree *BinaryTree) add(value int64, node *BinaryTreeNode) {
 		queue = append(queue, node.Left)
 		queue = append(queue, node.Right)
 	}
+}
+
+func (tree *BinaryTree) exists(value int64, node *BinaryTreeNode) bool {
+	if node == nil {
+		return false
+	}
+
+	if node.Value == value {
+		return true
+	}
+
+	existsLeft := tree.exists(value, node.Left)
+
+	if existsLeft {
+		return true
+	}
+
+	existsRight := tree.exists(value, node.Right)
+
+	return existsRight
 }

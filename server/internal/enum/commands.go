@@ -8,4 +8,5 @@ const (
 
 	BTADD    string = "BTADD"
 	BTGETALL string = "BTGETALL"
+	BTEXISTS string = "BTEXISTS"
 )
