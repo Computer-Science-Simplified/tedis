@@ -86,8 +86,6 @@ func handleConnection(conn net.Conn) {
 
 		commandName := string(buffer[:n])
 
-		fmt.Printf("Received: %s", commandName)
-
 		cmd, err := command.Parse(commandName)
 
 		if err != nil {
@@ -112,7 +110,6 @@ func handleConnection(conn net.Conn) {
 
 func addEventListeners(lru *store.LRU) {
 	event.On(enum.WriteCommandExecuted, event.ListenerFunc(func(e event.Event) error {
-		fmt.Println("---- Write Command Executed----")
 		rdb.CurrentUnsavedWriteCommands++
 
 		data := e.Data()
@@ -139,7 +136,6 @@ func addEventListeners(lru *store.LRU) {
 	}))
 
 	event.On(enum.CommandExecuted, event.ListenerFunc(func(e event.Event) error {
-		fmt.Println("---- Command Executed----")
 		data := e.Data()
 		cmd, _ := data["command"].(command.Command)
 
@@ -147,8 +143,6 @@ func addEventListeners(lru *store.LRU) {
 		if err != nil {
 			fmt.Println(fmt.Errorf("unable to access LRU: %s", err))
 		}
-
-		fmt.Println(lru.Items)
 
 		return nil
 	}))
