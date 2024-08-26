@@ -2,6 +2,7 @@ package command
 
 import (
 	"fmt"
+	"github.com/Computer-Science-Simplified/tedis/server/internal/command/binarytree"
 	"github.com/Computer-Science-Simplified/tedis/server/internal/command/bst"
 	"github.com/Computer-Science-Simplified/tedis/server/internal/enum"
 	"github.com/Computer-Science-Simplified/tedis/server/internal/types"
@@ -26,6 +27,20 @@ func Create(name string, key string, args []int64) (Command, error) {
 			return bst.NewBSTRem(cp), nil
 		case enum.BSTEXISTS:
 			return bst.NewBSTExists(cp), nil
+		}
+	}
+
+	if strings.HasPrefix(name, "BT") {
+		cp := &types.CommandParams{
+			Name: name,
+			Key:  key,
+			Args: args,
+			Type: enum.BinaryTree,
+		}
+
+		switch name {
+		case enum.BTADD:
+			return binarytree.NewBTAdd(cp), nil
 		}
 	}
 

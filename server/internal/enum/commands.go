@@ -5,4 +5,6 @@ const (
 	BSTEXISTS string = "BSTEXISTS"
 	BSTGETALL string = "BSTGETALL"
 	BSTREM    string = "BSTREM"
+
+	BTADD string = "BTADD"
 )

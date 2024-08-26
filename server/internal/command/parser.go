@@ -41,6 +41,10 @@ func Parse(line string) (Command, error) {
 		return nil, fmt.Errorf("%s requires exactly 1 argument but %d given", enum.BSTREM, len(args))
 	}
 
+	if name == enum.BTADD && len(args) != 1 {
+		return nil, fmt.Errorf("%s requires exactly 1 argument but %d given", enum.BTADD, len(args))
+	}
+
 	formattedArgs := make([]int64, 0)
 
 	if len(args) > 0 {
