@@ -5,6 +5,7 @@ import (
 	"encoding/binary"
 	"errors"
 	"fmt"
+	"github.com/Computer-Science-Simplified/tedis/server/internal/command"
 	"github.com/Computer-Science-Simplified/tedis/server/internal/enum"
 	"github.com/Computer-Science-Simplified/tedis/server/internal/model"
 	"github.com/Computer-Science-Simplified/tedis/server/internal/store"
@@ -31,18 +32,17 @@ func Persist() error {
 	}
 
 	for _, key := range store.Keys() {
+		fmt.Println(key)
 		tree, ok := store.Get(key)
 
 		if !ok {
 			continue
 		}
 
-		if tree.GetType() == enum.BinarySearchTree {
-			err = persistTree(tree.GetKey(), tree, file)
+		err = persistTree(tree, file)
 
-			if err != nil {
-				fmt.Println(err.Error())
-			}
+		if err != nil {
+			fmt.Println(err.Error())
 		}
 	}
 
@@ -132,19 +132,10 @@ func Reload() (int, error) {
 		}
 
 		for _, value := range values {
-			fmt.Println(value)
-			//cmd := types.CommandParams{
-			//	Key:  keyName,
-			//	Name: enum.BSTADD,
-			//	Args: []int64{value},
-			//	Type: enum.BinarySearchTree,
-			//}
-
-			//_, err := cmd.Execute(false)
-
-			//if err != nil {
-			//	return numberOfKeys, err
-			//}
+			err = executeCommand(keyName, value, treeType)
+			if err != nil {
+				return numberOfKeys, err
+			}
 		}
 
 		numberOfKeys++
@@ -158,19 +149,19 @@ func Reload() (int, error) {
 	return numberOfKeys, nil
 }
 
-func persistTree(key string, tree model.Tree, file *os.File) error {
+func persistTree(tree model.Tree, file *os.File) error {
 	values := tree.GetAll()
 
 	length := len(values)
 
 	writer := bufio.NewWriter(file)
 
-	err := binary.Write(writer, binary.LittleEndian, byte(len(key)))
+	err := binary.Write(writer, binary.LittleEndian, byte(len(tree.GetKey())))
 	if err != nil {
 		return err
 	}
 
-	err = binary.Write(writer, binary.LittleEndian, []byte(key))
+	err = binary.Write(writer, binary.LittleEndian, []byte(tree.GetKey()))
 	if err != nil {
 		return err
 	}
@@ -199,6 +190,29 @@ func persistTree(key string, tree model.Tree, file *os.File) error {
 
 	err = writer.Flush()
 
+	if err != nil {
+		return err
+	}
+
+	return nil
+}
+
+func executeCommand(keyName string, value int64, treeType string) error {
+	var cmdName string
+
+	switch treeType {
+	case enum.BinarySearchTree:
+		cmdName = enum.BSTADD
+	case enum.BinaryTree:
+		cmdName = enum.BTADD
+	}
+
+	cmd, err := command.Create(cmdName, keyName, []int64{value})
+	if err != nil {
+		return err
+	}
+
+	_, err = cmd.Execute(false)
 	if err != nil {
 		return err
 	}
