@@ -6,5 +6,6 @@ const (
 	BSTGETALL string = "BSTGETALL"
 	BSTREM    string = "BSTREM"
 
-	BTADD string = "BTADD"
+	BTADD    string = "BTADD"
+	BTGETALL string = "BTGETALL"
 )

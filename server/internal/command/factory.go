@@ -41,6 +41,8 @@ func Create(name string, key string, args []int64) (Command, error) {
 		switch name {
 		case enum.BTADD:
 			return binarytree.NewBTAdd(cp), nil
+		case enum.BTGETALL:
+			return binarytree.NewBTGetAll(cp), nil
 		}
 	}
 

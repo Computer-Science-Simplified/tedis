@@ -25,7 +25,7 @@ func (tree *BinaryTree) GetType() string {
 }
 
 func (tree *BinaryTree) Add(value int64) {
-	tree.Root = tree.add(value, tree.Root)
+	tree.add(value, tree.Root)
 }
 
 func (tree *BinaryTree) Exists(value int64) bool {
@@ -66,11 +66,11 @@ func (tree *BinaryTree) GetAll() []int64 {
 
 // -------- Private functions --------
 
-func (tree *BinaryTree) add(value int64, node *BinaryTreeNode) *BinaryTreeNode {
+func (tree *BinaryTree) add(value int64, node *BinaryTreeNode) {
 	if node == nil {
 		newNode := BinaryTreeNode{Value: value}
-
-		return &newNode
+		tree.Root = &newNode
+		return
 	}
 
 	queue := make([]*BinaryTreeNode, 0)
@@ -87,17 +87,15 @@ func (tree *BinaryTree) add(value int64, node *BinaryTreeNode) *BinaryTreeNode {
 
 		if node.Left == nil {
 			node.Left = newNode
-			return newNode
+			return
 		}
 
 		if node.Right == nil {
 			node.Right = newNode
-			return newNode
+			return
 		}
 
 		queue = append(queue, node.Left)
 		queue = append(queue, node.Right)
 	}
-
-	return nil
 }
