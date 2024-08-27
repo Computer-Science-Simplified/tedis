@@ -15,20 +15,20 @@ func NewBSTExists(params *types.CommandParams) *BSTExists {
 	bst := &BSTExists{}
 
 	bst.DoExecuteFunc = bst.doExecute
-	bst.Params = params
+	bst.CommandParams = params
 	bst.AccessType = enum.READ
 
 	return bst
 }
 
 func (b *BSTExists) doExecute() (string, error) {
-	t, err := tree.Create(b.Params.Key, b.Params.Type)
+	t, err := tree.Create(b.CommandParams.Key, b.CommandParams.Type)
 
 	if err != nil {
 		return "", err
 	}
 
-	exists := t.Exists(b.Params.Args[0])
+	exists := t.Exists(b.CommandParams.Args[0])
 
 	return strconv.FormatBool(exists), nil
 }

@@ -15,14 +15,14 @@ func NewBSTGetAll(params *types.CommandParams) *BSTGetAll {
 	bst := &BSTGetAll{}
 
 	bst.DoExecuteFunc = bst.doExecute
-	bst.Params = params
+	bst.CommandParams = params
 	bst.AccessType = enum.READ
 
 	return bst
 }
 
 func (b *BSTGetAll) doExecute() (string, error) {
-	t, err := tree.Create(b.Params.Key, b.Params.Type)
+	t, err := tree.Create(b.CommandParams.Key, b.CommandParams.Type)
 
 	if err != nil {
 		return "", err

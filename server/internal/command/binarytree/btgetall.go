@@ -15,14 +15,14 @@ func NewBTGetAll(params *types.CommandParams) *BTGetAll {
 	cmd := &BTGetAll{}
 
 	cmd.DoExecuteFunc = cmd.doExecute
-	cmd.Params = params
+	cmd.CommandParams = params
 	cmd.AccessType = enum.READ
 
 	return cmd
 }
 
 func (b *BTGetAll) doExecute() (string, error) {
-	t, err := tree.Create(b.Params.Key, b.Params.Type)
+	t, err := tree.Create(b.CommandParams.Key, b.CommandParams.Type)
 
 	if err != nil {
 		return "", err

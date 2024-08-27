@@ -14,20 +14,20 @@ func NewBSTAdd(params *types.CommandParams) *BSTAdd {
 	bst := &BSTAdd{}
 
 	bst.DoExecuteFunc = bst.doExecute
-	bst.Params = params
+	bst.CommandParams = params
 	bst.AccessType = enum.WRITE
 
 	return bst
 }
 
 func (b *BSTAdd) doExecute() (string, error) {
-	t, err := tree.Create(b.Params.Key, b.Params.Type)
+	t, err := tree.Create(b.CommandParams.Key, b.CommandParams.Type)
 
 	if err != nil {
 		return "", err
 	}
 
-	t.Add(b.Params.Args[0])
+	t.Add(b.CommandParams.Args[0])
 
 	return "ok", nil
 }

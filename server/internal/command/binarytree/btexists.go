@@ -15,20 +15,20 @@ func NewBTExists(params *types.CommandParams) *BTExists {
 	cmd := &BTExists{}
 
 	cmd.DoExecuteFunc = cmd.doExecute
-	cmd.Params = params
+	cmd.CommandParams = params
 	cmd.AccessType = enum.READ
 
 	return cmd
 }
 
 func (b *BTExists) doExecute() (string, error) {
-	t, err := tree.Create(b.Params.Key, b.Params.Type)
+	t, err := tree.Create(b.CommandParams.Key, b.CommandParams.Type)
 
 	if err != nil {
 		return "", err
 	}
 
-	exists := t.Exists(b.Params.Args[0])
+	exists := t.Exists(b.CommandParams.Args[0])
 
 	return strconv.FormatBool(exists), nil
 }

@@ -7,7 +7,7 @@ import (
 )
 
 type BaseCommand struct {
-	Params        *CommandParams
+	CommandParams *CommandParams
 	AccessType    string
 	DoExecuteFunc ExecuteFunc
 }
@@ -33,9 +33,9 @@ func (b BaseCommand) Execute(shouldFireEvent bool) (string, error) {
 }
 
 func (b BaseCommand) GetParams() *CommandParams {
-	return b.Params
+	return b.CommandParams
 }
 
 func (b BaseCommand) String() string {
-	return fmt.Sprintf("[%s] %s %s %v", b.Params.Type, b.Params.Name, b.Params.Key, b.Params.Args)
+	return fmt.Sprintf("[%s] %s %s %v", b.CommandParams.Type, b.CommandParams.Name, b.CommandParams.Key, b.CommandParams.Args)
 }

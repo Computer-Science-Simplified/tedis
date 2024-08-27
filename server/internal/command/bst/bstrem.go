@@ -14,20 +14,20 @@ func NewBSTRem(params *types.CommandParams) *BSTRem {
 	bst := &BSTRem{}
 
 	bst.DoExecuteFunc = bst.doExecute
-	bst.Params = params
+	bst.CommandParams = params
 	bst.AccessType = enum.WRITE
 
 	return bst
 }
 
 func (b *BSTRem) doExecute() (string, error) {
-	t, err := tree.Create(b.Params.Key, b.Params.Type)
+	t, err := tree.Create(b.CommandParams.Key, b.CommandParams.Type)
 
 	if err != nil {
 		return "", err
 	}
 
-	t.Remove(b.Params.Args[0])
+	t.Remove(b.CommandParams.Args[0])
 
 	return "ok", nil
 }
