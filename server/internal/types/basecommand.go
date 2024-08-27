@@ -7,7 +7,7 @@ import (
 )
 
 type BaseCommand struct {
-	CommandParams *CommandParams
+	*CommandParams
 	AccessType    string
 	DoExecuteFunc ExecuteFunc
 }
