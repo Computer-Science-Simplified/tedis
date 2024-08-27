@@ -25,9 +25,11 @@ func (b BaseCommand) Execute(shouldFireEvent bool) (string, error) {
 		})
 	}
 
-	event.MustFire(enum.CommandExecuted, event.M{
-		"command": b,
-	})
+	if shouldFireEvent {
+		event.MustFire(enum.CommandExecuted, event.M{
+			"command": b,
+		})
+	}
 
 	return res, nil
 }
